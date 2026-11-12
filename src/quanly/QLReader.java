@@ -1,4 +1,6 @@
-package Reader;
+package quanly;
+
+import danhsach.DSReader;
 
 import java.util.Scanner;
 

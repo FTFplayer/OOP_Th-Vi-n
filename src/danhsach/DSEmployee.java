@@ -1,4 +1,6 @@
-package Employee;
+package danhsach;
+
+import model.Employee;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -637,7 +639,7 @@ public class DSEmployee {
         FileInputStream Instream = null;
 
         try {
-            Instream = new FileInputStream("OOP_Th-Vi-n/AnhPhu/Employee/Employee.txt");
+            Instream = new FileInputStream("data/Employee.txt");
             sc = new Scanner(Instream);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             this.dsnv = new Employee[0];
@@ -706,7 +708,7 @@ public class DSEmployee {
         PrintWriter writer = null;
 
         try {
-            Outstream = new FileOutputStream("OOP_Th-Vi-n/AnhPhu/Employee/Employee.txt");
+            Outstream = new FileOutputStream("data/Employee.txt");
             writer = new PrintWriter(Outstream);
 
             for (int i = 0; i < this.n; i++) {

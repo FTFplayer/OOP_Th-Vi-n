@@ -1,4 +1,6 @@
-package Publisher;
+package danhsach;
+
+import model.Publisher;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -418,7 +420,7 @@ public class DSPublisher {
         FileInputStream Instream = null;
 
         try {
-            Instream = new FileInputStream("OOP_Th-Vi-n/AnhPhu/Publisher/Publisher.txt");
+            Instream = new FileInputStream("data/Publisher.txt");
             sc = new Scanner(Instream);
             this.dsnxb = new Publisher[0];
 
@@ -466,7 +468,7 @@ public class DSPublisher {
         PrintWriter writer = null;
 
         try {
-            Outstream = new FileOutputStream("OOP_Th-Vi-n/AnhPhu/Publisher/Publisher.txt");
+            Outstream = new FileOutputStream("data/Publisher.txt");
             writer = new PrintWriter(Outstream);
 
             for (int i = 0; i < this.n; i++) {

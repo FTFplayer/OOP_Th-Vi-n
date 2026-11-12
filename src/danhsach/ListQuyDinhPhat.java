@@ -1,39 +1,40 @@
+package danhsach;
+
+import model.QuyDinhPhat;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;             // Dùng để kiểm tra file có tồn tại hay không
-import java.io.IOException;       // Mở luồng đọc file ký tự
-import java.io.PrintWriter;   // Đọc từng dòng văn bản tối ưu, nhanh chóng
-import java.util.Arrays;       // Mở luồng ghi file ký tự
-import java.util.Scanner;      // Ghi dữ liệu dạng dòng văn bản (println, printf)
-
-
+import java.io.FileWriter; // Dùng để kiểm tra file có tồn tại hay không
+import java.io.IOException; // Mở luồng đọc file ký tự
+import java.io.PrintWriter; // Đọc từng dòng văn bản tối ưu, nhanh chóng
+import java.util.Arrays; // Mở luồng ghi file ký tự
+import java.util.Scanner; // Ghi dữ liệu dạng dòng văn bản (println, printf)
 
 public class ListQuyDinhPhat {
     private QuyDinhPhat[] dsQDP;
     private int soLuong;
 
     public ListQuyDinhPhat(int length) {
-        this.soLuong=0; this.dsQDP=new QuyDinhPhat[length];}
+        this.soLuong = 0;
+        this.dsQDP = new QuyDinhPhat[length];
+    }
+
     public ListQuyDinhPhat(QuyDinhPhat[] dsQDP, int soLuong) {
         this.dsQDP = dsQDP;
         this.soLuong = soLuong;
     }
 
-
-
     public int getSoLuong() {
-        return soLuong;}
+        return soLuong;
+    }
+
     public QuyDinhPhat getQDP(int index) {
         if (index < 0 || index >= soLuong) {
             throw new IndexOutOfBoundsException("Vi tri quy dinh phat khong hop le.");
         }
-        return dsQDP[index];}
+        return dsQDP[index];
+    }
 
-    
-
-    
-    
     public void Input(Scanner sc) {
         System.out.print("Nhap so luong quy dinh phat: ");
         int sl = Integer.parseInt(sc.nextLine());
@@ -44,6 +45,7 @@ public class ListQuyDinhPhat {
         }
 
     }
+
     public void Output() {
         System.out.println("DANH SACH QUY DINH PHAT");
         System.out.printf("|%-10s|%-30s|%-14s|%n", "MA LD", "TEN LY DO", "SO TIEN");
@@ -55,9 +57,6 @@ public class ListQuyDinhPhat {
         }
     }
 
-
-
-
     private int TimViTri(String maLD) {
         for (int i = 0; i < soLuong; i++) {
             if (dsQDP[i].getMaLD().equalsIgnoreCase(maLD)) {
@@ -66,10 +65,12 @@ public class ListQuyDinhPhat {
         }
         return -1;
     }
+
     public QuyDinhPhat Tim(String maLD) {
         int viTri = TimViTri(maLD);
         return viTri == -1 ? null : dsQDP[viTri];
     }
+
     public QuyDinhPhat Tim(Scanner sc) {
         System.out.print("Nhap ma quy dinh can tim: ");
         QuyDinhPhat quyDinh = Tim(sc.nextLine().trim());
@@ -78,19 +79,14 @@ public class ListQuyDinhPhat {
         }
         return quyDinh;
     }
+
     public void TimQuyDinh(Scanner sc) {
         QuyDinhPhat quyDinh = Tim(sc);
         if (quyDinh != null) {
             quyDinh.Output();
-        }
-        else
-          System.out.println("Khong tim thay quy dinh phat");
+        } else
+            System.out.println("Khong tim thay quy dinh phat");
     }
-
-
-
-
-
 
     public void Them(Scanner sc) {
         QuyDinhPhat quyDinh = new QuyDinhPhat();
@@ -102,24 +98,21 @@ public class ListQuyDinhPhat {
         }
         Them(quyDinh);
     }
+
     public void Them(QuyDinhPhat quyDinh) {
         if (Tim(quyDinh.getMaLD()) != null) {
-            throw new IllegalArgumentException("Ma ly do phat da ton tai.");    
+            throw new IllegalArgumentException("Ma ly do phat da ton tai.");
         }
         if (soLuong == dsQDP.length) {
             dsQDP = Arrays.copyOf(dsQDP, dsQDP.length + 1);
         }
         dsQDP[soLuong++] = quyDinh;
-    
+
     }
-
-
-
-
 
     public boolean Xoa(String maLD) {
         int viTri = TimViTri(maLD);
-        if (viTri == -1 ) {
+        if (viTri == -1) {
             return false;
         }
         for (int i = viTri; i < soLuong - 1; i++) {
@@ -128,21 +121,16 @@ public class ListQuyDinhPhat {
         dsQDP[--soLuong] = null;
         return true;
     }
+
     public void Xoa(Scanner sc) {
         System.out.print("Nhap ma ly do can xoa: ");
         String maLD = sc.nextLine().trim();
-        if (Xoa(maLD)) 
+        if (Xoa(maLD))
             System.out.println("Xoa quy dinh thanh cong.");
-       else {
+        else {
             System.out.println("Khong tim thay quy dinh phat.");
         }
     }
-
-
-
-
-
-
 
     public void Sua(Scanner sc) {
         QuyDinhPhat quyDinh = Tim(sc);
@@ -156,17 +144,9 @@ public class ListQuyDinhPhat {
         System.out.println("Sua quy dinh thanh cong.");
     }
 
-
-
-
-
     public void ThongKe() {
         System.out.println("Tong so quy dinh: " + soLuong);
     }
-
-   
-
-
 
     public void ghiFile(String filename) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
@@ -183,7 +163,8 @@ public class ListQuyDinhPhat {
     public void docFile(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line = br.readLine();
-            if (line == null) return;
+            if (line == null)
+                return;
             soLuong = 0;
             int sl = Integer.parseInt(line);
             for (int i = 0; i < sl; i++) {

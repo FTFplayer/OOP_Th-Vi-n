@@ -1,11 +1,21 @@
-package TheLoai;
+package danhsach;
+
+import model.TheLoai;
+
 import java.util.Arrays;
 import java.util.Scanner;
+
 public class DSTheLoai {
     Scanner sc = new Scanner(System.in);
     private TheLoai[] ds;
     private int n;
-    public DSTheLoai() {ds = new TheLoai[0]; n = 0; khoiTaoDuLieuMau();}
+
+    public DSTheLoai() {
+        ds = new TheLoai[0];
+        n = 0;
+        khoiTaoDuLieuMau();
+    }
+
     private void khoiTaoDuLieuMau() {
         ds = new TheLoai[3];
         ds[0] = new TheLoai("TL01", "Cong Nghe Thong Tin");
@@ -20,7 +30,7 @@ public class DSTheLoai {
                 return ds[i].getTenTheLoai();
             }
         }
-        return "Khong ro"; 
+        return "Khong ro";
     }
 
     public boolean kiemTraTonTai(String ma) {
@@ -31,7 +41,7 @@ public class DSTheLoai {
         }
         return false;
     }
-    
+
     // Hàm 3: In danh sách thu gọn (Chỉ Mã và Tên) cho thủ thư nhìn để nhập sách
     public void hienThiDanhSachChon() {
         System.out.println("\n--- DANH SACH THE LOAI ---");
@@ -40,7 +50,6 @@ public class DSTheLoai {
         }
     }
 
-    
     public void xuatDS() {
         System.out.println("\n=========================================");
         System.out.println("          DANH SACH THE LOAI             ");
@@ -79,6 +88,6 @@ public class DSTheLoai {
             System.out.println("=> Xoa the loai thanh cong!");
         } else {
             System.out.println("=> Khong tim thay the loai co ma: " + ma);
-        }   
+        }
     }
 }

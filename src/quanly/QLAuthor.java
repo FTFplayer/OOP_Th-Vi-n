@@ -1,4 +1,6 @@
-package Author;
+package quanly;
+
+import danhsach.DSAuthor;
 
 import java.util.Scanner;
 

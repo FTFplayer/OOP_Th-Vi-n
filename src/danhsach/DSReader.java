@@ -1,4 +1,6 @@
-package Reader;
+package danhsach;
+
+import model.Reader;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -651,7 +653,7 @@ public class DSReader {
         FileInputStream Instream = null;
 
         try {
-            Instream = new FileInputStream("OOP_Th-Vi-n/AnhPhu/Reader/Reader.txt");
+            Instream = new FileInputStream("data/Reader.txt");
             sc = new Scanner(Instream);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             this.dsdocgia = new Reader[0];
@@ -723,7 +725,7 @@ public class DSReader {
         PrintWriter writer = null;
 
         try {
-            Outstream = new FileOutputStream("OOP_Th-Vi-n/AnhPhu/Reader/Reader.txt");
+            Outstream = new FileOutputStream("data/Reader.txt");
             writer = new PrintWriter(Outstream);
 
             for (int i = 0; i < this.n; i++) {

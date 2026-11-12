@@ -1,13 +1,27 @@
-package Book;
+package danhsach;
+
+import model.Book;
+import model.ReferenceBook;
+import model.EducationBook;
 
 import java.util.Arrays;
 import java.util.Scanner;
-public class DSBook{
+
+public class DSBook {
     Scanner sc = new Scanner(System.in);
     private Book[] ds = new Book[1];
     private int n;
-    public DSBook(){this.ds=new Book[1];this.n=0;}
-    public DSBook(Book[] ds, int n){this.ds=ds;this.n=n;}
+
+    public DSBook() {
+        this.ds = new Book[1];
+        this.n = 0;
+    }
+
+    public DSBook(Book[] ds, int n) {
+        this.ds = ds;
+        this.n = n;
+    }
+
     public void Input() {
         System.out.print("Nhap so luong sach khac nhau: ");
         n = sc.nextInt();
@@ -16,41 +30,57 @@ public class DSBook{
         for (int i = 0; i < n; i++) {
             System.out.println("\n---Nhap thong tin sach thu " + (i + 1) + "---");
             System.out.print("Chon loai sach (1-Sach giao khoa | 2-Sach thuong): ");
-            int loai=sc.nextInt();sc.nextLine();
-            if(loai==1) ds[i]=new EducationBook();
-            else if(loai==2) ds[i]=new ReferenceBook();
+            int loai = sc.nextInt();
+            sc.nextLine();
+            if (loai == 1)
+                ds[i] = new EducationBook();
+            else if (loai == 2)
+                ds[i] = new ReferenceBook();
             ds[i].Input();
         }
     }
+
     public void Output() {
-        System.out.println("\n============================================================================================================");
-        System.out.println("                                         DANH SACH QUAN LY SACH                                         ");
-        System.out.println("============================================================================================================");
+        System.out.println(
+                "\n============================================================================================================");
+        System.out.println(
+                "                                         DANH SACH QUAN LY SACH                                         ");
+        System.out.println(
+                "============================================================================================================");
         System.out.printf("| %-4s | %-12s | %-8s | %-4s | %-8s | %-7s | %-3s | %-3s | %-10s | %-18s |\n",
-                "Ma", "Ten Sach", "The Loai", "MaTG", "Ngay XB", "Don Gia", "SL", "Con", "Trang thai", "Thong tin rieng");       
-        System.out.println("|----------------------------------------------------------------------------------------------------------|");
-        
+                "Ma", "Ten Sach", "The Loai", "MaTG", "Ngay XB", "Don Gia", "SL", "Con", "Trang thai",
+                "Thong tin rieng");
+        System.out.println(
+                "|----------------------------------------------------------------------------------------------------------|");
+
         for (int i = 0; i < n; i++) {
             ds[i].Output();
         }
-        System.out.println("============================================================================================================");
+        System.out.println(
+                "============================================================================================================");
     }
+
     public void them() {
         ds = Arrays.copyOf(ds, n + 1);
         System.out.print("Chon loai sach (1 - Sach giao khoa | 2 - Sach thuong): ");
-        int loai = sc.nextInt(); sc.nextLine();
-        if (loai == 1) ds[n] = new EducationBook();
-        else ds[n] = new ReferenceBook();
+        int loai = sc.nextInt();
+        sc.nextLine();
+        if (loai == 1)
+            ds[n] = new EducationBook();
+        else
+            ds[n] = new ReferenceBook();
         ds[n].Input();
         n++;
         System.out.println("Them sach thanh cong!");
     }
+
     public void them(Book x) {
         ds = Arrays.copyOf(ds, n + 1);
         ds[n] = x;
         n++;
         System.out.println("Them sach thanh cong!");
     }
+
     public int timkiem(String ma) {
         for (int i = 0; i < n; i++) {
             if (ds[i].getMaSach().equalsIgnoreCase(ma)) {
@@ -59,6 +89,7 @@ public class DSBook{
         }
         return -1;
     }
+
     public void timkiem() {
         System.out.print("Nhap ma sach can tim: ");
         String ma = sc.nextLine();
@@ -66,14 +97,18 @@ public class DSBook{
         if (vt != -1) {
             System.out.println("\n===== KET QUA TIM KIEM =====");
             System.out.printf("| %-4s | %-12s | %-8s | %-4s | %-8s | %-7s | %-3s | %-3s | %-10s | %-18s |\n",
-                    "Ma", "Ten Sach", "The Loai", "MaTG", "Ngay XB", "Don Gia", "SL", "Con", "Trang thai", "Thong tin rieng");
-            System.out.println("------------------------------------------------------------------------------------------------------------");
+                    "Ma", "Ten Sach", "The Loai", "MaTG", "Ngay XB", "Don Gia", "SL", "Con", "Trang thai",
+                    "Thong tin rieng");
+            System.out.println(
+                    "------------------------------------------------------------------------------------------------------------");
             ds[vt].Output();
-            System.out.println("============================================================================================================");
+            System.out.println(
+                    "============================================================================================================");
         } else {
             System.out.println("Khong tim thay sach co ma: " + ma);
         }
     }
+
     public Book timkiemBook(String ma) {
         int vt = timkiem(ma);
         if (vt != -1) {
@@ -81,6 +116,7 @@ public class DSBook{
         }
         return null;
     }
+
     public void timTheoTenSach() {
         System.out.print("Nhap ten sach can tim: ");
         String ten = sc.nextLine();
@@ -90,19 +126,23 @@ public class DSBook{
                 if (!found) {
                     System.out.println("\n===== DANH SACH TIM THAY =====");
                     System.out.printf("| %-4s | %-12s | %-8s | %-4s | %-8s | %-7s | %-3s | %-3s | %-10s | %-18s |\n",
-                            "Ma", "Ten Sach", "The Loai", "MaTG", "Ngay XB", "Don Gia", "SL", "Con", "Trang thai", "Thong tin rieng");
-                    System.out.println("------------------------------------------------------------------------------------------------------------");
+                            "Ma", "Ten Sach", "The Loai", "MaTG", "Ngay XB", "Don Gia", "SL", "Con", "Trang thai",
+                            "Thong tin rieng");
+                    System.out.println(
+                            "------------------------------------------------------------------------------------------------------------");
                     found = true;
                 }
                 ds[i].Output();
             }
         }
         if (found) {
-            System.out.println("============================================================================================================");
+            System.out.println(
+                    "============================================================================================================");
         } else {
             System.out.println("Khong tim thay sach nao co ten chua: " + ten);
         }
     }
+
     public void timTheoTheLoai() {
         System.out.print("Nhap the loai can tim: ");
         String tl = sc.nextLine();
@@ -112,19 +152,23 @@ public class DSBook{
                 if (!found) {
                     System.out.println("\n===== DANH SACH TIM THAY =====");
                     System.out.printf("| %-4s | %-12s | %-8s | %-4s | %-8s | %-7s | %-3s | %-3s | %-10s | %-18s |\n",
-                            "Ma", "Ten Sach", "The Loai", "MaTG", "Ngay XB", "Don Gia", "SL", "Con", "Trang thai", "Thong tin rieng");
-                    System.out.println("------------------------------------------------------------------------------------------------------------");
+                            "Ma", "Ten Sach", "The Loai", "MaTG", "Ngay XB", "Don Gia", "SL", "Con", "Trang thai",
+                            "Thong tin rieng");
+                    System.out.println(
+                            "------------------------------------------------------------------------------------------------------------");
                     found = true;
                 }
                 ds[i].Output();
             }
         }
         if (found) {
-            System.out.println("============================================================================================================");
+            System.out.println(
+                    "============================================================================================================");
         } else {
             System.out.println("Khong tim thay sach thuoc the loai: " + tl);
         }
     }
+
     public void xoa(String ma) {
         int vt = timkiem(ma);
         if (vt == -1) {
@@ -138,16 +182,19 @@ public class DSBook{
         ds = Arrays.copyOf(ds, n);
         System.out.println("Xoa sach thanh cong!");
     }
+
     public void xoa() {
         System.out.print("Nhap ma sach can xoa: ");
         String ma = sc.nextLine();
         xoa(ma);
     }
+
     public void sua() {
         System.out.print("Nhap ma sach can sua: ");
         String ma = sc.nextLine();
         sua(ma);
     }
+
     public void sua(String ma) {
         int vt = timkiem(ma);
         if (vt == -1) {
@@ -175,6 +222,7 @@ public class DSBook{
         }
         System.out.println("Sua thong tin thanh cong!");
     }
+
     public void thongKeLoaiSach() {
         int sgk = 0, st = 0;
         for (int i = 0; i < n; i++) {
@@ -188,6 +236,7 @@ public class DSBook{
         System.out.println("Sach giao khoa (EducationBook): " + sgk + " cuon");
         System.out.println("Sach tham khao (ReferenceBook): " + st + " cuon");
     }
+
     public void thongKeTinhTrang() {
         int con = 0, het = 0;
         for (int i = 0; i < n; i++) {
@@ -201,13 +250,17 @@ public class DSBook{
         System.out.println("Sach con trong kho : " + con + " ma sach");
         System.out.println("Sach da het hang   : " + het + " ma sach (Can nhap them!)");
     }
+
     public void thongKeGiaTien() {
         int re = 0, trungBinh = 0, cao = 0;
         for (int i = 0; i < n; i++) {
             double gia = ds[i].getDonGia();
-            if (gia < 50000) re++;
-            else if (gia <= 150000) trungBinh++;
-            else cao++;
+            if (gia < 50000)
+                re++;
+            else if (gia <= 150000)
+                trungBinh++;
+            else
+                cao++;
         }
         System.out.println("\n===== THONG KE THEO MUC GIA =====");
         System.out.println("Sach duoi 50.000 VND        : " + re + " cuon");

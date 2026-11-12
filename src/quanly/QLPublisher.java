@@ -1,9 +1,11 @@
-package Publisher;
+package quanly;
+
+import danhsach.DSPublisher;
 
 import java.util.Scanner;
 
 public class QLPublisher {
-    private DSPublisher dsPublisher;
+    private DSPublisher dsPublisher = new DSPublisher();
     private Scanner sc = new Scanner(System.in);
 
     // -----------------------------------------------------------------------------------//

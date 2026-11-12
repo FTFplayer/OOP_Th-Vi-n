@@ -1,4 +1,6 @@
-package Author;
+package danhsach;
+
+import model.Author;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -590,7 +592,7 @@ public class DSAuthor {
         FileInputStream Instream = null;
 
         try {
-            Instream = new FileInputStream("OOP_Th-Vi-n/AnhPhu/Author/Author.txt");
+            Instream = new FileInputStream("data/Author.txt");
             sc = new Scanner(Instream);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             this.dstacgia = new Author[0];
@@ -650,7 +652,7 @@ public class DSAuthor {
         PrintWriter writer = null;
 
         try {
-            Outstream = new FileOutputStream("OOP_Th-Vi-n/AnhPhu/Author/Author.txt");
+            Outstream = new FileOutputStream("data/Author.txt");
             writer = new PrintWriter(Outstream);
 
             for (int i = 0; i < this.n; i++) {

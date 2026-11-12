@@ -1,4 +1,6 @@
-package Employee;
+package quanly;
+
+import danhsach.DSEmployee;
 
 import java.util.Scanner;
 
