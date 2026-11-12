@@ -34,8 +34,13 @@ public class QLPublisher {
                     break;
                 case 2:
                     System.out.println("\n--- [2] THEM NHA XUAT BAN MOI ---");
-                    dsPublisher.ThemPublisher();
-                    dsPublisher.WriteFile();
+                    System.out.print("Ban muon nhap bao nhieu nha xuat ban: ");
+                    int twice = nhapLuaChon();
+                    for (int i = 0; i < twice; i++) {
+                        System.out.println("Nhap nha xuat ban thu " + (i + 1) + ": ");
+                        dsPublisher.ThemPublisher();
+                        dsPublisher.WriteFile();
+                    }
                     break;
                 case 3:
                     menuTimKiem();

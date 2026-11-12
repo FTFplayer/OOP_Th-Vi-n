@@ -590,7 +590,7 @@ public class DSAuthor {
         FileInputStream Instream = null;
 
         try {
-            Instream = new FileInputStream("Author/Author.txt");
+            Instream = new FileInputStream("OOP_Th-Vi-n/AnhPhu/Author/Author.txt");
             sc = new Scanner(Instream);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             this.dstacgia = new Author[0];
@@ -650,7 +650,7 @@ public class DSAuthor {
         PrintWriter writer = null;
 
         try {
-            Outstream = new FileOutputStream("Author/Author.txt");
+            Outstream = new FileOutputStream("OOP_Th-Vi-n/AnhPhu/Author/Author.txt");
             writer = new PrintWriter(Outstream);
 
             for (int i = 0; i < this.n; i++) {

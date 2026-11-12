@@ -35,8 +35,13 @@ public class QLAuthor {
                     break;
                 case 2:
                     System.out.println("\n--- [2] THEM TAC GIA MOI ---");
-                    dsAuthor.ThemAuthor();
-                    dsAuthor.WriteFile();
+                    System.out.print("Ban muon nhap bao nhieu tac gia: ");
+                    int twice = nhapLuaChon();
+                    for (int i = 0; i < twice; i++) {
+                        System.out.println("Nhap tac gia thu " + (i + 1) + ": ");
+                        dsAuthor.ThemAuthor();
+                        dsAuthor.WriteFile();
+                    }
                     break;
                 case 3:
                     menuTimKiem();

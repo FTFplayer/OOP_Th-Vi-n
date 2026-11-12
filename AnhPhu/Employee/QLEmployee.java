@@ -35,8 +35,13 @@ public class QLEmployee {
                     break;
                 case 2:
                     System.out.println("\n--- [2] THEM NHAN VIEN MOI ---");
-                    dsEmployee.ThemEmployee();
-                    dsEmployee.WriteFile();
+                    System.out.print("Ban muon nhap bao nhieu nhan vien: ");
+                    int twice = nhapLuaChon();
+                    for (int i = 0; i < twice; i++) {
+                        System.out.println("Nhap nhan vien thu " + (i + 1) + ": ");
+                        dsEmployee.ThemEmployee();
+                        dsEmployee.WriteFile();
+                    }
                     break;
                 case 3:
                     menuTimKiem();

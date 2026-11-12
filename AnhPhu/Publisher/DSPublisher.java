@@ -418,7 +418,7 @@ public class DSPublisher {
         FileInputStream Instream = null;
 
         try {
-            Instream = new FileInputStream("Publisher/Publisher.txt");
+            Instream = new FileInputStream("OOP_Th-Vi-n/AnhPhu/Publisher/Publisher.txt");
             sc = new Scanner(Instream);
             this.dsnxb = new Publisher[0];
 
@@ -466,7 +466,7 @@ public class DSPublisher {
         PrintWriter writer = null;
 
         try {
-            Outstream = new FileOutputStream("Publisher/Publisher.txt");
+            Outstream = new FileOutputStream("OOP_Th-Vi-n/AnhPhu/Publisher/Publisher.txt");
             writer = new PrintWriter(Outstream);
 
             for (int i = 0; i < this.n; i++) {

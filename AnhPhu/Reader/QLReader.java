@@ -35,8 +35,13 @@ public class QLReader {
                     break;
                 case 2:
                     System.out.println("\n--- [2] THEM DOC GIA MOI ---");
-                    dsReader.ThemReader();
-                    dsReader.WriteFile();
+                    System.out.print("Ban muon nhap bao nhieu doc gia: ");
+                    int twice = nhapLuaChon();
+                    for (int i = 0; i < twice; i++) {
+                        System.out.println("Nhap doc gia thu " + (i + 1) + ": ");
+                        dsReader.ThemReader();
+                        dsReader.WriteFile();
+                    }
                     break;
                 case 3:
                     menuTimKiem();

@@ -11,26 +11,26 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class DSReader {
-    // 1. Thuoc tinh
+    // 1. Thuộc tính
     private int n;
     private Reader dsdocgia[] = new Reader[0];
 
     // -----------------------------------------------------------------------------------//
 
     // 2. Constructor
-    // 2.1 Constructor khong tham so
+    // 2.1 Constructor không tham số
     public DSReader() {
         this.n = 0;
         this.dsdocgia = new Reader[0];
     }
 
-    // 2.2 Constructor co tham so
+    // 2.2 Constructor có tham số
     public DSReader(int n, Reader[] dsdocgia) {
         this.n = n;
         this.dsdocgia = dsdocgia;
     }
 
-    // 2.3 Constructor sao chep
+    // 2.3 Constructor sao chép
     public DSReader(DSReader copy) {
         if (copy != null) {
             this.n = copy.n;
@@ -57,7 +57,7 @@ public class DSReader {
 
     // -----------------------------------------------------------------------------------//
 
-    // 4. Nhap danh sach
+    // 4. Nhập danh sách
     public void Input() {
         Scanner sc = new Scanner(System.in);
         this.n = sc.nextInt();
@@ -73,9 +73,9 @@ public class DSReader {
 
     // -----------------------------------------------------------------------------------//
 
-    // 5. Xuat danh sach
+    // 5. Xem danh sách
     public void Output() {
-        if (n == 0) {
+        if (this.n == 0) {
             System.out.println("Danh sach doc gia dang trong!");
             return;
         }
@@ -91,9 +91,9 @@ public class DSReader {
 
     // -----------------------------------------------------------------------------------//
 
-    // 6. Tim kiem
+    // 6. Tìm kiếm
 
-    // 6.1 Tim theo ma
+    // 6.1 Tìm kiếm theo mã
     public void TimReaderTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma doc gia can tim: ");
@@ -120,7 +120,7 @@ public class DSReader {
         return -1;
     }
 
-    // 6.2 Tim theo ho
+    // 6.2 Tim kiếm theo họ
     public void TimReaderTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho doc gia can tim: ");
@@ -142,7 +142,7 @@ public class DSReader {
         }
     }
 
-    // 6.3 Tim theo ten
+    // 6.3 Tìm kiếm theo tên
     public void TimReaderTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten doc gia can tim: ");
@@ -166,7 +166,7 @@ public class DSReader {
 
     // -----------------------------------------------------------------------------------//
 
-    // 7. Them
+    // 7. Thêm
     public void ThemReader() {
         dsdocgia = Arrays.copyOf(dsdocgia, n + 1);
         dsdocgia[n] = new Reader();
@@ -185,7 +185,7 @@ public class DSReader {
 
     // -----------------------------------------------------------------------------------//
 
-    // 8. Xoa
+    // 8. Xóa độc giả
     public void XoaReader(int pos) {
         if (pos >= n || pos < 0) {
             System.out.println("Vi tri xoa khong hop le.");
@@ -200,6 +200,7 @@ public class DSReader {
         dsdocgia = Arrays.copyOf(dsdocgia, n);
     }
 
+    // Xóa độc giả theo mã
     public void XoaReaderTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma doc gia can xoa: ");
@@ -214,6 +215,7 @@ public class DSReader {
         }
     }
 
+    // Xóa độc giả theo họ
     public void XoaReaderTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho doc gia can xoa: ");
@@ -235,6 +237,7 @@ public class DSReader {
         }
     }
 
+    // Xóa độc giả theo tên
     public void XoaReaderTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten doc gia can xoa: ");
@@ -256,6 +259,7 @@ public class DSReader {
         }
     }
 
+    // Xóa độc giả theo địa chỉ
     public void XoaReaderTheoDiaChi() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap dia chi doc gia can xoa: ");
@@ -277,6 +281,7 @@ public class DSReader {
         }
     }
 
+    // Xóa độc giả theo SDT
     public void XoaReaderTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap so dien thoai doc gia can xoa: ");
@@ -298,6 +303,7 @@ public class DSReader {
         }
     }
 
+    // Xóa độc giả theo ngày lập thẻ
     public void XoaReaderTheoNgayLapThe() {
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -331,6 +337,7 @@ public class DSReader {
         }
     }
 
+    // Xóa độc giả theo ngày sinh
     public void XoaReaderTheoNgaySinh() {
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -364,6 +371,7 @@ public class DSReader {
         }
     }
 
+    // Xóa độc giả theo giới tính
     public void XoaReaderTheoGioiTinh() {
         String strGioiTinhCanXoa;
         Scanner sc = new Scanner(System.in);
@@ -643,7 +651,7 @@ public class DSReader {
         FileInputStream Instream = null;
 
         try {
-            Instream = new FileInputStream("Reader/Reader.txt");
+            Instream = new FileInputStream("OOP_Th-Vi-n/AnhPhu/Reader/Reader.txt");
             sc = new Scanner(Instream);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             this.dsdocgia = new Reader[0];
@@ -715,7 +723,7 @@ public class DSReader {
         PrintWriter writer = null;
 
         try {
-            Outstream = new FileOutputStream("Reader/Reader.txt");
+            Outstream = new FileOutputStream("OOP_Th-Vi-n/AnhPhu/Reader/Reader.txt");
             writer = new PrintWriter(Outstream);
 
             for (int i = 0; i < this.n; i++) {
