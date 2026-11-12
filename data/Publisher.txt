@@ -1,0 +1,5 @@
+NXB01,Kim Dong,0901234567,kimdong@gmail.com,Quan 1 TP.HCM
+NXB02,Tre,0912345678,nxbtre@gmail.com,Quan 3 TP.HCM
+NXB03,Giao Duc,0987654321,giaoduc@edu.vn,Quan 5 TP.HCM
+NXB04,Tong Hop,0933445566,tonghop@hcm.vn,Quan 10 TP.HCM
+NXB05,Phu Nu,0977889900,phunu@nxbphunu.vn,Thu Duc TP.HCM
