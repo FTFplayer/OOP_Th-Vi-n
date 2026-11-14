@@ -96,7 +96,7 @@ public class ChiTietPhieuPhat {
     }
 
     public void Output() {
-        System.out.printf("| %-8s | %-10s | %-15.2f | %-8s |\n", maPP, maSach, tienPhat, maLDi);
+        System.out.printf("| %-8s | %-10s | %-15.2f | %-8s |\n", maPP, maSach, tienPhat, maLD);
     }
 
 }

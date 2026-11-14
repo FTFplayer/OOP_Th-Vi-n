@@ -173,6 +173,7 @@ public class DSReader {
         dsdocgia = Arrays.copyOf(dsdocgia, n + 1);
         dsdocgia[n] = new Reader();
         System.out.println("Nhap thong tin doc gia moi:");
+
         dsdocgia[n].Input();
         n++;
     }
@@ -758,4 +759,14 @@ public class DSReader {
             }
         }
     }
+
+    public boolean CheckMaDG(String MaDG) {
+        for (int i = 0; i < this.n; i++) {
+            if (dsdocgia[i] != null && dsdocgia[i].getMaDocGia().equals(MaDG)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -491,4 +491,16 @@ public class DSPublisher {
             }
         }
     }
+
+    // -----------------------------------------------------------------------------------//
+    // 12. Kiểm tra mã trùng
+
+    public boolean CheckMaNXB(String MaNXB) {
+        for (int i = 0; i < this.n; i++) {
+            if (dsnxb[i] != null && dsnxb[i].getMaNXB().equals(MaNXB)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

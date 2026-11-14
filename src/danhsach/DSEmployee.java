@@ -738,4 +738,16 @@ public class DSEmployee {
             }
         }
     }
+
+    // -----------------------------------------------------------------------------------//
+    // 12. Kiểm tra mã trùng
+
+    public boolean CheckMaNV(String MaNV) {
+        for (int i = 0; i < this.n; i++) {
+            if (dsnv[i] != null && dsnv[i].getMaNV().equals(MaNV)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

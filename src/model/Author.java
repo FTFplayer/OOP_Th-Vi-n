@@ -96,8 +96,8 @@ public class Author {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Nhap ma tac gia: ");
-        this.MaTG = sc.nextLine().trim();
+        // System.out.print("Nhap ma tac gia: ");
+        // this.MaTG = sc.nextLine().trim();
 
         System.out.print("Nhap ho tac gia: ");
         this.HoTG = sc.nextLine().trim();
@@ -183,4 +183,5 @@ public class Author {
 
         System.out.printf(dataFormat, this.MaTG, this.HoTG, this.TenTG, strNgaySinh, this.GioiTinh, this.SDT);
     }
+
 }

@@ -13,25 +13,25 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class DSAuthor {
-    // 1. Thuoc tinh
+    // 1. Thuộc tính
     private int n;
     private Author dstacgia[] = new Author[0];
 
     // -----------------------------------------------------------------------------------//
     // 2. Constructor
-    // 2.1 Constructor khong tham so
+    // 2.1 Constructor không tham số
     public DSAuthor() {
         this.n = 0;
         this.dstacgia = new Author[0];
     }
 
-    // 2.2 Constructor co tham so
+    // 2.2 Constructor có tham số
     public DSAuthor(int n, Author[] dstacgia) {
         this.n = n;
         this.dstacgia = dstacgia;
     }
 
-    // 2.3 Constructor sao chep
+    // 2.3 Constructor sao chép
     public DSAuthor(DSAuthor copy) {
         if (copy != null) {
             this.n = copy.n;
@@ -45,7 +45,7 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 3. In tieu de bang dong bo voi Output() cua Author
+    // 3. Tạo khung tiêu đề
     public void PrintHeader() {
         System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
         System.out.printf("|%-10s|%-12s|%-10s|%-14s|%-10s|%-12s|%n",
@@ -54,7 +54,7 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 4. Nhap danh sach tu ban phim
+    // 4. Nhập danh sách từ bàn phím
     public void Input() {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -79,7 +79,7 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 5. Xuat danh sach
+    // 5. Xem danh sách
     public void Output() {
         if (this.n == 0) {
             System.out.println("Danh sach tac gia dang trong!");
@@ -95,9 +95,9 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 6. Tim kiem
+    // 6. Tìm kiếm
 
-    // 6.1 Tim theo ma tac gia
+    // 6.1 Tìm kiếm theo mã tac gia
     public void TimAuthorTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma tac gia can tim: ");
@@ -123,7 +123,7 @@ public class DSAuthor {
         return -1;
     }
 
-    // 6.2 Tim theo ho tac gia
+    // 6.2 Tìm kiếm theo họ tác giả
     public void TimAuthorTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho tac gia can tim: ");
@@ -144,7 +144,7 @@ public class DSAuthor {
         }
     }
 
-    // 6.3 Tim theo ten tac gia
+    // 6.3 Tìm kiếm theo tên tác giả
     public void TimAuthorTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten tac gia can tim: ");
@@ -165,7 +165,7 @@ public class DSAuthor {
         }
     }
 
-    // 6.4 Tim theo SDT
+    // 6.4 Tìm kiếm theo số điện thoại
     public void TimAuthorTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap SDT tac gia can tim: ");
@@ -192,18 +192,26 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 7. Them
+    // 7. Thêm tác giả
 
     public void ThemAuthor() {
+        Scanner sc = new Scanner(System.in);
         dstacgia = Arrays.copyOf(dstacgia, n + 1);
         dstacgia[n] = new Author();
         System.out.println("Nhap thong tin tac gia moi:");
+        System.out.println("Nhap ma tac gia: ");
+        String MaTG = sc.nextLine().trim();
+        while (CheckMaTG(MaTG)) {
+            System.out.println("Ma tac gia bi trung. Vui long nhap lai");
+            MaTG = sc.nextLine();
+        }
+        dstacgia[n].setMaTG(MaTG);
         dstacgia[n].Input();
         n++;
     }
 
     public void ThemAuthor(Author author) {
-        if (author != null) {
+        if (author != null && !CheckMaTG(author.getMaTG())) {
             dstacgia = Arrays.copyOf(dstacgia, n + 1);
             dstacgia[n] = new Author(author);
             n++;
@@ -211,7 +219,7 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 8. Xoa
+    // 8. Xóa tác giả
 
     public void XoaAuthor(int pos) {
         if (pos >= n || pos < 0) {
@@ -227,7 +235,7 @@ public class DSAuthor {
         dstacgia = Arrays.copyOf(dstacgia, n);
     }
 
-    // 8.1 Xoa theo ma tac gia
+    // 8.1 Xoá theo mã tác giả
     public void XoaAuthorTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma tac gia can xoa: ");
@@ -242,7 +250,7 @@ public class DSAuthor {
         }
     }
 
-    // 8.2 Xoa theo ho tac gia
+    // 8.2 Xóa theo họ tác giả
     public void XoaAuthorTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho tac gia can xoa: ");
@@ -264,7 +272,7 @@ public class DSAuthor {
         }
     }
 
-    // 8.3 Xoa theo ten tac gia
+    // 8.3 Xoá theo tên tác giả
     public void XoaAuthorTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten tac gia can xoa: ");
@@ -286,7 +294,7 @@ public class DSAuthor {
         }
     }
 
-    // 8.4 Xoa theo gioi tinh
+    // 8.4 Xóa theo giới tính tác giả
     public void XoaAuthorTheoGioiTinh() {
         Scanner sc = new Scanner(System.in);
         String GioiTinhCanXoa;
@@ -322,7 +330,7 @@ public class DSAuthor {
         }
     }
 
-    // 8.5 Xoa theo ngay sinh
+    // 8.5 Xóa theo ngày sinh tác giả
     public void XoaAuthorTheoNgaySinh() {
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -356,7 +364,7 @@ public class DSAuthor {
         }
     }
 
-    // 8.6 Xoa theo SDT
+    // 8.6 Xóa théo số điện thoại tác giả
     public void XoaAuthorTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap so dien thoai tac gia can xoa: ");
@@ -379,7 +387,7 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 9. Sua
+    // 9. Sửa thông tin tác giả
     public void SuaAuthor() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma tac gia can sua: ");
@@ -493,9 +501,9 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 10. Thong ke
+    // 10. Thống kê
 
-    // 10.1 Thong ke theo ho tac gia
+    // 10.1 Thống kê theo họ tác giả
     public void ThongKeAuthorTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho tac gia can thong ke: ");
@@ -510,7 +518,7 @@ public class DSAuthor {
         System.out.println("So luong tac gia co ho " + HoCanThongKe + ": " + count);
     }
 
-    // 10.2 Thong ke theo ten tac gia
+    // 10.2 Thống kê theo tên tác giả
     public void ThongKeAuthorTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten tac gia can thong ke: ");
@@ -525,7 +533,7 @@ public class DSAuthor {
         System.out.println("So luong tac gia co ten " + TenCanThongKe + ": " + count);
     }
 
-    // 10.3 Thong ke theo gioi tinh
+    // 10.3 Thống kê theo giới tính
     public void ThongKeAuthorTheoGioiTinh() {
         Scanner sc = new Scanner(System.in);
         String GioiTinhCanThongKe;
@@ -554,7 +562,7 @@ public class DSAuthor {
         System.out.println("So luong tac gia co gioi tinh " + GioiTinhCanThongKe + ": " + count);
     }
 
-    // 10.4 Thong ke theo tuoi
+    // 10.4 Thống kê theo tuổi
     public void ThongKeAuthorTheoTuoi() {
         Scanner sc = new Scanner(System.in);
         int tuoi;
@@ -583,9 +591,9 @@ public class DSAuthor {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 11. Doc va Ghi file
+    // 11. Đọc và ghi file
 
-    // 11.1 Doc file Author/Author.txt
+    // 11.1 Đọc file
     public void ReadFile() {
         int count = 0;
         Scanner sc = null;
@@ -640,7 +648,7 @@ public class DSAuthor {
         }
     }
 
-    // 11.2 Ghi file Author/Author.txt
+    // 11.2 Ghi file
     public void WriteFile() {
         if (this.n == 0) {
             System.out.println("Danh sach tac gia dang trong, khong co du lieu de ghi!");
@@ -680,4 +688,17 @@ public class DSAuthor {
             }
         }
     }
+
+    // -----------------------------------------------------------------------------------//
+    // 12. Kiểm tra mã trùng
+
+    public boolean CheckMaTG(String MaTG) {
+        for (int i = 0; i < this.n; i++) {
+            if (dstacgia[i] != null && dstacgia[i].getMaTG().equals(MaTG)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
