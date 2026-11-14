@@ -1,8 +1,7 @@
 package model;
 
-import danhsach.ListQuyDinhPhat;
 import danhsach.DSBook;
-
+import danhsach.DSQuyDinhPhat;
 import java.util.Scanner;
 
 public class ChiTietPhieuPhat {
@@ -65,7 +64,7 @@ public class ChiTietPhieuPhat {
     }
 
     // Input all thông tin
-    public void Input(String maPPCurrent, ListQuyDinhPhat listQD, DSBook dsBook, Scanner sc) {
+    public void Input(String maPPCurrent, DSQuyDinhPhat listQD, DSBook dsBook, Scanner sc) {
         this.maPP = maPPCurrent;
         System.out.print("Nhap ma sach: ");
         maSach = sc.nextLine().trim();
@@ -96,7 +95,7 @@ public class ChiTietPhieuPhat {
     }
 
     public void Output() {
-        System.out.printf("| %-8s | %-10s | %-15.2f | %-8s |\n", maPP, maSach, tienPhat, maLDi);
+        System.out.printf("| %-8s | %-10s | %-15.2f | %-8s |\n", maPP, maSach, tienPhat, maLD);
     }
 
 }

@@ -1,3 +1,4 @@
+package model;
 import java.util.Scanner;
 
 public class PhieuPhat {
@@ -64,7 +65,7 @@ public class PhieuPhat {
 
     
     
-    public void capNhatTongTienPhat(DSChiTiet dsChiTiet) {
+    public void capNhatTongTienPhat(DSChiTietPhieuPhat dsChiTiet) {
         double tongTien = 0;
         for (int i = 0; i < dsChiTiet.getSoLuong(); i++) {
             ChiTietPhieuPhat chiTiet = dsChiTiet.getChiTiet(i);

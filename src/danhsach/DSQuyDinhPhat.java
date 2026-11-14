@@ -1,25 +1,24 @@
 package danhsach;
 
-import model.QuyDinhPhat;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter; // Dùng để kiểm tra file có tồn tại hay không
-import java.io.IOException; // Mở luồng đọc file ký tự
-import java.io.PrintWriter; // Đọc từng dòng văn bản tối ưu, nhanh chóng
-import java.util.Arrays; // Mở luồng ghi file ký tự
-import java.util.Scanner; // Ghi dữ liệu dạng dòng văn bản (println, printf)
+import java.io.FileWriter;
+import java.io.IOException; // Dùng để kiểm tra file có tồn tại hay không
+import java.io.PrintWriter; // Mở luồng đọc file ký tự
+import java.util.Arrays; // Đọc từng dòng văn bản tối ưu, nhanh chóng
+import java.util.Scanner; // Mở luồng ghi file ký tự
+import model.QuyDinhPhat; // Ghi dữ liệu dạng dòng văn bản (println, printf)
 
-public class ListQuyDinhPhat {
+public class DSQuyDinhPhat {
     private QuyDinhPhat[] dsQDP;
     private int soLuong;
 
-    public ListQuyDinhPhat(int length) {
+    public DSQuyDinhPhat(int length) {
         this.soLuong = 0;
         this.dsQDP = new QuyDinhPhat[length];
     }
 
-    public ListQuyDinhPhat(QuyDinhPhat[] dsQDP, int soLuong) {
+    public DSQuyDinhPhat(QuyDinhPhat[] dsQDP, int soLuong) {
         this.dsQDP = dsQDP;
         this.soLuong = soLuong;
     }
@@ -79,6 +78,9 @@ public class ListQuyDinhPhat {
         }
         return quyDinh;
     }
+
+
+   
 
     public void TimQuyDinh(Scanner sc) {
         QuyDinhPhat quyDinh = Tim(sc);

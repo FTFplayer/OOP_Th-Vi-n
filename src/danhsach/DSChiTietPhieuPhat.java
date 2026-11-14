@@ -1,7 +1,5 @@
 package danhsach;
 
-import model.ChiTietPhieuPhat;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,23 +7,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
+import model.ChiTietPhieuPhat;
 
-public class DSChiTiet {
+public class DSChiTietPhieuPhat {
   
     private ChiTietPhieuPhat[] dsChiTiet;
     private int soLuong;
 
 
 
-     public DSChiTiet() {
+     public DSChiTietPhieuPhat() {
         this.dsChiTiet = new ChiTietPhieuPhat[100];
         this.soLuong = 0;
     }
-    public DSChiTiet(int length) {
+    public DSChiTietPhieuPhat(int length) {
         soLuong=0;
         dsChiTiet= new ChiTietPhieuPhat[length];
     }
-    public DSChiTiet(ChiTietPhieuPhat[] dsChiTiet, int soLuong) {
+    public DSChiTietPhieuPhat(ChiTietPhieuPhat[] dsChiTiet, int soLuong) {
         this.dsChiTiet = dsChiTiet;
         this.soLuong = soLuong;
     }
@@ -51,7 +50,7 @@ public class DSChiTiet {
     // IN / OUT / HIỂN THỊ
     // ==========================================
     // Khong tham so (In toan bo danh sach)
-    public void Input(String maPPCurrent, ListQuyDinhPhat listQD,DSBook dsBook, Scanner sc) {
+    public void Input(String maPPCurrent, DSQuyDinhPhat listQD,DSBook dsBook, Scanner sc) {
         System.out.print("Nhap so luong sach vi pham: ");
         int sl = Integer.parseInt(sc.nextLine());
         dsChiTiet= new ChiTietPhieuPhat[sl];
@@ -94,7 +93,7 @@ public class DSChiTiet {
     // THEM / ADD
     // ==========================================
     // Khong tham so (tu nhap tu ban phim)
-   public void Them(Scanner sc, ListQuyDinhPhat listQD, DSBook dsBook) {
+   public void Them(Scanner sc, DSQuyDinhPhat listQD, DSBook dsBook) {
         System.out.print("Nhap ma phieu phat: ");
         String maPP = sc.nextLine().trim();
         ChiTietPhieuPhat ct = new ChiTietPhieuPhat();
@@ -178,7 +177,7 @@ public void Xoa(Scanner sc) {
     // ==========================================
     // SUA / EDIT
     // ==========================================
-        public void Sua(Scanner sc, ListQuyDinhPhat listQD, DSBook dsBook) {
+        public void Sua(Scanner sc, DSQuyDinhPhat listQD, DSBook dsBook) {
         System.out.print("Nhap ma phieu phat can sua: ");
         String maPP = sc.nextLine().trim();
         System.out.print("Nhap ma sach can sua: ");

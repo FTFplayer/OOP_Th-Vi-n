@@ -1,4 +1,6 @@
+package model;
 import java.util.Scanner;
+
 
 public class QuyDinhPhat {
     private String maLD;
