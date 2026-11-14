@@ -177,9 +177,12 @@ public class DSReader {
         System.out.println("Nhap ma doc gia: ");
         String MaDG = sc.nextLine().trim();
 
-        while (CheckMaDG(MaDG)) {
-            System.out.print("Ma doc gia bi trung. Vui long nhap lai");
-            System.out.print("Nhap ma doc gia: ");
+        while (CheckMaDG(MaDG) || !CheckHopLe(MaDG)) {
+            if (CheckMaDG(MaDG)) {
+                System.out.print("Ma doc gia bi trung. Vui long nhap lai: ");
+            } else {
+                System.out.print("Ma doc gia khong hop le (phai co dang TGxx). Vui long nhap lai: ");
+            }
             MaDG = sc.nextLine().trim();
         }
 
@@ -770,6 +773,8 @@ public class DSReader {
         }
     }
 
+    // -----------------------------------------------------------------------------------//
+    // 12. Kiểm tra trùng của mã
     public boolean CheckMaDG(String MaDG) {
         for (int i = 0; i < this.n; i++) {
             if (dsdocgia[i] != null && dsdocgia[i].getMaDocGia().equals(MaDG)) {
@@ -777,6 +782,22 @@ public class DSReader {
             }
         }
         return false;
+    }
+
+    // -----------------------------------------------------------------------------------//
+    // 13. Kiểm tra tính hợp lệ của mã
+    public boolean CheckHopLe(String MaDG) {
+        if (MaDG.length() < 2 || !MaDG.substring(0, 2).equals("DG")) {
+            return false;
+        }
+
+        for (int i = 2; i < MaDG.length(); i++) {
+            char c = MaDG.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

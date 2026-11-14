@@ -10,25 +10,25 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class DSPublisher {
-    // 1. Thuoc tinh
+    // 1. Thuộc tính
     private int n;
     private Publisher dsnxb[] = new Publisher[0];
 
     // -----------------------------------------------------------------------------------//
     // 2. Constructor
-    // 2.1 Constructor khong tham so
+    // 2.1 Constructor không tham số
     public DSPublisher() {
         this.n = 0;
         this.dsnxb = new Publisher[0];
     }
 
-    // 2.2 Constructor co tham so
+    // 2.2 Constructor có tham số
     public DSPublisher(int n, Publisher[] dsnxb) {
         this.n = n;
         this.dsnxb = dsnxb;
     }
 
-    // 2.3 Constructor sao chep
+    // 2.3 Constructor sao chép
     public DSPublisher(DSPublisher copy) {
         if (copy != null) {
             this.n = copy.n;
@@ -42,7 +42,7 @@ public class DSPublisher {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 3. In tieu de bang
+    // 3. In tiêu đề bảng
     public void PrintHeader() {
         System.out.format(
                 "+--------+----------+----------+------------------------------+--------------------+%n");
@@ -53,7 +53,7 @@ public class DSPublisher {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 4. Nhap danh sach tu ban phim
+    // 4. Nhập danh sách từ bàn phím
     public void Input() {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -78,7 +78,7 @@ public class DSPublisher {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 5. Xuat danh sach
+    // 5. Xuất danh sách
     public void Output() {
         if (this.n == 0) {
             System.out.println("Danh sach nha xuat ban dang trong!");
@@ -95,9 +95,9 @@ public class DSPublisher {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 6. Tim kiem
+    // 6. Tìm kiếm
 
-    // 6.1 Tim theo ma NXB
+    // 6.1 Tìm kiếm theo mã nhà xuất bản
     public void TimPublisherTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma NXB can tim: ");
@@ -124,7 +124,7 @@ public class DSPublisher {
         return -1;
     }
 
-    // 6.2 Tim theo ten NXB
+    // 6.2 Tìm kiếm theo tên nhà xuất bản
     public void TimPublisherTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten NXB can tim: ");
@@ -146,7 +146,7 @@ public class DSPublisher {
         }
     }
 
-    // 6.3 Tim theo so dien thoai
+    // 6.3 Tìm kiếm theo số điện thoại nhà xuất bản
     public void TimPublisherTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap SDT NXB can tim: ");
@@ -174,7 +174,7 @@ public class DSPublisher {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 7. Them
+    // 7. Thêm
 
     public void ThemPublisher() {
         Scanner sc = new Scanner(System.in);
@@ -184,9 +184,12 @@ public class DSPublisher {
         System.out.println("Nhap thong tin ma nha xuat ban: ");
         String MaNXB = sc.nextLine().trim();
 
-        while (CheckMaNXB(MaNXB)) {
-            System.out.println("Ma nha xuat ban bi trung. Vui long nhap lai");
-            System.out.println("Nhap thong tin ma nha xuat ban: ");
+        while (CheckMaNXB(MaNXB) || !CheckHopLe(MaNXB)) {
+            if (CheckMaNXB(MaNXB)) {
+                System.out.print("Ma tac gia bi trung. Vui long nhap lai: ");
+            } else {
+                System.out.print("Ma tac gia khong hop le (phai co dang TGxx). Vui long nhap lai: ");
+            }
             MaNXB = sc.nextLine().trim();
         }
 
@@ -204,7 +207,7 @@ public class DSPublisher {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 8. Xoa
+    // 8. Xóa
 
     public void XoaPublisher(int pos) {
         if (pos >= n || pos < 0) {
@@ -220,7 +223,7 @@ public class DSPublisher {
         dsnxb = Arrays.copyOf(dsnxb, n);
     }
 
-    // 8.1 Xoa theo ma NXB
+    // 8.1 Xóa theo mã NXB
     public void XoaPublisherTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma NXB can xoa: ");
@@ -235,7 +238,7 @@ public class DSPublisher {
         }
     }
 
-    // 8.2 Xoa theo ten NXB
+    // 8.2 Xóa theo tên NXB
     public void XoaPublisherTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten NXB can xoa: ");
@@ -257,7 +260,7 @@ public class DSPublisher {
         }
     }
 
-    // 8.3 Xoa theo SDT
+    // 8.3 Xóa theo SDT
     public void XoaPublisherTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap SDT NXB can xoa: ");
@@ -279,7 +282,7 @@ public class DSPublisher {
         }
     }
 
-    // 8.4 Xoa theo email
+    // 8.4 Xóa theo email
     public void XoaPublisherTheoEmail() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap email NXB can xoa: ");
@@ -301,7 +304,7 @@ public class DSPublisher {
         }
     }
 
-    // 8.5 Xoa theo dia chi
+    // 8.5 Xóa theo địa chỉ
     public void XoaPublisherTheoDiaChi() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap dia chi NXB can xoa: ");
@@ -324,7 +327,7 @@ public class DSPublisher {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 9. Sua
+    // 9. Sửa
     public void SuaPublisher() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma NXB can sua: ");
@@ -504,7 +507,7 @@ public class DSPublisher {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 12. Kiểm tra mã trùng
+    // 11. Kiểm tra mã trùng
 
     public boolean CheckMaNXB(String MaNXB) {
         for (int i = 0; i < this.n; i++) {
@@ -516,6 +519,22 @@ public class DSPublisher {
     }
 
     public boolean CheckKiTuNXB(String MaNXB) {
+        return true;
+    }
+
+    // -----------------------------------------------------------------------------------//
+    // 12. Kiểm tra tính hợp lệ của mã
+    public boolean CheckHopLe(String MaNXB) {
+        if (MaNXB.length() < 4 || !MaNXB.substring(0, 3).equals("NXB")) {
+            return false;
+        }
+
+        for (int i = 3; i < MaNXB.length(); i++) {
+            char c = MaNXB.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
         return true;
     }
 }
