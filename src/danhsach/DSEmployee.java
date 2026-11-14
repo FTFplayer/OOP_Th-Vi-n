@@ -202,15 +202,26 @@ public class DSEmployee {
     // 7. Them
 
     public void ThemEmployee() {
+        Scanner sc = new Scanner(System.in);
         dsnv = Arrays.copyOf(dsnv, n + 1);
         dsnv[n] = new Employee();
         System.out.println("Nhap thong tin nhan vien moi:");
+        System.out.println("Nhap thong tin ma nhan vien: ");
+        String MaNV = sc.nextLine().trim();
+
+        while (CheckMaNV(MaNV)) {
+            System.out.println("Ma nhan vien bi trung. Vui long nhap lai");
+            System.out.println("Nhap thong tin ma nhan vien: ");
+            MaNV = sc.nextLine().trim();
+        }
+
+        dsnv[n].setMaNV(MaNV);
         dsnv[n].Input();
         n++;
     }
 
     public void ThemEmployee(Employee employee) {
-        if (employee != null) {
+        if (employee != null && CheckMaNV(employee.getMaNV())) {
             dsnv = Arrays.copyOf(dsnv, n + 1);
             dsnv[n] = new Employee(employee);
             n++;

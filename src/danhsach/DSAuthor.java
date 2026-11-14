@@ -201,10 +201,13 @@ public class DSAuthor {
         System.out.println("Nhap thong tin tac gia moi:");
         System.out.println("Nhap ma tac gia: ");
         String MaTG = sc.nextLine().trim();
+
         while (CheckMaTG(MaTG)) {
             System.out.println("Ma tac gia bi trung. Vui long nhap lai");
-            MaTG = sc.nextLine();
+            System.out.println("Nhap ma tac gia: ");
+            MaTG = sc.nextLine().trim();
         }
+
         dstacgia[n].setMaTG(MaTG);
         dstacgia[n].Input();
         n++;

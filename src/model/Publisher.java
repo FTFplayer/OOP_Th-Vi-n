@@ -86,8 +86,8 @@ public class Publisher {
     public void Input() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Nhập mã nhà xuất bản: ");
-        this.MaNXB = scanner.nextLine().trim();
+        // System.out.print("Nhập mã nhà xuất bản: ");
+        // this.MaNXB = scanner.nextLine().trim();
 
         System.out.print("Nhập tên nhà xuất bản: ");
         this.TenNXB = scanner.nextLine().trim();

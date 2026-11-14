@@ -171,15 +171,25 @@ public class DSReader {
     // 7. Thêm
     public void ThemReader() {
         dsdocgia = Arrays.copyOf(dsdocgia, n + 1);
+        Scanner sc = new Scanner(System.in);
         dsdocgia[n] = new Reader();
         System.out.println("Nhap thong tin doc gia moi:");
+        System.out.println("Nhap ma doc gia: ");
+        String MaDG = sc.nextLine().trim();
 
+        while (CheckMaDG(MaDG)) {
+            System.out.print("Ma doc gia bi trung. Vui long nhap lai");
+            System.out.print("Nhap ma doc gia: ");
+            MaDG = sc.nextLine().trim();
+        }
+
+        dsdocgia[n].setMaDocGia(MaDG);
         dsdocgia[n].Input();
         n++;
     }
 
     public void ThemReader(Reader reader) {
-        if (reader != null) {
+        if (reader != null && !CheckMaDG(reader.getMaDocGia())) {
             dsdocgia = Arrays.copyOf(dsdocgia, n + 1);
             dsdocgia[n] = new Reader(reader);
             n++;

@@ -177,15 +177,26 @@ public class DSPublisher {
     // 7. Them
 
     public void ThemPublisher() {
+        Scanner sc = new Scanner(System.in);
         dsnxb = Arrays.copyOf(dsnxb, n + 1);
         dsnxb[n] = new Publisher();
         System.out.println("Nhap thong tin nha xuat ban moi:");
+        System.out.println("Nhap thong tin ma nha xuat ban: ");
+        String MaNXB = sc.nextLine().trim();
+
+        while (CheckMaNXB(MaNXB)) {
+            System.out.println("Ma nha xuat ban bi trung. Vui long nhap lai");
+            System.out.println("Nhap thong tin ma nha xuat ban: ");
+            MaNXB = sc.nextLine().trim();
+        }
+
+        dsnxb[n].setMaNXB(MaNXB);
         dsnxb[n].Input();
         n++;
     }
 
     public void ThemPublisher(Publisher publisher) {
-        if (publisher != null) {
+        if (publisher != null && CheckMaNXB(publisher.getMaNXB())) {
             dsnxb = Arrays.copyOf(dsnxb, n + 1);
             dsnxb[n] = new Publisher(publisher);
             n++;
@@ -502,5 +513,9 @@ public class DSPublisher {
             }
         }
         return false;
+    }
+
+    public boolean CheckKiTuNXB(String MaNXB) {
+        return true;
     }
 }
