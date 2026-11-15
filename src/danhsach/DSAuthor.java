@@ -202,9 +202,12 @@ public class DSAuthor {
         System.out.println("Nhap ma tac gia: ");
         String MaTG = sc.nextLine().trim();
 
-        while (CheckMaTG(MaTG)) {
-            System.out.println("Ma tac gia bi trung. Vui long nhap lai");
-            System.out.println("Nhap ma tac gia: ");
+        while (CheckMaTG(MaTG) || !CheckHopLe(MaTG)) {
+            if (CheckMaTG(MaTG)) {
+                System.out.print("Ma tac gia bi trung. Vui long nhap lai: ");
+            } else {
+                System.out.print("Ma tac gia khong hop le (phai co dang TGxx). Vui long nhap lai: ");
+            }
             MaTG = sc.nextLine().trim();
         }
 
@@ -702,6 +705,22 @@ public class DSAuthor {
             }
         }
         return false;
+    }
+
+    // -----------------------------------------------------------------------------------//
+    // 13. Kiểm tra tính hợp lệ của mã
+    public boolean CheckHopLe(String MaTG) {
+        if (MaTG.length() < 3 || !MaTG.substring(0, 2).equals("TG")) {
+            return false;
+        }
+
+        for (int i = 2; i < MaTG.length(); i++) {
+            char c = MaTG.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

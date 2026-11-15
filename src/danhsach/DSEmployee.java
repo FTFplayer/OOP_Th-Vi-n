@@ -19,19 +19,19 @@ public class DSEmployee {
 
     // -----------------------------------------------------------------------------------//
     // 2. Constructor
-    // 2.1 Constructor khong tham so
+    // 2.1 Constructor không tham số
     public DSEmployee() {
         this.n = 0;
         this.dsnv = new Employee[0];
     }
 
-    // 2.2 Constructor co tham so
+    // 2.2 Constructor có tham số
     public DSEmployee(int n, Employee[] dsnv) {
         this.n = n;
         this.dsnv = dsnv;
     }
 
-    // 2.3 Constructor sao chep
+    // 2.3 Constructor sao chép
     public DSEmployee(DSEmployee copy) {
         if (copy != null) {
             this.n = copy.n;
@@ -45,7 +45,7 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 3. In tieu de bang dong bo voi Output() cua Employee
+    // 3. In tiêu đề
     public void PrintHeader() {
         System.out.format(
                 "+----------+------------+----------+----------+------------+------------+--------------------+---------------+%n");
@@ -56,7 +56,7 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 4. Nhap danh sach tu ban phim
+    // 4. Nhập danh sách
     public void Input() {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -81,7 +81,7 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 5. Xuat danh sach
+    // 5. Xuất danh sách
     public void Output() {
         if (this.n == 0) {
             System.out.println("Danh sach nhan vien dang trong!");
@@ -98,9 +98,9 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 6. Tim kiem
+    // 6.Tìm kiếm
 
-    // 6.1 Tim theo ma nhan vien
+    // 6.1 Tim kiếm theo mã nhân viên
     public void TimEmployeeTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma nhan vien can tim: ");
@@ -127,7 +127,7 @@ public class DSEmployee {
         return -1;
     }
 
-    // 6.2 Tim theo ho nhan vien
+    // 6.2 Tìm kiếm theo họ nhân viên
     public void TimEmployeeTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho nhan vien can tim: ");
@@ -149,7 +149,7 @@ public class DSEmployee {
         }
     }
 
-    // 6.3 Tim theo ten nhan vien
+    // 6.3 Tìm kiếm theo tên nhân viên
     public void TimEmployeeTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten nhan vien can tim: ");
@@ -171,7 +171,7 @@ public class DSEmployee {
         }
     }
 
-    // 6.4 Tim theo so dien thoai
+    // 6.4 Tìm kiếm theo số điện thoại
     public void TimEmployeeTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap SDT nhan vien can tim: ");
@@ -199,7 +199,7 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 7. Them
+    // 7. Thêm
 
     public void ThemEmployee() {
         Scanner sc = new Scanner(System.in);
@@ -209,9 +209,12 @@ public class DSEmployee {
         System.out.println("Nhap thong tin ma nhan vien: ");
         String MaNV = sc.nextLine().trim();
 
-        while (CheckMaNV(MaNV)) {
-            System.out.println("Ma nhan vien bi trung. Vui long nhap lai");
-            System.out.println("Nhap thong tin ma nhan vien: ");
+        while (CheckMaNV(MaNV) || !CheckHopLe(MaNV)) {
+            if (CheckMaNV(MaNV)) {
+                System.out.print("Ma tac gia bi trung. Vui long nhap lai: ");
+            } else {
+                System.out.print("Ma tac gia khong hop le (phai co dang TGxx). Vui long nhap lai: ");
+            }
             MaNV = sc.nextLine().trim();
         }
 
@@ -229,7 +232,7 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 8. Xoa
+    // 8. Xóa
 
     public void XoaEmployee(int pos) {
         if (pos >= n || pos < 0) {
@@ -245,7 +248,7 @@ public class DSEmployee {
         dsnv = Arrays.copyOf(dsnv, n);
     }
 
-    // 8.1 Xoa theo ma nhan vien
+    // 8.1 Xóa theo mã nhân viên
     public void XoaEmployeeTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma nhan vien can xoa: ");
@@ -260,7 +263,7 @@ public class DSEmployee {
         }
     }
 
-    // 8.2 Xoa theo ho
+    // 8.2 Xóa theo họ nhân viên
     public void XoaEmployeeTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho nhan vien can xoa: ");
@@ -282,7 +285,7 @@ public class DSEmployee {
         }
     }
 
-    // 8.3 Xoa theo ten
+    // 8.3 Xóa theo tên nhân viên
     public void XoaEmployeeTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten nhan vien can xoa: ");
@@ -304,7 +307,7 @@ public class DSEmployee {
         }
     }
 
-    // 8.4 Xoa theo gioi tinh
+    // 8.4 Xóa theo giới tính nhân viên
     public void XoaEmployeeTheoGioiTinh() {
         Scanner sc = new Scanner(System.in);
         String GioiTinhCanXoa;
@@ -338,7 +341,7 @@ public class DSEmployee {
         }
     }
 
-    // 8.5 Xoa theo ngay sinh
+    // 8.5 Xóa theo ngày sinh nhân viên
     public void XoaEmployeeTheoNgaySinh() {
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -372,7 +375,7 @@ public class DSEmployee {
         }
     }
 
-    // 8.6 Xoa theo SDT
+    // 8.6 Xóa theo SDT
     public void XoaEmployeeTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap so dien thoai nhan vien can xoa: ");
@@ -394,7 +397,7 @@ public class DSEmployee {
         }
     }
 
-    // 8.7 Xoa theo dia chi
+    // 8.7 Xóa theo địa chỉ
     public void XoaEmployeeTheoDiaChi() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap dia chi nhan vien can xoa: ");
@@ -417,7 +420,7 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 9. Sua
+    // 9. Sửa
     public void SuaEmployee() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma nhan vien can sua: ");
@@ -555,9 +558,9 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 10. Thong ke
+    // 10. Thống kê
 
-    // 10.1 Thong ke theo gioi tinh
+    // 10.1 Thống kê theo giới tính
     public void ThongKeEmployeeTheoGioiTinh() {
         Scanner sc = new Scanner(System.in);
         String GioiTinhCanThongKe;
@@ -584,7 +587,7 @@ public class DSEmployee {
         System.out.println("So luong nhan vien co gioi tinh " + GioiTinhCanThongKe + ": " + count);
     }
 
-    // 10.2 Thong ke theo tuoi
+    // 10.2 Thống kê theo tuổi
     public int ThongKeEmployeeTheoTuoi() {
         Scanner sc = new Scanner(System.in);
         int TuoiCanThongKe;
@@ -612,7 +615,7 @@ public class DSEmployee {
         return count;
     }
 
-    // 10.3 Thong ke theo muc luong (Lon hon hoac bang)
+    // 10.3 Thống kê theo mức lương tối thiểu
     public int ThongKeEmployeeTheoLuongToiThieu() {
         Scanner sc = new Scanner(System.in);
         float luongMin;
@@ -641,9 +644,9 @@ public class DSEmployee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 11. Doc va Ghi file
+    // 11. Đọc và ghi file
 
-    // 11.1 Doc file Employee/Employee.txt
+    // 11.1 Đọc file Employee/Employee.txt
     public void ReadFile() {
         int count = 0;
         Scanner sc = null;
@@ -760,5 +763,21 @@ public class DSEmployee {
             }
         }
         return false;
+    }
+
+    // -----------------------------------------------------------------------------------//
+    // 13. Kiểm tra tính hợp lệ của mã
+    public boolean CheckHopLe(String MaNV) {
+        if (MaNV.length() < 3 || !MaNV.substring(0, 2).equals("NV")) {
+            return false;
+        }
+
+        for (int i = 2; i < MaNV.length(); i++) {
+            char c = MaNV.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 }
