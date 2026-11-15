@@ -4,15 +4,14 @@ import danhsach.DSAuthor;
 
 import java.util.Scanner;
 
-public class QLAuthor {
-    private static DSAuthor dsAuthor = new DSAuthor();
+public class QLAuthor extends QLThuVien {
     private Scanner sc = new Scanner(System.in);
 
     // -----------------------------------------------------------------------------------//
     // 1. Menu dieu khien chinh
+    @Override
     public void menu() {
         int choice;
-        dsAuthor.ReadFile();
         do {
             System.out.println();
             System.out.println("+-------------------------------------------+");

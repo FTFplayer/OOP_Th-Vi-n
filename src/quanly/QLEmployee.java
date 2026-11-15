@@ -4,15 +4,14 @@ import danhsach.DSEmployee;
 
 import java.util.Scanner;
 
-public class QLEmployee {
-    private static DSEmployee dsEmployee = new DSEmployee();
+public class QLEmployee extends QLThuVien {
     private Scanner sc = new Scanner(System.in);
 
     // -----------------------------------------------------------------------------------//
     // 1. Menu chính
+    @Override
     public void menu() {
         int choice;
-        dsEmployee.ReadFile();
         do {
             System.out.println();
             System.out.println("+-------------------------------------------+");

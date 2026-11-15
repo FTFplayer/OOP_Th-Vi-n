@@ -4,12 +4,12 @@ import danhsach.DSPublisher;
 
 import java.util.Scanner;
 
-public class QLPublisher {
-    private DSPublisher dsPublisher = new DSPublisher();
+public class QLPublisher extends QLThuVien {
     private Scanner sc = new Scanner(System.in);
 
     // -----------------------------------------------------------------------------------//
     // 1. Menu quản lý
+    @Override
     public void menu() {
         int choice;
         dsPublisher.ReadFile();

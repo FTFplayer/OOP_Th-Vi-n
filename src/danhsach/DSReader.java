@@ -716,8 +716,6 @@ public class DSReader {
             }
 
             this.n = count;
-            System.out.println("Lay du lieu thanh cong! Tong cong: " + this.n + " doc gia.");
-
         } catch (FileNotFoundException e) {
             System.out.println("Loi: Khong tim thay file Reader/Reader.txt!");
         } finally {
@@ -763,7 +761,6 @@ public class DSReader {
                     writer.println(line);
                 }
             }
-            System.out.println("Ghi danh sach vao file Reader/Reader.txt thanh cong!");
         } catch (FileNotFoundException e) {
             System.out.println("Loi: Khong tim thay duong dan file de ghi!");
         } finally {

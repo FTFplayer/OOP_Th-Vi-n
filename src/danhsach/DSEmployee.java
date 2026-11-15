@@ -699,8 +699,6 @@ public class DSEmployee {
             }
 
             this.n = count;
-            System.out.println("Lay du lieu thanh cong! Tong cong: " + this.n + " nhan vien.");
-
         } catch (FileNotFoundException e) {
             System.out.println("Loi: Khong tim thay file Employee/Employee.txt!");
         } finally {
@@ -743,7 +741,6 @@ public class DSEmployee {
                     writer.println(line);
                 }
             }
-            System.out.println("Ghi danh sach vao file Employee/Employee.txt thanh cong!");
         } catch (FileNotFoundException e) {
             System.out.println("Loi: Khong tim thay duong dan file de ghi!");
         } finally {

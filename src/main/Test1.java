@@ -1,10 +1,10 @@
 package main;
 
-import quanly.QLPublisher;
+import quanly.*;
 
 public class Test1 {
     public static void main(String args[]) {
-        QLPublisher qlPublisher = new QLPublisher();
+        MenuThuVien qlPublisher = new MenuThuVien();
         qlPublisher.menu();
     }
 }

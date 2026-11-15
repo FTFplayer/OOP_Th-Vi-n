@@ -460,7 +460,6 @@ public class DSPublisher {
             }
 
             this.n = count;
-            System.out.println("Lay du lieu thanh cong! Tong cong: " + this.n + " NXB.");
 
         } catch (FileNotFoundException e) {
             System.out.println("Loi: Khong tim thay file Publisher/Publisher.txt!");
@@ -496,7 +495,6 @@ public class DSPublisher {
                     writer.println(line);
                 }
             }
-            System.out.println("Ghi danh sach vao file Publisher/Publisher.txt thanh cong!");
         } catch (FileNotFoundException e) {
             System.out.println("Loi: Khong tim thay duong dan file de ghi!");
         } finally {

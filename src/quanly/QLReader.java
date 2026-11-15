@@ -4,15 +4,13 @@ import danhsach.DSReader;
 
 import java.util.Scanner;
 
-public class QLReader {
-    private DSReader dsReader = new DSReader();
+public class QLReader extends QLThuVien {
     private Scanner sc = new Scanner(System.in);
 
     // -----------------------------------------------------------------------------------//
     // 1. Menu chính
     public void menu() {
         int choice;
-        dsReader.ReadFile();
         do {
             System.out.println();
             System.out.println("+-------------------------------------------+");

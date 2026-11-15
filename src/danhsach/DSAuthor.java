@@ -643,8 +643,6 @@ public class DSAuthor {
             }
 
             this.n = count;
-            System.out.println("Lay du lieu thanh cong! Tong cong: " + this.n + " tac gia.");
-
         } catch (FileNotFoundException e) {
             System.out.println("Loi: Khong tim thay file Author/Author.txt!");
         } finally {
@@ -685,7 +683,6 @@ public class DSAuthor {
                     writer.println(line);
                 }
             }
-            System.out.println("Ghi danh sach vao file Author/Author.txt thanh cong!");
         } catch (FileNotFoundException e) {
             System.out.println("Loi: Khong tim thay duong dan file de ghi!");
         } finally {

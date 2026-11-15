@@ -1,4 +1,5 @@
 package danhsach;
+
 import model.PhieuPhat;
 import danhsach.DSChiTietPhieuPhat;
 import java.io.BufferedReader;
@@ -13,7 +14,7 @@ public class DSPhieuPhat {
     private static final String TEN_FILE = "PhieuPhat.txt";
     private int soLuong;
     private PhieuPhat[] dsPhieuPhat;
-    private DSChiTiet dsChiTiet;
+    private DSChiTietPhieuPhat dsChiTiet;
 
     // Constructor khoi tao mang tho rong, KHONG tu dong doc file nua
     public DSPhieuPhat(int length) {
@@ -21,14 +22,17 @@ public class DSPhieuPhat {
         this.soLuong = 0;
     }
 
-    public int getSoLuong() { return soLuong; }
+    public int getSoLuong() {
+        return soLuong;
+    }
 
     public PhieuPhat getPhieuPhat(int index) {
-        if (index < 0 || index >= soLuong) return null;
+        if (index < 0 || index >= soLuong)
+            return null;
         return dsPhieuPhat[index];
     }
 
-    public void setDSChiTiet(DSChiTiet dsChiTiet) {
+    public void setDSChiTiet(DSChiTietPhieuPhat dsChiTiet) {
         this.dsChiTiet = dsChiTiet;
     }
 
@@ -118,7 +122,6 @@ public class DSPhieuPhat {
         }
         return -1;
     }
-    
 
     public void TimtheoMaPP(Scanner sc) {
         System.out.print("Nhap ma phieu phat can tim: ");
@@ -126,36 +129,31 @@ public class DSPhieuPhat {
         Output(maPP);
     }
 
-
-    public PhieuPhat[] TimtheoMaPM(String maPM)
-    {   int count=0;
-        for (int i=0; i< soLuong; i++)
-            if(dsPhieuPhat[i].getMaPM().equalsIgnoreCase(maPM))
+    public PhieuPhat[] TimtheoMaPM(String maPM) {
+        int count = 0;
+        for (int i = 0; i < soLuong; i++)
+            if (dsPhieuPhat[i].getMaPM().equalsIgnoreCase(maPM))
                 count++;
-          ds= new PhieuPhat[count];
-          int index=0;
-          
-           for (int i=0; i< soLuong; i++)
-            if(dsPhieuPhat[i].getMaPM().equalsIgnoreCase(maPM))
-                ds[index++]= dsPhieuPhat[i];
+        ds = new PhieuPhat[count];
+        int index = 0;
+
+        for (int i = 0; i < soLuong; i++)
+            if (dsPhieuPhat[i].getMaPM().equalsIgnoreCase(maPM))
+                ds[index++] = dsPhieuPhat[i];
     }
 
-    public void TimtheoMaPM(Scanner sc)
-    {
+    public void TimtheoMaPM(Scanner sc) {
         System.out.println("Nhap ma phieu muon:");
-        String maPM= sc.nextLine();
-        PhieuPhat[] ds=TimtheoMaPM(maPM);
-        if(ds.length == 0)
-        {
-            System.out.println("Ma PM:"+maPM+"khong co phieu phat");
+        String maPM = sc.nextLine();
+        PhieuPhat[] ds = TimtheoMaPM(maPM);
+        if (ds.length == 0) {
+            System.out.println("Ma PM:" + maPM + "khong co phieu phat");
             return;
         }
-        
-        for ( int i =0; i< ds.length; i++){
+
+        for (int i = 0; i < ds.length; i++) {
             ds[i].Output();
         }
-
-
 
     }
 
@@ -164,8 +162,9 @@ public class DSPhieuPhat {
     // ==========================================
     public boolean Xoa(String maPP) {
         int viTri = Tim(maPP);
-        if (viTri == -1) return false;
-        
+        if (viTri == -1)
+            return false;
+
         for (int i = viTri; i < soLuong - 1; i++) {
             dsPhieuPhat[i] = dsPhieuPhat[i + 1];
         }
@@ -204,7 +203,8 @@ public class DSPhieuPhat {
 
     public boolean Sua(String maPP, PhieuPhat pMoi) {
         int viTri = Tim(maPP);
-        if (viTri == -1) return false;
+        if (viTri == -1)
+            return false;
         dsPhieuPhat[viTri] = pMoi;
         return true;
     }
@@ -253,13 +253,15 @@ public class DSPhieuPhat {
     public void docFile() {
         try (BufferedReader br = new BufferedReader(new FileReader(TEN_FILE))) {
             String line = br.readLine();
-            if (line == null) return;
+            if (line == null)
+                return;
             soLuong = 0;
             int sl = Integer.parseInt(line.trim());
             dsPhieuPhat = new PhieuPhat[Math.max(1, sl)];
             for (int i = 0; i < sl; i++) {
                 String fileLine = br.readLine();
-                if (fileLine == null) break;
+                if (fileLine == null)
+                    break;
                 String[] p = fileLine.split(";", -1);
                 if (p.length >= 4) {
                     PhieuPhat phieu = new PhieuPhat(p[0], p[1], p[2], Double.parseDouble(p[3]));
@@ -267,6 +269,7 @@ public class DSPhieuPhat {
                 }
             }
             System.out.println("-> Doc file phieu phat thanh cong!");
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 }
