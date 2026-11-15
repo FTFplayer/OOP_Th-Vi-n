@@ -183,7 +183,7 @@ public int Timvitri(String maPP){
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1) Sua ma phieu muon.                     |");
             System.out.println("| 2) Sua ngay lap phieu phat.               |");
-            System.out.println("| 3) Sua tong tien phat.                 |");
+            System.out.println("| 3) Sua tong tien phat.                    |");
             System.out.println("| 0) Thoat.                                 |");
             System.out.println("+-------------------------------------------+");
             try {
