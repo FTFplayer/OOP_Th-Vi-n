@@ -12,6 +12,7 @@ public class QLPublisher {
     // 1. Menu quản lý
     public void menu() {
         int choice;
+        dsPublisher.ReadFile();
         do {
             System.out.println();
             System.out.println("+-------------------------------------------+");

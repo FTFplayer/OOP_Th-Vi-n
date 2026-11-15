@@ -134,8 +134,8 @@ public class Employee {
         Scanner sc = new Scanner(System.in);
 
         // 4.1 Nhập mã nhân viên
-        System.out.print("Nhap ma nhan vien: ");
-        this.MaNV = sc.nextLine().trim();
+        // System.out.print("Nhap ma nhan vien: ");
+        // this.MaNV = sc.nextLine().trim();
 
         // 4.2 Nhập họ nhân viên
         System.out.print("Nhap ho nhan vien: ");

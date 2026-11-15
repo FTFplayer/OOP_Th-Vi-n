@@ -12,6 +12,7 @@ public class QLReader {
     // 1. Menu chính
     public void menu() {
         int choice;
+        dsReader.ReadFile();
         do {
             System.out.println();
             System.out.println("+-------------------------------------------+");

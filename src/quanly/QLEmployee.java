@@ -12,6 +12,7 @@ public class QLEmployee {
     // 1. Menu chính
     public void menu() {
         int choice;
+        dsEmployee.ReadFile();
         do {
             System.out.println();
             System.out.println("+-------------------------------------------+");

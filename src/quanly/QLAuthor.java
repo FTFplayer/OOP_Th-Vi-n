@@ -12,6 +12,7 @@ public class QLAuthor {
     // 1. Menu dieu khien chinh
     public void menu() {
         int choice;
+        dsAuthor.ReadFile();
         do {
             System.out.println();
             System.out.println("+-------------------------------------------+");

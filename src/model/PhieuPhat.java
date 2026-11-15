@@ -7,7 +7,6 @@ public class PhieuPhat {
     private String ngayPhat;
     private double soTienPhat;
 
-
     public PhieuPhat() {
     }
 
@@ -18,46 +17,58 @@ public class PhieuPhat {
         this.soTienPhat = soTienPhat;
     }
 
-
     public String getMaPP() {
         return maPP;
     }
-   public void setMaPP(String maPP) {
+
+    public void setMaPP(String maPP) {
         this.maPP = maPP;
     }
+
     public String getMaPhieuPhat() {
         return maPP;
     }
+
     public void setMaPhieuPhat(String maPhieuPhat) {
         this.maPP = maPhieuPhat;
     }
+
     public String getMaPM() {
         return maPM;
     }
+
     public String getMaPhieuMuon() {
         return maPM;
     }
+
     public void setMaPM(String maPM) {
         this.maPM = maPM;
     }
+
     public void setMaPhieuMuon(String maPhieuMuon) {
         this.maPM = maPhieuMuon;
     }
+
     public String getNgayPhat() {
         return ngayPhat;
     }
+
     public void setNgayPhat(String ngayPhat) {
         this.ngayPhat = ngayPhat;
     }
+
     public double getSoTienPhat() {
         return soTienPhat;
     }
+
     public double getTongTienPhat() {
         return soTienPhat;
     }
+
     public void setSoTienPhat(double soTienPhat) {
         this.soTienPhat = soTienPhat;
     }
+
     public void setTongTienPhat(double tongTienPhat) {
         this.soTienPhat = tongTienPhat;
     }
@@ -66,6 +77,7 @@ public class PhieuPhat {
     
     
     public void capNhatTongTienPhat(DSChiTietPhieuPhat dsChiTiet) {
+    public void capNhatTongTienPhat(DSChiTiet dsChiTiet) {
         double tongTien = 0;
         for (int i = 0; i < dsChiTiet.getSoLuong(); i++) {
             ChiTietPhieuPhat chiTiet = dsChiTiet.getChiTiet(i);

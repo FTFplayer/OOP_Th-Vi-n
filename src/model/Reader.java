@@ -128,8 +128,8 @@ public class Reader {
         Scanner scanner = new Scanner(System.in);
 
         // 4.1 Nhap thong tin ma doc gia
-        System.out.print("Nhap ma doc gia: ");
-        this.MaDocGia = scanner.nextLine().trim();
+        // System.out.print("Nhap ma doc gia: ");
+        // this.MaDocGia = scanner.nextLine().trim();
 
         // 4.2 Nhap thong tin ho
         System.out.print("Nhap ho: ");
