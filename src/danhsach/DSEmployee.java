@@ -12,7 +12,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.Arrays;
 
-public class DSEmployee {
+public class DSEmployee implements DanhSach {
     // 1. Thuoc tinh
     private int n;
     private Employee dsnv[] = new Employee[0];

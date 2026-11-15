@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.Arrays;
 
-public class DSPublisher {
+public class DSPublisher implements DanhSach {
     // 1. Thuộc tính
     private int n;
     private Publisher dsnxb[] = new Publisher[0];

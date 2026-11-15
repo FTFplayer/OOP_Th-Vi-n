@@ -12,7 +12,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.Arrays;
 
-public class DSAuthor {
+public class DSAuthor implements DanhSach {
     // 1. Thuộc tính
     private int n;
     private Author dstacgia[] = new Author[0];

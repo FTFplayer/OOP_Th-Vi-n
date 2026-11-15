@@ -12,7 +12,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.Arrays;
 
-public class DSReader {
+public class DSReader implements DanhSach {
     // 1. Thuộc tính
     private int n;
     private Reader dsdocgia[] = new Reader[0];

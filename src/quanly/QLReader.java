@@ -9,6 +9,7 @@ public class QLReader extends QLThuVien {
 
     // -----------------------------------------------------------------------------------//
     // 1. Menu chính
+    @Override
     public void menu() {
         int choice;
         do {
