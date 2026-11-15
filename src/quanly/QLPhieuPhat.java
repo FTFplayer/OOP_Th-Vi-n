@@ -1,7 +1,6 @@
 package quanly;
-import danhsach.DSPhieuPhat;
 import danhsach.DSChiTietPhieuPhat;
-
+import danhsach.DSPhieuPhat;
 import java.util.Scanner;
 
 public class QLPhieuPhat {
