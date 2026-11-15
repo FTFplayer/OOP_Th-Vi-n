@@ -277,6 +277,16 @@ public void Xoa(Scanner sc) {
         }
     }
 
+
+    //update Tổng tiền 1 PP theo mã PP
+    public double UpdateTongTienPhat(String maPP)
+    {   double tong=0;
+        for ( ChiTietPhieuPhat ct: dsChiTiet)
+            if (ct.getMaPP().equalsIgnoreCase(maPP))
+                 tong+= ct.getTienPhat();
+        return tong;        
+    }
+
 }
 
 

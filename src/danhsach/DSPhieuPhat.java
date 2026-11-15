@@ -1,147 +1,128 @@
 package danhsach;
 
 import model.PhieuPhat;
-import danhsach.DSChiTietPhieuPhat;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class DSPhieuPhat {
-    private static final String TEN_FILE = "PhieuPhat.txt";
-    private int soLuong;
+    private int n;
     private PhieuPhat[] dsPhieuPhat;
-    private DSChiTietPhieuPhat dsChiTiet;
+    Scanner sc= new Scanner(System.in);
+    
 
-    // Constructor khoi tao mang tho rong, KHONG tu dong doc file nua
+    // 1.Constructor
     public DSPhieuPhat(int length) {
-        this.dsPhieuPhat = new PhieuPhat[length];
-        this.soLuong = 0;
-    }
+        this.dsPhieuPhat = new PhieuPhat[length];  this.n = 0;}
+    public DSPhieuPhat() {dsPhieuPhat= new PhieuPhat[100]; this.n=0;}
+    //2.Getset
+    public int getN() {return n;}
+    public void setSoLuong(int n){this.n= n;}
+    public PhieuPhat getPhieuPhat(int vt){if(vt>-1 && vt < n) return dsPhieuPhat[vt]; return null;}
+    public PhieuPhat[] getDanhSachPP(){ return dsPhieuPhat;}
+    
 
-    public int getSoLuong() {
-        return soLuong;
-    }
-
-    public PhieuPhat getPhieuPhat(int index) {
-        if (index < 0 || index >= soLuong)
-            return null;
-        return dsPhieuPhat[index];
-    }
-
-    public void setDSChiTiet(DSChiTietPhieuPhat dsChiTiet) {
-        this.dsChiTiet = dsChiTiet;
-    }
-
-    // ==========================================
-    // 1. INPUT DANH SACH (Bang tay tu ban phim)
-    // ==========================================
-    public void Input(Scanner sc) {
+    // ===========================================
+    // 2. INPUT
+    // ===========================================
+    public void Input(DSPhieuMuon dspm) {
         System.out.print("Nhap so luong phieu phat: ");
-        int n = Integer.parseInt(sc.nextLine().trim());
-        this.dsPhieuPhat = new PhieuPhat[Math.max(1, n)];
-        this.soLuong = 0;
+        int sl = Integer.parseInt(sc.nextLine().trim());
+        dsPhieuPhat = new PhieuPhat[sl];
+        this.n = 0;
         for (int i = 0; i < n; i++) {
             System.out.println("Nhap phieu phat thu " + (i + 1) + ":");
-            PhieuPhat p = new PhieuPhat();
-            p.Input(sc);
-            Them(p);
+            Them(dspm);
         }
     }
 
     // ==========================================
-    // 2. OUTPUT / XUAT
+    // 3. ADD
     // ==========================================
-    public void Output() {
-        if (dsChiTiet != null) {
-            for (int i = 0; i < soLuong; i++) {
-                if (dsPhieuPhat[i] != null) {
-                    dsPhieuPhat[i].capNhatTongTienPhat(dsChiTiet);
-                }
-            }
-        }
+    public void Them(DSPhieuMuon dspm){
+        System.out.println("Tien hanh nhap thong tin phieu phat");
+        PhieuPhat pp= new PhieuPhat();
+        pp.Input(this, dspm);
+        Them(pp);
+    
+    }
+    public void Them(PhieuPhat pp){
+        if (n >= dsPhieuPhat.length) {
+             dsPhieuPhat = Arrays.copyOf(dsPhieuPhat, dsPhieuPhat.length + 1);
+        dsPhieuPhat[n++]= pp;   
+    }}
 
+    // ==========================================
+    // 4.. OUTPUT
+    // ==========================================
+
+    //Xuất tất cả phiếu phạt trong danh sách
+    public void Output() {
         System.out.println("DANH SACH PHIEU PHAT");
         System.out.printf("|%-12s|%-14s|%-14s|%-14s|%n", "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
-        for (int i = 0; i < soLuong; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsPhieuPhat[i] != null) {
                 dsPhieuPhat[i].Output();
             }
         }
-        if (soLuong == 0) {
+        if (n == 0) {
             System.out.println("DANH SACH RONG");
         }
     }
 
-    public void OutputtheoMaPP(String maPP) {
-        int idx = TimtheoMaPP(maPP);
-        if (idx != -1) {
-            if (dsChiTiet != null) {
-                dsPhieuPhat[idx].capNhatTongTienPhat(dsChiTiet);
-            }
-            System.out.printf("|%-12s|%-14s|%-14s|%-14s|%n", "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
-            dsPhieuPhat[idx].Output();
-        } else {
-            System.out.println("Khong tim thay phieu phat co ma: " + maPP);
-        }
-    }
 
-    // ==========================================
-    // 3. THEM / ADD
-    // ==========================================
-    public void Them(Scanner sc) {
-        PhieuPhat p = new PhieuPhat();
-        p.Input(sc);
-        while (p.getMaPP().isEmpty() || Tim(p.getMaPP()) != -1) {
-            System.out.println("Ma phieu phat rong hoac da ton tai!");
-            System.out.print("Nhap lai ma phieu phat: ");
-            p.setMaPP(sc.nextLine().trim());
-        }
-        Them(p);
-        System.out.println("Them phieu phat thanh cong!");
-    }
-
-    public void Them(PhieuPhat p) {
-        if (soLuong >= dsPhieuPhat.length) {
-            dsPhieuPhat = Arrays.copyOf(dsPhieuPhat, dsPhieuPhat.length + 1);
-        }
-        dsPhieuPhat[soLuong++] = p;
-    }
-
+    
     // ==========================================
     // 4. TIM KIEM
+    //  4.1|- theo mã pp
+    //  4.2|- theo mã pm(fk)
     // ==========================================
-    public int TimtheoMaPP(String maPP) {
-        for (int i = 0; i < soLuong; i++) {
-            if (dsPhieuPhat[i] != null && dsPhieuPhat[i].getMaPP().equalsIgnoreCase(maPP)) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
-    public void TimtheoMaPP(Scanner sc) {
+//4.1 
+
+   //return vị trí
+public int Timvitri(String maPP){
+    for (int i =0; i<n; i++)
+        if (dsPhieuPhat[i].getMaPhieuPhat().equalsIgnoreCase(maPP))
+            return i;
+    return -1;    
+}
+    //return 1 object PhieuPhat
+        public PhieuPhat TimtheoMaPP(String maPP) {
+            for (int i = 0; i < n; i++) {
+               if (dsPhieuPhat[i] != null && dsPhieuPhat[i].getMaPP().equalsIgnoreCase(maPP)) {
+                   return dsPhieuPhat[i];}}
+            return null;}
+   // in ra Phiếuphat
+        public void TimtheoMaPP() {
         System.out.print("Nhap ma phieu phat can tim: ");
-        String maPP = sc.nextLine().trim();
-        Output(maPP);
-    }
+        String mapp=sc.nextLine();
+        int vt=Timvitri(mapp);
+        if (vt== -1){
+            System.out.println("khong tim thay phieu phat ma: "+mapp);
+        return;}
+        System.out.printf("|%-12s|%-14s|%-14s|%-14s|%n", "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
+        dsPhieuPhat[vt].Output();
+        }
 
+//4.2.theo mã Phiếu mượn 
+    // tham chiếu mã ,return ds PhieuPhat
     public PhieuPhat[] TimtheoMaPM(String maPM) {
         int count = 0;
-        for (int i = 0; i < soLuong; i++)
+        for (int i = 0; i < n; i++)
             if (dsPhieuPhat[i].getMaPM().equalsIgnoreCase(maPM))
                 count++;
-        ds = new PhieuPhat[count];
+        PhieuPhat[] ds = new PhieuPhat[count];
         int index = 0;
 
-        for (int i = 0; i < soLuong; i++)
+        for (int i = 0; i < n; i++)
             if (dsPhieuPhat[i].getMaPM().equalsIgnoreCase(maPM))
                 ds[index++] = dsPhieuPhat[i];
-    }
 
+        return ds;}
+    
+    // nhập mã pm , in ra danh sách
     public void TimtheoMaPM(Scanner sc) {
         System.out.println("Nhap ma phieu muon:");
         String maPM = sc.nextLine();
@@ -150,25 +131,25 @@ public class DSPhieuPhat {
             System.out.println("Ma PM:" + maPM + "khong co phieu phat");
             return;
         }
-
+        System.out.printf("|%-12s|%-14s|%-14s|%-14s|%n", "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
         for (int i = 0; i < ds.length; i++) {
+
             ds[i].Output();
         }
 
     }
 
-    // ==========================================
     // 5. XOA / DELETE
     // ==========================================
     public boolean Xoa(String maPP) {
-        int viTri = Tim(maPP);
+        int viTri = Timvitri(maPP);
         if (viTri == -1)
             return false;
 
-        for (int i = viTri; i < soLuong - 1; i++) {
+        for (int i = viTri; i < n - 1; i++) {
             dsPhieuPhat[i] = dsPhieuPhat[i + 1];
         }
-        dsPhieuPhat[--soLuong] = null;
+        dsPhieuPhat[--n] = null;
         return true;
     }
 
@@ -183,93 +164,78 @@ public class DSPhieuPhat {
     }
 
     // ==========================================
-    // 6. SUA / EDIT
-    // ==========================================
-    public void Sua(Scanner sc) {
+    // 6. EDIT
+    // ============================================
+    public void Sua() {
         System.out.print("Nhap ma phieu phat can sua: ");
         String maPP = sc.nextLine().trim();
-        int viTri = Tim(maPP);
+        int viTri = Timvitri(maPP);
         if (viTri == -1) {
             System.out.println("Khong tim thay phieu phat de sua!");
             return;
         }
-        PhieuPhat p = dsPhieuPhat[viTri];
-        System.out.print("Nhap ma phieu muon moi (FK): ");
-        p.setMaPM(sc.nextLine().trim());
-        System.out.print("Nhap ngay phat moi: ");
-        p.setNgayPhat(sc.nextLine().trim());
+        int chon;
+       do {
+            PhieuPhat p = dsPhieuPhat[viTri];
+            System.out.println();
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|         MENU SUA THONG TIN PHIEU PHAT     |");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1) Sua ma phieu muon.                     |");
+            System.out.println("| 2) Sua ngay lap phieu phat.               |");
+            System.out.println("| 3) Sua tong tien phat.                 |");
+            System.out.println("| 0) Thoat.                                 |");
+            System.out.println("+-------------------------------------------+");
+            try {
+                System.out.print("Chon:");
+                chon= Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                chon=-1;
+            }
+
+            switch(chon){
+                case 1:
+                     System.out.print("Nhap ma phieu muon moi (FK): ");
+                     p.setMaPM(sc.nextLine().trim());
+                     System.out.println("Da sua ma phieu muon.");
+                     break;
+                case 2:
+                     System.out.print("Nhap ngay phat moi: ");
+                     p.setNgayPhat(LocalDate.parse(sc.nextLine().trim()));
+                     System.out.println("Da sua ngay tao phieu phat.");
+                     break;  
+            }}
+            while(chon !=0);
+
         System.out.println("Sua phieu phat thanh cong!");
     }
 
-    public boolean Sua(String maPP, PhieuPhat pMoi) {
-        int viTri = Tim(maPP);
-        if (viTri == -1)
-            return false;
-        dsPhieuPhat[viTri] = pMoi;
-        return true;
-    }
-
+   
     // ==========================================
     // 7. THONG KE
     // ==========================================
-    public void ThongKe() {
-        double tongTien = 0;
-        if (dsChiTiet != null) {
-            for (int i = 0; i < soLuong; i++) {
-                if (dsPhieuPhat[i] != null) {
-                    dsPhieuPhat[i].capNhatTongTienPhat(dsChiTiet);
-                    tongTien += dsPhieuPhat[i].getSoTienPhat();
-                }
-            }
-        } else {
-            for (int i = 0; i < soLuong; i++) {
-                if (dsPhieuPhat[i] != null) {
-                    tongTien += dsPhieuPhat[i].getSoTienPhat();
-                }
-            }
-        }
-        System.out.println("Tong so phieu phat: " + soLuong);
-        System.out.printf("Tong so tien phat: %.2f%n", tongTien);
-    }
+    // public void ThongKe() {
+    //     double tongTien = 0;
+    //     if (dsChiTiet != null) {
+    //         for (int i = 0; i < n; i++) {
+    //             if (dsPhieuPhat[i] != null) {
+    //                 dsPhieuPhat[i].capNhatTongTienPhat(dsChiTiet);
+    //                 tongTien += dsPhieuPhat[i].getSoTienPhat();
+    //             }
+    //         }
+    //     } else {
+    //         for (int i = 0; i < n; i++) {
+    //             if (dsPhieuPhat[i] != null) {
+    //                 tongTien += dsPhieuPhat[i].getSoTienPhat();
+    //             }
+    //         }
+    //     }
+    //     System.out.println("Tong so phieu phat: " + n);
+    //     System.out.printf("Tong so tien phat: %.2f%n", tongTien);
+    // }
 
     // ==========================================
     // DOC / GHI FILE (Do Menu goi)
     // ==========================================
-    public void ghiFile() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(TEN_FILE))) {
-            pw.println(soLuong);
-            for (int i = 0; i < soLuong; i++) {
-                if (dsPhieuPhat[i] != null) {
-                    PhieuPhat p = dsPhieuPhat[i];
-                    pw.println(p.getMaPP() + ";" + p.getMaPM() + ";" + p.getNgayPhat() + ";" + p.getSoTienPhat());
-                }
-            }
-            System.out.println("-> Ghi file phieu phat thanh cong!");
-        } catch (IOException e) {
-            System.out.println("Loi ghi file phieu phat: " + e.getMessage());
-        }
-    }
-
-    public void docFile() {
-        try (BufferedReader br = new BufferedReader(new FileReader(TEN_FILE))) {
-            String line = br.readLine();
-            if (line == null)
-                return;
-            soLuong = 0;
-            int sl = Integer.parseInt(line.trim());
-            dsPhieuPhat = new PhieuPhat[Math.max(1, sl)];
-            for (int i = 0; i < sl; i++) {
-                String fileLine = br.readLine();
-                if (fileLine == null)
-                    break;
-                String[] p = fileLine.split(";", -1);
-                if (p.length >= 4) {
-                    PhieuPhat phieu = new PhieuPhat(p[0], p[1], p[2], Double.parseDouble(p[3]));
-                    dsPhieuPhat[soLuong++] = phieu;
-                }
-            }
-            System.out.println("-> Doc file phieu phat thanh cong!");
-        } catch (IOException ignored) {
-        }
-    }
+   
 }
