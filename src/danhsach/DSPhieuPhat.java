@@ -187,7 +187,7 @@ public int Timvitri(String maPP){
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1) Sua ma phieu muon.                     |");
             System.out.println("| 2) Sua ngay lap phieu phat.               |");
-            System.out.println("| 3) Sua tong tien phat.                 |");
+            System.out.println("| 3) Sua tong tien phat.                    |");
             System.out.println("| 0) Thoat.                                 |");
             System.out.println("+-------------------------------------------+");
             try {
@@ -244,8 +244,8 @@ public int Timvitri(String maPP){
    
     public void ThongKePPtheoMaPM(String maPM){
         PhieuPhat[] ds=TimtheoMaPM(maPM);
-        if(ds== null){
-            System.out.println("Tong so phieu phat theo ma phieu muon "+maPM":0");
+        if(ds.length == 0){
+            System.out.println("Tong so phieu phat theo ma phieu muon " + maPM + ": 0");
             return;}
         System.out.println("THONG KE PHIEU PHAT CO MA PM:"+maPM);  
         for(PhieuPhat pp: ds)
