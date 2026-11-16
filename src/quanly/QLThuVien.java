@@ -1,5 +1,6 @@
 package quanly;
 
+import danhsach.*;
 import java.util.Scanner;
 import danhsach.*;
 
