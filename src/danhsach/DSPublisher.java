@@ -10,25 +10,25 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class DSPublisher implements DanhSach {
-    // 1. Thuộc tính
+    // 1. Thuoc tinh
     private int n;
     private Publisher dsnxb[] = new Publisher[0];
 
     // -----------------------------------------------------------------------------------//
     // 2. Constructor
-    // 2.1 Constructor không tham số
+    // 2.1 Constructor khong tham so
     public DSPublisher() {
         this.n = 0;
         this.dsnxb = new Publisher[0];
     }
 
-    // 2.2 Constructor có tham số
+    // 2.2 Constructor co tham so
     public DSPublisher(int n, Publisher[] dsnxb) {
         this.n = n;
         this.dsnxb = dsnxb;
     }
 
-    // 2.3 Constructor sao chép
+    // 2.3 Constructor sao chep
     public DSPublisher(DSPublisher copy) {
         if (copy != null) {
             this.n = copy.n;
@@ -42,25 +42,26 @@ public class DSPublisher implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 3. In tiêu đề bảng
+    // 3. In tieu de bang
     public void PrintHeader() {
         System.out.format(
-                "+--------+----------+----------+------------------------------+--------------------+%n");
-        System.out.printf("|%-8s|%-10s|%-10s|%-30s|%-20s|%n",
+                "+--------+--------------------+------------+------------------------------+-------------------------+%n");
+        System.out.printf("|%-8s|%-20s|%-12s|%-30s|%-25s|%n",
                 "Ma NXB", "Ten NXB", "SDT", "Email", "Dia Chi");
         System.out.format(
-                "+--------+----------+----------+------------------------------+--------------------+%n");
+                "+--------+--------------------+------------+------------------------------+-------------------------+%n");
     }
 
     // -----------------------------------------------------------------------------------//
-    // 4. Nhập danh sách từ bàn phím
+    // 4. Nhap danh sach
     public void Input() {
         Scanner sc = new Scanner(System.in);
+        int soLuong = 0;
         while (true) {
             System.out.print("Nhap so luong nha xuat ban: ");
             try {
-                this.n = Integer.parseInt(sc.nextLine().trim());
-                if (this.n >= 0) {
+                soLuong = Integer.parseInt(sc.nextLine().trim());
+                if (soLuong >= 0) {
                     break;
                 }
                 System.out.println("So luong NXB khong duoc am. Vui long nhap lai!");
@@ -69,16 +70,31 @@ public class DSPublisher implements DanhSach {
             }
         }
 
-        this.dsnxb = new Publisher[n];
-        for (int i = 0; i < n; i++) {
+        this.n = 0;
+        this.dsnxb = new Publisher[soLuong];
+        for (int i = 0; i < soLuong; i++) {
             System.out.println("\n--- Nhap nha xuat ban thu " + (i + 1) + " ---");
-            this.dsnxb[i] = new Publisher();
-            this.dsnxb[i].Input();
+            this.dsnxb[this.n] = new Publisher();
+            System.out.print("Nhap ma nha xuat ban: ");
+            String MaNXB = sc.nextLine().trim();
+
+            while (CheckMaNXB(MaNXB) || !CheckHopLe(MaNXB)) {
+                if (CheckMaNXB(MaNXB)) {
+                    System.out.print("Ma nha xuat ban bi trung. Vui long nhap lai: ");
+                } else {
+                    System.out.print("Ma nha xuat ban khong hop le (phai co dang NXBxx). Vui long nhap lai: ");
+                }
+                MaNXB = sc.nextLine().trim();
+            }
+
+            this.dsnxb[this.n].setMaNXB(MaNXB);
+            this.dsnxb[this.n].Input();
+            this.n++;
         }
     }
 
     // -----------------------------------------------------------------------------------//
-    // 5. Xuất danh sách
+    // 5. Xuat danh sach
     public void Output() {
         if (this.n == 0) {
             System.out.println("Danh sach nha xuat ban dang trong!");
@@ -91,13 +107,13 @@ public class DSPublisher implements DanhSach {
             }
         }
         System.out.format(
-                "+--------+----------+----------+------------------------------+--------------------+%n");
+                "+--------+--------------------+------------+------------------------------+-------------------------+%n");
     }
 
     // -----------------------------------------------------------------------------------//
-    // 6. Tìm kiếm
+    // 6. Tim kiem
 
-    // 6.1 Tìm kiếm theo mã nhà xuất bản
+    // 6.1 Tim kiem theo ma nha xuat ban
     public void TimPublisherTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma NXB can tim: ");
@@ -109,7 +125,7 @@ public class DSPublisher implements DanhSach {
             this.PrintHeader();
             this.dsnxb[index].Output();
             System.out.format(
-                    "+--------+----------+----------+------------------------------+--------------------+%n");
+                    "+--------+--------------------+------------+------------------------------+-------------------------+%n");
         } else {
             System.out.println("Khong tim thay NXB co ma " + MaNXBCanTim);
         }
@@ -117,14 +133,15 @@ public class DSPublisher implements DanhSach {
 
     public int TimPublisherTheoMa(String MaNXBCanTim) {
         for (int i = 0; i < n; i++) {
-            if (this.dsnxb[i] != null && this.dsnxb[i].getMaNXB().equalsIgnoreCase(MaNXBCanTim)) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getMaNXB() != null
+                    && this.dsnxb[i].getMaNXB().equalsIgnoreCase(MaNXBCanTim)) {
                 return i;
             }
         }
         return -1;
     }
 
-    // 6.2 Tìm kiếm theo tên nhà xuất bản
+    // 6.2 Tim kiem theo ten nha xuat ban
     public void TimPublisherTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten NXB can tim: ");
@@ -133,20 +150,21 @@ public class DSPublisher implements DanhSach {
         int count = 0;
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
-            if (this.dsnxb[i] != null && this.dsnxb[i].getTenNXB().equalsIgnoreCase(TenCanTim)) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getTenNXB() != null
+                    && this.dsnxb[i].getTenNXB().equalsIgnoreCase(TenCanTim)) {
                 this.dsnxb[i].Output();
                 count++;
             }
         }
         System.out.format(
-                "+--------+----------+----------+------------------------------+--------------------+%n");
+                "+--------+--------------------+------------+------------------------------+-------------------------+%n");
 
         if (count == 0) {
             System.out.println("Khong tim thay NXB co ten " + TenCanTim);
         }
     }
 
-    // 6.3 Tìm kiếm theo số điện thoại nhà xuất bản
+    // 6.3 Tim kiem theo so dien thoai nha xuat ban
     public void TimPublisherTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap SDT NXB can tim: ");
@@ -158,7 +176,7 @@ public class DSPublisher implements DanhSach {
             this.PrintHeader();
             this.dsnxb[index].Output();
             System.out.format(
-                    "+--------+----------+----------+------------------------------+--------------------+%n");
+                    "+--------+--------------------+------------+------------------------------+-------------------------+%n");
         } else {
             System.out.println("Khong tim thay NXB co SDT " + SDTCanTim);
         }
@@ -166,7 +184,8 @@ public class DSPublisher implements DanhSach {
 
     public int TimPublisherTheoSDT(String SDTCanTim) {
         for (int i = 0; i < n; i++) {
-            if (this.dsnxb[i] != null && this.dsnxb[i].getSdt().equals(SDTCanTim)) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getSdt() != null
+                    && this.dsnxb[i].getSdt().equals(SDTCanTim)) {
                 return i;
             }
         }
@@ -174,21 +193,21 @@ public class DSPublisher implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 7. Thêm
+    // 7. Them
 
     public void ThemPublisher() {
         Scanner sc = new Scanner(System.in);
         dsnxb = Arrays.copyOf(dsnxb, n + 1);
         dsnxb[n] = new Publisher();
         System.out.println("Nhap thong tin nha xuat ban moi:");
-        System.out.println("Nhap thong tin ma nha xuat ban: ");
+        System.out.print("Nhap ma nha xuat ban: ");
         String MaNXB = sc.nextLine().trim();
 
         while (CheckMaNXB(MaNXB) || !CheckHopLe(MaNXB)) {
             if (CheckMaNXB(MaNXB)) {
-                System.out.print("Ma tac gia bi trung. Vui long nhap lai: ");
+                System.out.print("Ma nha xuat ban bi trung. Vui long nhap lai: ");
             } else {
-                System.out.print("Ma tac gia khong hop le (phai co dang TGxx). Vui long nhap lai: ");
+                System.out.print("Ma nha xuat ban khong hop le (phai co dang NXBxx). Vui long nhap lai: ");
             }
             MaNXB = sc.nextLine().trim();
         }
@@ -199,7 +218,7 @@ public class DSPublisher implements DanhSach {
     }
 
     public void ThemPublisher(Publisher publisher) {
-        if (publisher != null && CheckMaNXB(publisher.getMaNXB())) {
+        if (publisher != null && !CheckMaNXB(publisher.getMaNXB())) {
             dsnxb = Arrays.copyOf(dsnxb, n + 1);
             dsnxb[n] = new Publisher(publisher);
             n++;
@@ -207,7 +226,7 @@ public class DSPublisher implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 8. Xóa
+    // 8. Xoa
 
     public void XoaPublisher(int pos) {
         if (pos >= n || pos < 0) {
@@ -223,7 +242,7 @@ public class DSPublisher implements DanhSach {
         dsnxb = Arrays.copyOf(dsnxb, n);
     }
 
-    // 8.1 Xóa theo mã NXB
+    // 8.1 Xoa theo ma NXB
     public void XoaPublisherTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma NXB can xoa: ");
@@ -238,7 +257,7 @@ public class DSPublisher implements DanhSach {
         }
     }
 
-    // 8.2 Xóa theo tên NXB
+    // 8.2 Xoa theo ten NXB
     public void XoaPublisherTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten NXB can xoa: ");
@@ -246,7 +265,8 @@ public class DSPublisher implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnxb[i] != null && this.dsnxb[i].getTenNXB().equalsIgnoreCase(TenCanXoa)) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getTenNXB() != null
+                    && this.dsnxb[i].getTenNXB().equalsIgnoreCase(TenCanXoa)) {
                 XoaPublisher(i);
                 i--;
                 count++;
@@ -260,7 +280,7 @@ public class DSPublisher implements DanhSach {
         }
     }
 
-    // 8.3 Xóa theo SDT
+    // 8.3 Xoa theo SDT
     public void XoaPublisherTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap SDT NXB can xoa: ");
@@ -268,7 +288,8 @@ public class DSPublisher implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnxb[i] != null && this.dsnxb[i].getSdt().equals(SDTCanXoa)) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getSdt() != null
+                    && this.dsnxb[i].getSdt().equals(SDTCanXoa)) {
                 XoaPublisher(i);
                 i--;
                 count++;
@@ -282,7 +303,7 @@ public class DSPublisher implements DanhSach {
         }
     }
 
-    // 8.4 Xóa theo email
+    // 8.4 Xoa theo email
     public void XoaPublisherTheoEmail() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap email NXB can xoa: ");
@@ -290,7 +311,8 @@ public class DSPublisher implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnxb[i] != null && this.dsnxb[i].getEmail().equalsIgnoreCase(EmailCanXoa)) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getEmail() != null
+                    && this.dsnxb[i].getEmail().equalsIgnoreCase(EmailCanXoa)) {
                 XoaPublisher(i);
                 i--;
                 count++;
@@ -304,7 +326,7 @@ public class DSPublisher implements DanhSach {
         }
     }
 
-    // 8.5 Xóa theo địa chỉ
+    // 8.5 Xoa theo dia chi
     public void XoaPublisherTheoDiaChi() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap dia chi NXB can xoa: ");
@@ -312,7 +334,8 @@ public class DSPublisher implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnxb[i] != null && this.dsnxb[i].getDiaChi().equalsIgnoreCase(DiaChiCanXoa)) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getDiaChi() != null
+                    && this.dsnxb[i].getDiaChi().equalsIgnoreCase(DiaChiCanXoa)) {
                 XoaPublisher(i);
                 i--;
                 count++;
@@ -327,7 +350,7 @@ public class DSPublisher implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 9. Sửa
+    // 9. Sua
     public void SuaPublisher() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma NXB can sua: ");
@@ -425,9 +448,68 @@ public class DSPublisher implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 10. Doc va Ghi file
+    // 10. Thong ke (In so luong + Show bang chi tiet)
 
-    // 10.1 Doc file Publisher/Publisher.txt
+    // 10.1 Thong ke theo dia chi
+    public void ThongKePublisherTheoDiaChi() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhap dia chi NXB can thong ke: ");
+        String DiaChiCanThongKe = sc.nextLine().trim();
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getDiaChi() != null
+                    && this.dsnxb[i].getDiaChi().equalsIgnoreCase(DiaChiCanThongKe)) {
+                count++;
+            }
+        }
+
+        System.out.println("\n=> So luong NXB o dia chi " + DiaChiCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dsnxb[i] != null && this.dsnxb[i].getDiaChi() != null
+                        && this.dsnxb[i].getDiaChi().equalsIgnoreCase(DiaChiCanThongKe)) {
+                    this.dsnxb[i].Output();
+                }
+            }
+            System.out.format(
+                    "+--------+--------------------+------------+------------------------------+-------------------------+%n");
+        }
+    }
+
+    // 10.2 Thong ke theo ten NXB
+    public void ThongKePublisherTheoTen() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhap ten NXB can thong ke: ");
+        String TenCanThongKe = sc.nextLine().trim();
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (this.dsnxb[i] != null && this.dsnxb[i].getTenNXB() != null
+                    && this.dsnxb[i].getTenNXB().equalsIgnoreCase(TenCanThongKe)) {
+                count++;
+            }
+        }
+
+        System.out.println("\n=> So luong NXB co ten " + TenCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dsnxb[i] != null && this.dsnxb[i].getTenNXB() != null
+                        && this.dsnxb[i].getTenNXB().equalsIgnoreCase(TenCanThongKe)) {
+                    this.dsnxb[i].Output();
+                }
+            }
+            System.out.format(
+                    "+--------+--------------------+------------+------------------------------+-------------------------+%n");
+        }
+    }
+
+    // -----------------------------------------------------------------------------------//
+    // 11. Doc va Ghi file
+
+    // 11.1 Doc file data/Publisher.txt
     public void ReadFile() {
         int count = 0;
         Scanner sc = null;
@@ -460,9 +542,8 @@ public class DSPublisher implements DanhSach {
             }
 
             this.n = count;
-
         } catch (FileNotFoundException e) {
-            System.out.println("Loi: Khong tim thay file Publisher/Publisher.txt!");
+            System.out.println("Loi: Khong tim thay file data/Publisher.txt!");
         } finally {
             if (sc != null) {
                 sc.close();
@@ -470,7 +551,7 @@ public class DSPublisher implements DanhSach {
         }
     }
 
-    // 10.2 Ghi file Publisher/Publisher.txt
+    // 11.2 Ghi file data/Publisher.txt
     public void WriteFile() {
         if (this.n == 0) {
             System.out.println("Danh sach NXB dang trong, khong co du lieu de ghi!");
@@ -505,25 +586,23 @@ public class DSPublisher implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 11. Kiểm tra mã trùng
-
+    // 12. Kiem tra ma trung
     public boolean CheckMaNXB(String MaNXB) {
+        if (MaNXB == null)
+            return false;
         for (int i = 0; i < this.n; i++) {
-            if (dsnxb[i] != null && dsnxb[i].getMaNXB().equals(MaNXB)) {
+            if (dsnxb[i] != null && dsnxb[i].getMaNXB() != null
+                    && dsnxb[i].getMaNXB().equalsIgnoreCase(MaNXB)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean CheckKiTuNXB(String MaNXB) {
-        return true;
-    }
-
     // -----------------------------------------------------------------------------------//
-    // 12. Kiểm tra tính hợp lệ của mã
+    // 13. Kiem tra tinh hop le cua ma (Dang NXBxx)
     public boolean CheckHopLe(String MaNXB) {
-        if (MaNXB.length() < 4 || !MaNXB.substring(0, 3).equals("NXB")) {
+        if (MaNXB == null || MaNXB.length() < 4 || !MaNXB.substring(0, 3).equals("NXB")) {
             return false;
         }
 

@@ -6,7 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+// MaTG, HoTG, TenTG, NgaySinh, GioiTinh, SDT
 public class Author {
+    // 1. Thuoc tinh
     private String MaTG;
     private String HoTG;
     private String TenTG;
@@ -14,6 +16,9 @@ public class Author {
     private String GioiTinh;
     private String SDT;
 
+    // -----------------------------------------------------------------------------------//
+    // 2. Constructor
+    // 2.1 Constructor mac dinh
     public Author() {
         this.MaTG = "";
         this.HoTG = "";
@@ -23,6 +28,7 @@ public class Author {
         this.SDT = "";
     }
 
+    // 2.2 Constructor co tham so
     public Author(String MaTG, String HoTG, String TenTG, LocalDate NgaySinh, String GioiTinh, String SDT) {
         this.MaTG = MaTG;
         this.HoTG = HoTG;
@@ -32,6 +38,7 @@ public class Author {
         this.SDT = SDT;
     }
 
+    // 2.3 Constructor sao chep
     public Author(Author copy) {
         if (copy != null) {
             this.MaTG = copy.MaTG;
@@ -43,6 +50,8 @@ public class Author {
         }
     }
 
+    // -----------------------------------------------------------------------------------//
+    // 3. Getter va Setter
     public String getMaTG() {
         return MaTG;
     }
@@ -75,7 +84,6 @@ public class Author {
         this.NgaySinh = NgaySinh;
     }
 
-    // Doi isGioiTinh() thanh getGioiTinh()
     public String getGioiTinh() {
         return GioiTinh;
     }
@@ -92,20 +100,25 @@ public class Author {
         this.SDT = SDT;
     }
 
+    // -----------------------------------------------------------------------------------//
+    // 4. Phuong thuc nhap
     public void Input() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Scanner sc = new Scanner(System.in);
 
+        // 4.1 Nhap ma tac gia (Xu ly o DSAuthor)
         // System.out.print("Nhap ma tac gia: ");
         // this.MaTG = sc.nextLine().trim();
 
+        // 4.2 Nhap ho tac gia
         System.out.print("Nhap ho tac gia: ");
         this.HoTG = sc.nextLine().trim();
 
+        // 4.3 Nhap ten tac gia
         System.out.print("Nhap ten tac gia: ");
         this.TenTG = sc.nextLine().trim();
 
-        // Nhap ngay sinh (co kiem tra tuong lai)
+        // 4.4 Nhap ngay sinh
         while (true) {
             System.out.print("Nhap ngay sinh (dd/MM/yyyy): ");
             String strNgaySinh = sc.nextLine().trim();
@@ -119,28 +132,27 @@ public class Author {
                 this.NgaySinh = temp;
                 break;
             } catch (DateTimeParseException e) {
-                System.out.println(
-                        "Ngay sinh nhap khong dung dinh dang dd/MM/yyyy hoac khong ton tai. Vui long nhap lai!");
+                System.out.println("Ngay sinh nhap khong dung dinh dang hoac khong ton tai. Vui long nhap lai!");
             }
         }
 
-        // Nhap gioi tinh (khong bi loi font console va chuan hoa chuoi)
+        // 4.5 Nhap gioi tinh
         while (true) {
             System.out.print("Nhap gioi tinh (Nam/Nu): ");
             String strGioiTinh = sc.nextLine().trim();
 
-            if (strGioiTinh.equals("Nam")) {
+            if (strGioiTinh.equalsIgnoreCase("Nam")) {
                 this.GioiTinh = "Nam";
                 break;
-            } else if (strGioiTinh.equals("Nu")) {
-                this.GioiTinh = "Nữ";
+            } else if (strGioiTinh.equalsIgnoreCase("Nu")) {
+                this.GioiTinh = "Nu";
                 break;
             }
 
             System.out.println("Gioi tinh khong hop le. Vui long nhap lai (Nam/Nu).");
         }
 
-        // Nhap so dien thoai
+        // 4.6 Nhap so dien thoai
         while (true) {
             System.out.print("Nhap so dien thoai tac gia: ");
             this.SDT = sc.nextLine().trim();
@@ -160,22 +172,15 @@ public class Author {
             }
 
             if (!isDigit) {
-                System.out.println("So dien thoai chi duoc chua ky tu so. Vui long nhap lai!");
+                System.out.println("So dien thoai bi sai ky tu. Vui long nhap lai!");
                 continue;
             }
             break;
         }
     }
 
-    // Tinh tuoi tac gia
-    public int getAge() {
-        if (this.NgaySinh == null) {
-            return 0;
-        }
-        return Period.between(this.NgaySinh, LocalDate.now()).getYears();
-    }
-
-    // Phuong thuc xuat dinh dang bang
+    // -----------------------------------------------------------------------------------//
+    // 5. Phuong thuc xuat
     public void Output() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormat = "|%-10s|%-12s|%-10s|%-14s|%-10s|%-12s|%n";
@@ -184,4 +189,12 @@ public class Author {
         System.out.printf(dataFormat, this.MaTG, this.HoTG, this.TenTG, strNgaySinh, this.GioiTinh, this.SDT);
     }
 
+    // -----------------------------------------------------------------------------------//
+    // 6. Tinh tuoi tac gia
+    public int getAge() {
+        if (this.NgaySinh == null) {
+            return 0;
+        }
+        return Period.between(this.NgaySinh, LocalDate.now()).getYears();
+    }
 }

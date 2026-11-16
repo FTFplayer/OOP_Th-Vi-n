@@ -13,25 +13,25 @@ import java.util.Scanner;
 import java.util.Arrays;
 
 public class DSAuthor implements DanhSach {
-    // 1. Thuộc tính
+    // 1. Thuoc tinh
     private int n;
     private Author dstacgia[] = new Author[0];
 
     // -----------------------------------------------------------------------------------//
     // 2. Constructor
-    // 2.1 Constructor không tham số
+    // 2.1 Constructor khong tham so
     public DSAuthor() {
         this.n = 0;
         this.dstacgia = new Author[0];
     }
 
-    // 2.2 Constructor có tham số
+    // 2.2 Constructor co tham so
     public DSAuthor(int n, Author[] dstacgia) {
         this.n = n;
         this.dstacgia = dstacgia;
     }
 
-    // 2.3 Constructor sao chép
+    // 2.3 Constructor sao chep
     public DSAuthor(DSAuthor copy) {
         if (copy != null) {
             this.n = copy.n;
@@ -45,7 +45,7 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 3. Tạo khung tiêu đề
+    // 3. In tieu de bang
     public void PrintHeader() {
         System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
         System.out.printf("|%-10s|%-12s|%-10s|%-14s|%-10s|%-12s|%n",
@@ -54,14 +54,15 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 4. Nhập danh sách từ bàn phím
+    // 4. Nhap danh sach
     public void Input() {
         Scanner sc = new Scanner(System.in);
+        int soLuong = 0;
         while (true) {
             System.out.print("Nhap so luong tac gia: ");
             try {
-                this.n = Integer.parseInt(sc.nextLine().trim());
-                if (this.n >= 0) {
+                soLuong = Integer.parseInt(sc.nextLine().trim());
+                if (soLuong >= 0) {
                     break;
                 }
                 System.out.println("So luong tac gia khong duoc am. Vui long nhap lai!");
@@ -70,16 +71,31 @@ public class DSAuthor implements DanhSach {
             }
         }
 
-        this.dstacgia = new Author[n];
-        for (int i = 0; i < n; i++) {
+        this.n = 0;
+        this.dstacgia = new Author[soLuong];
+        for (int i = 0; i < soLuong; i++) {
             System.out.println("\n--- Nhap tac gia thu " + (i + 1) + " ---");
-            this.dstacgia[i] = new Author();
-            this.dstacgia[i].Input();
+            this.dstacgia[this.n] = new Author();
+            System.out.print("Nhap ma tac gia: ");
+            String MaTG = sc.nextLine().trim();
+
+            while (CheckMaTG(MaTG) || !CheckHopLe(MaTG)) {
+                if (CheckMaTG(MaTG)) {
+                    System.out.print("Ma tac gia bi trung. Vui long nhap lai: ");
+                } else {
+                    System.out.print("Ma tac gia khong hop le (phai co dang TGxx). Vui long nhap lai: ");
+                }
+                MaTG = sc.nextLine().trim();
+            }
+
+            this.dstacgia[this.n].setMaTG(MaTG);
+            this.dstacgia[this.n].Input();
+            this.n++;
         }
     }
 
     // -----------------------------------------------------------------------------------//
-    // 5. Xem danh sách
+    // 5. Xem danh sach
     public void Output() {
         if (this.n == 0) {
             System.out.println("Danh sach tac gia dang trong!");
@@ -95,9 +111,9 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 6. Tìm kiếm
+    // 6. Tim kiem
 
-    // 6.1 Tìm kiếm theo mã tac gia
+    // 6.1 Tim kiem theo ma tac gia
     public void TimAuthorTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma tac gia can tim: ");
@@ -116,14 +132,15 @@ public class DSAuthor implements DanhSach {
 
     public int TimAuthorTheoMa(String MaTGCanTim) {
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getMaTG().equalsIgnoreCase(MaTGCanTim)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getMaTG() != null
+                    && this.dstacgia[i].getMaTG().equalsIgnoreCase(MaTGCanTim)) {
                 return i;
             }
         }
         return -1;
     }
 
-    // 6.2 Tìm kiếm theo họ tác giả
+    // 6.2 Tim kiem theo ho tac gia
     public void TimAuthorTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho tac gia can tim: ");
@@ -132,7 +149,8 @@ public class DSAuthor implements DanhSach {
         int count = 0;
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getHoTG().equalsIgnoreCase(HoCanTim)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getHoTG() != null
+                    && this.dstacgia[i].getHoTG().equalsIgnoreCase(HoCanTim)) {
                 this.dstacgia[i].Output();
                 count++;
             }
@@ -144,7 +162,7 @@ public class DSAuthor implements DanhSach {
         }
     }
 
-    // 6.3 Tìm kiếm theo tên tác giả
+    // 6.3 Tim kiem theo ten tac gia
     public void TimAuthorTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten tac gia can tim: ");
@@ -153,7 +171,8 @@ public class DSAuthor implements DanhSach {
         int count = 0;
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getTenTG().equalsIgnoreCase(TenCanTim)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getTenTG() != null
+                    && this.dstacgia[i].getTenTG().equalsIgnoreCase(TenCanTim)) {
                 this.dstacgia[i].Output();
                 count++;
             }
@@ -165,7 +184,7 @@ public class DSAuthor implements DanhSach {
         }
     }
 
-    // 6.4 Tìm kiếm theo số điện thoại
+    // 6.4 Tim kiem theo so dien thoai
     public void TimAuthorTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap SDT tac gia can tim: ");
@@ -184,7 +203,8 @@ public class DSAuthor implements DanhSach {
 
     public int TimAuthorTheoSDT(String SDTCanTim) {
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getSDT().equals(SDTCanTim)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getSDT() != null
+                    && this.dstacgia[i].getSDT().equals(SDTCanTim)) {
                 return i;
             }
         }
@@ -192,14 +212,14 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 7. Thêm tác giả
+    // 7. Them tac gia
 
     public void ThemAuthor() {
         Scanner sc = new Scanner(System.in);
         dstacgia = Arrays.copyOf(dstacgia, n + 1);
         dstacgia[n] = new Author();
         System.out.println("Nhap thong tin tac gia moi:");
-        System.out.println("Nhap ma tac gia: ");
+        System.out.print("Nhap ma tac gia: ");
         String MaTG = sc.nextLine().trim();
 
         while (CheckMaTG(MaTG) || !CheckHopLe(MaTG)) {
@@ -225,7 +245,7 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 8. Xóa tác giả
+    // 8. Xoa tac gia
 
     public void XoaAuthor(int pos) {
         if (pos >= n || pos < 0) {
@@ -241,7 +261,7 @@ public class DSAuthor implements DanhSach {
         dstacgia = Arrays.copyOf(dstacgia, n);
     }
 
-    // 8.1 Xoá theo mã tác giả
+    // 8.1 Xoa theo ma tac gia
     public void XoaAuthorTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma tac gia can xoa: ");
@@ -256,7 +276,7 @@ public class DSAuthor implements DanhSach {
         }
     }
 
-    // 8.2 Xóa theo họ tác giả
+    // 8.2 Xoa theo ho tac gia
     public void XoaAuthorTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho tac gia can xoa: ");
@@ -264,7 +284,8 @@ public class DSAuthor implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getHoTG().equalsIgnoreCase(HoCanXoa)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getHoTG() != null
+                    && this.dstacgia[i].getHoTG().equalsIgnoreCase(HoCanXoa)) {
                 XoaAuthor(i);
                 i--;
                 count++;
@@ -278,7 +299,7 @@ public class DSAuthor implements DanhSach {
         }
     }
 
-    // 8.3 Xoá theo tên tác giả
+    // 8.3 Xoa theo ten tac gia
     public void XoaAuthorTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten tac gia can xoa: ");
@@ -286,7 +307,8 @@ public class DSAuthor implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getTenTG().equalsIgnoreCase(TenCanXoa)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getTenTG() != null
+                    && this.dstacgia[i].getTenTG().equalsIgnoreCase(TenCanXoa)) {
                 XoaAuthor(i);
                 i--;
                 count++;
@@ -300,18 +322,18 @@ public class DSAuthor implements DanhSach {
         }
     }
 
-    // 8.4 Xóa theo giới tính tác giả
+    // 8.4 Xoa theo gioi tinh tac gia
     public void XoaAuthorTheoGioiTinh() {
         Scanner sc = new Scanner(System.in);
         String GioiTinhCanXoa;
         while (true) {
             System.out.print("Nhap gioi tinh can xoa (Nam/Nu): ");
-            GioiTinhCanXoa = sc.nextLine().trim();
+            String input = sc.nextLine().trim();
 
-            if (GioiTinhCanXoa.equalsIgnoreCase("Nam")) {
+            if (input.equalsIgnoreCase("Nam")) {
                 GioiTinhCanXoa = "Nam";
                 break;
-            } else if (GioiTinhCanXoa.equalsIgnoreCase("Nu")) {
+            } else if (input.equalsIgnoreCase("Nu")) {
                 GioiTinhCanXoa = "Nu";
                 break;
             }
@@ -320,9 +342,10 @@ public class DSAuthor implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && (this.dstacgia[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanXoa)
-                    || (GioiTinhCanXoa.equalsIgnoreCase("Nu")
-                            && this.dstacgia[i].getGioiTinh().equalsIgnoreCase("Nữ")))) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getGioiTinh() != null
+                    && (this.dstacgia[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanXoa)
+                            || (GioiTinhCanXoa.equalsIgnoreCase("Nu")
+                                    && this.dstacgia[i].getGioiTinh().equalsIgnoreCase("Nữ")))) {
                 XoaAuthor(i);
                 i--;
                 count++;
@@ -336,7 +359,7 @@ public class DSAuthor implements DanhSach {
         }
     }
 
-    // 8.5 Xóa theo ngày sinh tác giả
+    // 8.5 Xoa theo ngay sinh tac gia
     public void XoaAuthorTheoNgaySinh() {
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -370,7 +393,7 @@ public class DSAuthor implements DanhSach {
         }
     }
 
-    // 8.6 Xóa théo số điện thoại tác giả
+    // 8.6 Xoa theo so dien thoai tac gia
     public void XoaAuthorTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap so dien thoai tac gia can xoa: ");
@@ -378,7 +401,8 @@ public class DSAuthor implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getSDT().equals(SDTCanXoa)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getSDT() != null
+                    && this.dstacgia[i].getSDT().equals(SDTCanXoa)) {
                 XoaAuthor(i);
                 i--;
                 count++;
@@ -393,7 +417,7 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 9. Sửa thông tin tác giả
+    // 9. Sua thong tin tac gia
     public void SuaAuthor() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma tac gia can sua: ");
@@ -507,9 +531,9 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 10. Thống kê
+    // 10. Thong ke (In so luong + Show bang chi tiet)
 
-    // 10.1 Thống kê theo họ tác giả
+    // 10.1 Thong ke theo ho tac gia
     public void ThongKeAuthorTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho tac gia can thong ke: ");
@@ -517,14 +541,26 @@ public class DSAuthor implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getHoTG().equalsIgnoreCase(HoCanThongKe)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getHoTG() != null
+                    && this.dstacgia[i].getHoTG().equalsIgnoreCase(HoCanThongKe)) {
                 count++;
             }
         }
-        System.out.println("So luong tac gia co ho " + HoCanThongKe + ": " + count);
+
+        System.out.println("\n=> So luong tac gia co ho " + HoCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dstacgia[i] != null && this.dstacgia[i].getHoTG() != null
+                        && this.dstacgia[i].getHoTG().equalsIgnoreCase(HoCanThongKe)) {
+                    this.dstacgia[i].Output();
+                }
+            }
+            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+        }
     }
 
-    // 10.2 Thống kê theo tên tác giả
+    // 10.2 Thong ke theo ten tac gia
     public void ThongKeAuthorTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten tac gia can thong ke: ");
@@ -532,25 +568,37 @@ public class DSAuthor implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && this.dstacgia[i].getTenTG().equalsIgnoreCase(TenCanThongKe)) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getTenTG() != null
+                    && this.dstacgia[i].getTenTG().equalsIgnoreCase(TenCanThongKe)) {
                 count++;
             }
         }
-        System.out.println("So luong tac gia co ten " + TenCanThongKe + ": " + count);
+
+        System.out.println("\n=> So luong tac gia co ten " + TenCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dstacgia[i] != null && this.dstacgia[i].getTenTG() != null
+                        && this.dstacgia[i].getTenTG().equalsIgnoreCase(TenCanThongKe)) {
+                    this.dstacgia[i].Output();
+                }
+            }
+            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+        }
     }
 
-    // 10.3 Thống kê theo giới tính
+    // 10.3 Thong ke theo gioi tinh
     public void ThongKeAuthorTheoGioiTinh() {
         Scanner sc = new Scanner(System.in);
         String GioiTinhCanThongKe;
         while (true) {
             System.out.print("Nhap gioi tinh can thong ke (Nam/Nu): ");
-            GioiTinhCanThongKe = sc.nextLine().trim();
+            String input = sc.nextLine().trim();
 
-            if (GioiTinhCanThongKe.equalsIgnoreCase("Nam")) {
+            if (input.equalsIgnoreCase("Nam")) {
                 GioiTinhCanThongKe = "Nam";
                 break;
-            } else if (GioiTinhCanThongKe.equalsIgnoreCase("Nu")) {
+            } else if (input.equalsIgnoreCase("Nu")) {
                 GioiTinhCanThongKe = "Nu";
                 break;
             }
@@ -559,16 +607,30 @@ public class DSAuthor implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dstacgia[i] != null && (this.dstacgia[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)
-                    || (GioiTinhCanThongKe.equalsIgnoreCase("Nu")
-                            && this.dstacgia[i].getGioiTinh().equalsIgnoreCase("Nữ")))) {
+            if (this.dstacgia[i] != null && this.dstacgia[i].getGioiTinh() != null
+                    && (this.dstacgia[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)
+                            || (GioiTinhCanThongKe.equalsIgnoreCase("Nu")
+                                    && this.dstacgia[i].getGioiTinh().equalsIgnoreCase("Nữ")))) {
                 count++;
             }
         }
-        System.out.println("So luong tac gia co gioi tinh " + GioiTinhCanThongKe + ": " + count);
+
+        System.out.println("\n=> So luong tac gia co gioi tinh " + GioiTinhCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dstacgia[i] != null && this.dstacgia[i].getGioiTinh() != null
+                        && (this.dstacgia[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)
+                                || (GioiTinhCanThongKe.equalsIgnoreCase("Nu")
+                                        && this.dstacgia[i].getGioiTinh().equalsIgnoreCase("Nữ")))) {
+                    this.dstacgia[i].Output();
+                }
+            }
+            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+        }
     }
 
-    // 10.4 Thống kê theo tuổi
+    // 10.4 Thong ke theo tuoi
     public void ThongKeAuthorTheoTuoi() {
         Scanner sc = new Scanner(System.in);
         int tuoi;
@@ -593,13 +655,23 @@ public class DSAuthor implements DanhSach {
                 count++;
             }
         }
-        System.out.println("So luong tac gia " + tuoi + " tuoi: " + count);
+
+        System.out.println("\n=> So luong tac gia " + tuoi + " tuoi: " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dstacgia[i] != null && this.dstacgia[i].getAge() == tuoi) {
+                    this.dstacgia[i].Output();
+                }
+            }
+            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+        }
     }
 
     // -----------------------------------------------------------------------------------//
-    // 11. Đọc và ghi file
+    // 11. Doc va ghi file
 
-    // 11.1 Đọc file
+    // 11.1 Doc file
     public void ReadFile() {
         int count = 0;
         Scanner sc = null;
@@ -644,7 +716,7 @@ public class DSAuthor implements DanhSach {
 
             this.n = count;
         } catch (FileNotFoundException e) {
-            System.out.println("Loi: Khong tim thay file Author/Author.txt!");
+            System.out.println("Loi: Khong tim thay file data/Author.txt!");
         } finally {
             if (sc != null) {
                 sc.close();
@@ -693,11 +765,13 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 12. Kiểm tra mã trùng
-
+    // 12. Kiem tra ma trung
     public boolean CheckMaTG(String MaTG) {
+        if (MaTG == null)
+            return false;
         for (int i = 0; i < this.n; i++) {
-            if (dstacgia[i] != null && dstacgia[i].getMaTG().equals(MaTG)) {
+            if (dstacgia[i] != null && dstacgia[i].getMaTG() != null
+                    && dstacgia[i].getMaTG().equalsIgnoreCase(MaTG)) {
                 return true;
             }
         }
@@ -705,9 +779,9 @@ public class DSAuthor implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 13. Kiểm tra tính hợp lệ của mã
+    // 13. Kiem tra tinh hop le cua ma (Dang TGxx)
     public boolean CheckHopLe(String MaTG) {
-        if (MaTG.length() < 3 || !MaTG.substring(0, 2).equals("TG")) {
+        if (MaTG == null || MaTG.length() < 3 || !MaTG.substring(0, 2).equals("TG")) {
             return false;
         }
 
@@ -719,5 +793,4 @@ public class DSAuthor implements DanhSach {
         }
         return true;
     }
-
 }

@@ -190,12 +190,10 @@ public class QLEmployee extends QLThuVien {
                     dsEmployee.ThongKeEmployeeTheoGioiTinh();
                     break;
                 case 2:
-                    int slTuoi = dsEmployee.ThongKeEmployeeTheoTuoi();
-                    System.out.println("So luong nhan vien co do tuoi nay la: " + slTuoi);
+                    dsEmployee.ThongKeEmployeeTheoTuoi();
                     break;
                 case 3:
-                    int slLuong = dsEmployee.ThongKeEmployeeTheoLuongToiThieu();
-                    System.out.println("So luong nhan vien dat muc luong nay tro len la: " + slLuong);
+                    dsEmployee.ThongKeEmployeeTheoLuongToiThieu();
                     break;
                 case 0:
                     System.out.println("Quay lai menu quan ly nhan vien.");

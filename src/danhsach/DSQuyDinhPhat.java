@@ -1,4 +1,5 @@
 package danhsach;
+
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 // Mở luồng đọc file ký tự
@@ -9,7 +10,7 @@ import model.QuyDinhPhat; // Ghi dữ liệu dạng dòng văn bản (println, p
 public class DSQuyDinhPhat {
     private QuyDinhPhat[] dsQDP;
     private int n;
-    Scanner sc= new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
 
     public DSQuyDinhPhat() {
         this.n = 0;
@@ -76,9 +77,6 @@ public class DSQuyDinhPhat {
         }
         return quyDinh;
     }
-
-
-   
 
     public void TimQuyDinh(Scanner sc) {
         QuyDinhPhat quyDinh = Tim(sc);
@@ -148,93 +146,85 @@ public class DSQuyDinhPhat {
         System.out.println("Tong so quy dinh: " + n);
     }
 
-
-
-    //Hàm tính tiền phạt dựa theo mã lý do phạt
-    public double TinhTienPhat(String maLD,double soNgayTre,String maSach, DSBook dsb)
-    {
-        if(TimViTri(maLD)== -1)
+    // Hàm tính tiền phạt dựa theo mã lý do phạt
+    public double TinhTienPhat(String maLD, double soNgayTre, String maSach, DSBook dsb) {
+        if (TimViTri(maLD) == -1)
             return -1;
-        QuyDinhPhat qd= Tim(maLD);
-        if(maLD.equals("QD01"))
-            return soNgayTre* 10;
-        double giaSach=dsb.timkiemBook(maSach).getDonGia();
-        if(maLD.equals("QD02"))
+        QuyDinhPhat qd = Tim(maLD);
+        if (maLD.equals("QD01"))
+            return soNgayTre * 10;
+        double giaSach = dsb.timkiemBook(maSach).getDonGia();
+        if (maLD.equals("QD02"))
             return giaSach;
         else
-            return giaSach*2;
+            return giaSach * 2;
 
     }
 
+    public void WriteFile() {
+        PrintWriter pw = null;
 
+        try {
 
+            pw = new PrintWriter("data/QuyDinhPhat.txt");
 
-     public void WriteFile() {
-     PrintWriter pw = null;
+            for (int i = 0; i < n; i++) {
 
-    try {
-
-        pw = new PrintWriter("data/QuyDinhPhat.txt");
-
-        for (int i = 0; i < n; i++) {
-
-            pw.println(
-                dsQDP[i].getMaQDP() + "," +
-                dsQDP[i].getTenLD() + "," +
-                dsQDP[i].getMoTa()
-            );
-        }
-
-        System.out.println("Ghi file thanh cong!");
-
-    } catch (Exception e) {
-        System.out.println("Loi ghi file: " + e.getMessage());
-    } finally {
-        if (pw != null)
-            pw.close();
-    }
-}
-
-
-   public void ReadFile() {
-    Scanner sc = null;
-    FileInputStream inputStream = null;
-
-    try {
-        inputStream = new FileInputStream("data/QuyDinhPhat.txt");
-        sc = new Scanner(inputStream);
-
-        n = 0;
-
-        while (sc.hasNextLine()) {
-
-            String line = sc.nextLine().trim();
-
-            if (line.isEmpty())
-                continue;
-
-            String[] data = line.split(",");
-
-            if (data.length >= 3) {
-
-                dsQDP[n] = new QuyDinhPhat();
-
-                dsQDP[n].setMaQDP(data[0].trim());
-                dsQDP[n].setTenLD(data[1].trim());
-                dsQDP[n].setMoTa(data[2].trim());
-
-                n++;
+                pw.println(
+                        dsQDP[i].getMaQDP() + "," +
+                                dsQDP[i].getTenLD() + "," +
+                                dsQDP[i].getMoTa());
             }
+
+            System.out.println("Ghi file thanh cong!");
+
+        } catch (Exception e) {
+            System.out.println("Loi ghi file: " + e.getMessage());
+        } finally {
+            if (pw != null)
+                pw.close();
         }
-
-        System.out.println("Doc file thanh cong!");
-
-    } catch (Exception e) {
-        System.out.println("Loi doc file: " + e.getMessage());
-    } finally {
-        if (sc != null)
-            sc.close();
     }
-}
+
+    public void ReadFile() {
+        Scanner sc = null;
+        FileInputStream inputStream = null;
+
+        try {
+            inputStream = new FileInputStream("data/QuyDinhPhat.txt");
+            sc = new Scanner(inputStream);
+
+            n = 0;
+
+            while (sc.hasNextLine()) {
+
+                String line = sc.nextLine().trim();
+
+                if (line.isEmpty())
+                    continue;
+
+                String[] data = line.split(",");
+
+                if (data.length >= 3) {
+
+                    dsQDP[n] = new QuyDinhPhat();
+
+                    dsQDP[n].setMaQDP(data[0].trim());
+                    dsQDP[n].setTenLD(data[1].trim());
+                    dsQDP[n].setMoTa(data[2].trim());
+
+                    n++;
+                }
+            }
+
+            System.out.println("Doc file thanh cong!");
+
+        } catch (Exception e) {
+            System.out.println("Loi doc file: " + e.getMessage());
+        } finally {
+            if (sc != null)
+                sc.close();
+        }
+    }
 
 }

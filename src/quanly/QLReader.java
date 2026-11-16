@@ -187,12 +187,10 @@ public class QLReader extends QLThuVien {
 
             switch (choice) {
                 case 1:
-                    int slLapThe = dsReader.ThongKeReaderTheoNgayLapThe();
-                    System.out.println("So luong doc gia co ngay lap the nay la: " + slLapThe);
+                    dsReader.ThongKeReaderTheoNgayLapThe();
                     break;
                 case 2:
-                    int slTuoi = dsReader.ThongKeReaderTheoTuoi();
-                    System.out.println("So luong doc gia co do tuoi nay la: " + slTuoi);
+                    dsReader.ThongKeReaderTheoTuoi();
                     break;
                 case 3:
                     dsReader.ThongKeReaderTheoGioiTinh();

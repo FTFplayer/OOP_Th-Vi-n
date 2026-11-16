@@ -12,13 +12,13 @@ public class QLThuVien {
     DSPublisher dsPublisher = new DSPublisher();
     DSReader dsReader = new DSReader();
     DSTheLoai dstl = new DSTheLoai();
-    //of phuoq.lyn-- mn nhớ ghi của ai vào nhé[hyhy]
-    DSPhieuPhat dsPP= new DSPhieuPhat();
-    DSChiTietPhieuPhat dsCTPP= new DSChiTietPhieuPhat();
-    DSQuyDinhPhat dsQDP= new DSQuyDinhPhat();
-    DSProvider dsProvider= new DSProvider();
-    //of Hưng
-    ListPhieuMuon dsPM= new ListPhieuMuon(); 
+    // of phuoq.lyn-- mn nhớ ghi của ai vào nhé[hyhy]
+    DSPhieuPhat dsPP = new DSPhieuPhat();
+    DSChiTietPhieuPhat dsCTPP = new DSChiTietPhieuPhat();
+    DSQuyDinhPhat dsQDP = new DSQuyDinhPhat();
+    DSProvider dsProvider = new DSProvider();
+    // of Hưng
+    ListPhieuMuon dsPM = new ListPhieuMuon();
 
     public void menu() {
     }
