@@ -1,16 +1,15 @@
 package danhsach;
 
-import model.Reader;
-
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Scanner;
+import model.Reader;
 
 public class DSReader implements DanhSach {
     // 1. Thuộc tính
