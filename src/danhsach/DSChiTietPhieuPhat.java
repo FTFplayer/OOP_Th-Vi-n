@@ -12,21 +12,21 @@ import model.ChiTietPhieuPhat;
 public class DSChiTietPhieuPhat {
   
     private ChiTietPhieuPhat[] dsChiTiet;
-    private int soLuong;
+    private int n;
 
 
 
      public DSChiTietPhieuPhat() {
         this.dsChiTiet = new ChiTietPhieuPhat[100];
-        this.soLuong = 0;
+        this.n = 0;
     }
     public DSChiTietPhieuPhat(int length) {
-        soLuong=0;
+        n=0;
         dsChiTiet= new ChiTietPhieuPhat[length];
     }
     public DSChiTietPhieuPhat(ChiTietPhieuPhat[] dsChiTiet, int soLuong) {
         this.dsChiTiet = dsChiTiet;
-        this.soLuong = soLuong;
+        this.n = soLuong;
     }
     
 
@@ -34,12 +34,12 @@ public class DSChiTietPhieuPhat {
    
 
     public ChiTietPhieuPhat getChiTiet(int index) {
-        if (index < 0 || index >= soLuong) {
+        if (index < 0 || index >= n) {
             return null;
         }
         return dsChiTiet[index];
     }
-    public int getSoLuong() {return soLuong;}
+    public int getSoLuong() {return n;}
   
 
 
@@ -54,7 +54,7 @@ public class DSChiTietPhieuPhat {
         System.out.print("Nhap so luong sach vi pham: ");
         int sl = Integer.parseInt(sc.nextLine());
         dsChiTiet= new ChiTietPhieuPhat[sl];
-        this.soLuong=sl;
+        this.n=sl;
         for ( int i=0; i<sl; i++){
             System.out.println("  Sach vi pham thu " + (i + 1) + ":");
             dsChiTiet[i] = new ChiTietPhieuPhat();
@@ -64,7 +64,7 @@ public class DSChiTietPhieuPhat {
     public void Output() {
         System.out.println("DANH SACH CHI TIET PHIEU PHAT:");
         System.out.printf("| %-8s | %-10s | %-15s | %-8s |\n","MA PP", "MA SACH", "TIEN PHAT", "MA LYDO");
-        for (int i = 0; i < soLuong; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsChiTiet[i] != null) {
                 dsChiTiet[i].Output();
             }
@@ -77,7 +77,7 @@ public class DSChiTietPhieuPhat {
         boolean found = false;
         System.out.println("DANH SACH CHI TIET THEO MA PP: " + maPP);
         System.out.printf("| %-8s | %-10s | %-15s | %-8s |\n","MA PP", "MA SACH", "TIEN PHAT", "MA LYDO");
-        for (int i=0; i<soLuong; i++) {
+        for (int i=0; i<n; i++) {
             if (dsChiTiet[i] != null && dsChiTiet[i].getMaPP().equalsIgnoreCase(maPP)) {
                 dsChiTiet[i].Output();
                 found = true;
@@ -93,19 +93,17 @@ public class DSChiTietPhieuPhat {
     // THEM / ADD
     // ==========================================
     // Khong tham so (tu nhap tu ban phim)
-   public void Them(Scanner sc, DSQuyDinhPhat listQD, DSBook dsBook) {
-        System.out.print("Nhap ma phieu phat: ");
-        String maPP = sc.nextLine().trim();
+   public void Them( DSQuyDinhPhat listQD, DSBook dsBook,String maPP) {
         ChiTietPhieuPhat ct = new ChiTietPhieuPhat();
-        ct.Input(maPP, listQD, dsBook, sc);
+        ct.Input(maPP, listQD, dsBook);
         Them(ct);
         System.out.println("Them thanh cong!");
     }
     public void Them(ChiTietPhieuPhat ct) {
-        if (soLuong >= dsChiTiet.length) {
+        if (n >= dsChiTiet.length) {
             dsChiTiet = Arrays.copyOf(dsChiTiet, dsChiTiet.length + 1);
         }
-        dsChiTiet[soLuong++] = ct;
+        dsChiTiet[n++] = ct;
     }
 
    // ==========================================
@@ -117,7 +115,7 @@ public class DSChiTietPhieuPhat {
     public ChiTietPhieuPhat[] Tim(String maPP) {
         // Dem xem co bao nhieu phan tu trung khop truoc
         int count = 0;
-        for (int i = 0; i < soLuong; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsChiTiet[i] != null && dsChiTiet[i].getMaPP().equalsIgnoreCase(maPP)) {
                 count++;
             }
@@ -128,7 +126,7 @@ public class DSChiTietPhieuPhat {
         // Tao mang ket qua chua dung so luong tim thay
         ChiTietPhieuPhat[] ketQua = new ChiTietPhieuPhat[count];
         int idx = 0;
-        for (int i = 0; i < soLuong; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsChiTiet[i] != null && dsChiTiet[i].getMaPP().equalsIgnoreCase(maPP)) {
                 ketQua[idx++] = dsChiTiet[i];
             }
@@ -145,7 +143,7 @@ public class DSChiTietPhieuPhat {
     // Co tham so (xoa dua tren maPP va maSach)
 public boolean Xoa(String maPP, String maSach) {
         int idx = -1;
-        for (int i = 0; i < soLuong; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsChiTiet[i] != null && 
                 dsChiTiet[i].getMaPP().equalsIgnoreCase(maPP) && 
                 dsChiTiet[i].getMaSach().equalsIgnoreCase(maSach)) {
@@ -154,10 +152,10 @@ public boolean Xoa(String maPP, String maSach) {
             }
         }
         if (idx == -1) return false;
-        for (int i = idx; i < soLuong - 1; i++) {
+        for (int i = idx; i < n - 1; i++) {
             dsChiTiet[i] = dsChiTiet[i + 1];
         }
-        dsChiTiet[--soLuong] = null;
+        dsChiTiet[--n] = null;
         return true;
     }    
 public void Xoa(Scanner sc) {
@@ -184,7 +182,7 @@ public void Xoa(Scanner sc) {
         String maSach = sc.nextLine().trim();
 
         int idx = -1;
-        for (int i = 0; i < soLuong; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsChiTiet[i] != null && 
                 dsChiTiet[i].getMaPP().equalsIgnoreCase(maPP) && 
                 dsChiTiet[i].getMaSach().equalsIgnoreCase(maSach)) {
@@ -242,8 +240,8 @@ public void Xoa(Scanner sc) {
 
         public void ghiFile(String filename) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
-            pw.println(soLuong);
-            for (int i = 0; i < soLuong; i++) {
+            pw.println(n);
+            for (int i = 0; i < n; i++) {
                 if (dsChiTiet[i] != null) {
                     ChiTietPhieuPhat ct = dsChiTiet[i];
                     pw.println(ct.getMaPP() + ";" + ct.getMaSach() + ";" + ct.getTienPhat() + ";" + ct.getMaLD());
@@ -259,7 +257,7 @@ public void Xoa(Scanner sc) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line = br.readLine();
             if (line == null) return;
-            soLuong = 0;
+            n = 0;
             int sl = Integer.parseInt(line.trim());
             dsChiTiet = new ChiTietPhieuPhat[Math.max(1, sl)];
             for (int i = 0; i < sl; i++) {
@@ -268,7 +266,7 @@ public void Xoa(Scanner sc) {
                 String[] p = fileLine.split(";", -1);
                 if (p.length >= 4) {
                     ChiTietPhieuPhat ct = new ChiTietPhieuPhat(p[0], p[1], Double.parseDouble(p[2]), p[3]);
-                    dsChiTiet[soLuong++] = ct;
+                    dsChiTiet[n++] = ct;
                 }
             }
             System.out.println("-> Doc file chi tiet thanh cong!");

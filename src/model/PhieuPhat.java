@@ -6,35 +6,30 @@ import java.util.Scanner;
 public class PhieuPhat {
     private String maPP;
     private String maPM;
-    private LocalDate ngayPhat;
-    private double soTienPhat;
+    private LocalDate ngayThucTra;
+    private double tongSoTienPhat;
     Scanner sc= new Scanner(System.in);
 
     //1.constructor
     public PhieuPhat() {}
-    public PhieuPhat(String maPM, String maPP, LocalDate ngayPhat, double soTienPhat) {
+    public PhieuPhat(String maPM, String maPP, LocalDate ngayThucTra, double tongSoTienPhat) {
         this.maPM = maPM;
         this.maPP = maPP;
-        this.ngayPhat = ngayPhat;
-        this.soTienPhat = soTienPhat;}
+        this.ngayThucTra = ngayThucTra;
+        this.tongSoTienPhat = tongSoTienPhat;}
     
     //2.Get_Set
-     public String getMaPP() { return maPP; }
+    public String getMaPP() { return maPP; }
     public void setMaPP(String maPP) { this.maPP = maPP; }
 
-    public String getMaPhieuPhat() { return maPP; }
-    public void setMaPhieuPhat(String maPhieuPhat) { this.maPP = maPhieuPhat; }
-
     public String getMaPM() { return maPM; }
-    public String getMaPhieuMuon() { return maPM; }
+    public void setMaPM(String maPM) { this.maPM= maPM; }
 
-    public void setMaPM(String maPM) { this.maPM = maPM; }
-    public void setMaPhieuMuon(String maPhieuMuon) { this.maPM = maPhieuMuon; }
-
-    public LocalDate getNgayPhat() {return ngayPhat;}
-    public void setNgayPhat(LocalDate ngayPhat) {this.ngayPhat = ngayPhat;}
-    public void setSoTienPhat(double soTienPhat) { this.soTienPhat = soTienPhat; }
-    public void setTongTienPhat(double tongTienPhat) { this.soTienPhat = tongTienPhat; }
+    public LocalDate getNgayThucTra() {return ngayThucTra;}
+    public void setNgayThucTra(LocalDate ngayThucTra){ this.ngayThucTra=ngayThucTra;}
+ 
+    public double  getTongSoTienPhat() { return tongSoTienPhat; }
+    public void setTongSoTienPhat(double tongSoTienPhat) { this.tongSoTienPhat = tongSoTienPhat; }
 
     //3.INPUT
     public void Input(DSPhieuPhat ds1,DSPhieuMuon ds2) {           ////////chu ý tham chiếu phiếu mượn
@@ -58,13 +53,18 @@ public class PhieuPhat {
             while(true);
         // Ngày lập phiếu
         System.out.print(" Nhap ngay lap phieu phat:"); 
-        ngayPhat= LocalDate.parse(sc.nextLine());
+        ngayThucTra= LocalDate.parse(sc.nextLine());
         }
     
+       //4.Output 
     public void Output() {
         System.out.printf("|%-12s|%-14s|%-14s|%-14.2f|%n",
-                maPP, maPM, ngayPhat, soTienPhat);
+                maPP, maPM, ngayThucTra, tongSoTienPhat);
     }
+    
+
+    //Tinh so ngay trả trễ theo ngày hẹn trả:
+    public int TinhSoNgayTraTre(){}
 
 
 

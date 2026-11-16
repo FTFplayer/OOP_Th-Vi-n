@@ -9,6 +9,7 @@ public class ChiTietPhieuPhat {
     private String maSach;
     private double tienPhat;
     private String maLD;
+    Scanner sc= new Scanner(System.in);
 
     public ChiTietPhieuPhat() {
     }
@@ -52,9 +53,7 @@ public class ChiTietPhieuPhat {
         this.maLD = maLD;
     }
 
-    public void Input(Scanner sc) {
-        System.out.print("Nhap ma phieu phat: ");
-        this.maPP = sc.nextLine().trim();
+    public void Input() {
         System.out.print("Nhap ma sach: ");
         this.maSach = sc.nextLine().trim();
         System.out.print("Nhap ma ly do phat: ");
@@ -64,34 +63,42 @@ public class ChiTietPhieuPhat {
     }
 
     // Input all thông tin
-    public void Input(String maPPCurrent, DSQuyDinhPhat listQD, DSBook dsBook, Scanner sc) {
-        this.maPP = maPPCurrent;
-        System.out.print("Nhap ma sach: ");
-        maSach = sc.nextLine().trim();
-        System.out.print("Nhap ma ly do phat(LD01/LD02/LD03): ");
-        maLD = sc.nextLine().trim();
-        ////////tienPhat
-        QuyDinhPhat qd = listQD.Tim(maLD);
-        if (qd == null) {
-            System.out.println("-> Ma loi khong ton tai!");
-            this.tienPhat = 0;
-            return;
-        }
+    public void Input(String maPP, DSQuyDinhPhat dsQDP) {
+        this.maPP = maPP;
+          //nhập mã sách
+         System.out.print("Nhap ma sach: ");
+         maSach = sc.nextLine().trim();
+          // nhập mã lý do phạt
+          dsQDP.Output();
+          do{
+          System.out.print("Dua vao bang quy dinh phat\nNhap ma ly do phat:"); 
+          maLD=sc.nextLine().trim();}
+          while(dsQDP.TimViTri(maLD)== -1);
+          }
+    
 
-        if (maLD.equalsIgnoreCase("LD01")) {
-            System.out.print("Nhap so ngay tre");
-            int soNgayTre = Integer.parseInt(sc.nextLine());
-            this.tienPhat = qd.tinhTienChiTiet(0, soNgayTre);
-        } else {
-            Book book = dsBook.timkiemBook(maSach);
-            if (book == null) {
-                System.out.println("Khong ton tai ma sach:" + maSach);
-                this.tienPhat = 0;
-                return;
-            }
-            double giaSach = book.getDonGia();
-            this.tienPhat = qd.tinhTienChiTiet(giaSach, 0);
-        }
+        ////////tienPhat        ////////tienPhat
+        //     double tienphat=dsQDP.TinhTienPhat(maLD);tienphat=listQD.TinhTienPhat(maLD);
+        //     System.out.println("-> Ma loi khong ton tai!");}
+        //     while(tienphat<0);
+        //     this.tienPhat = 0;
+        //     return;
+        // }
+
+        // // if (maLD.equalsIgnoreCase("LD01")) {
+        //     System.out.print("Nhap so ngay tre");
+        //     int soNgayTre = Integer.parseInt(sc.nextLine());
+        //     this.tienPhat = qd.tinhTienChiTiet(0, soNgayTre);
+        // } else {
+        //     Book book = dsBook.timkiemBook(maSach);
+        //     if (book == null) {
+        //         System.out.println("Khong ton tai ma sach:" + maSach);
+        //         this.tienPhat = 0;
+        //         return;
+        //     }
+        //     double giaSach = book.getDonGia();
+        //     this.tienPhat = qd.tinhTienChiTiet(giaSach, 0);
+        // }
     }
 
     public void Output() {

@@ -13,9 +13,13 @@ public class DSPhieuPhat {
     
 
     // 1.Constructor
-    public DSPhieuPhat(int length) {
-        this.dsPhieuPhat = new PhieuPhat[length];  this.n = 0;}
-    public DSPhieuPhat() {dsPhieuPhat= new PhieuPhat[100]; this.n=0;}
+    public DSPhieuPhat(PhieuPhat[] dsPhieuPhat,int n) { 
+        this.dsPhieuPhat= dsPhieuPhat;
+         this.n=n;}
+    public DSPhieuPhat() {
+        dsPhieuPhat= new PhieuPhat[100];
+         this.n=0;}
+         
     //2.Getset
     public int getN() {return n;}
     public void setSoLuong(int n){this.n= n;}
@@ -214,7 +218,7 @@ public int Timvitri(String maPP){
     // ==========================================
     // 7. THONG KE
     // ==========================================
-    // public void ThongKe() {
+    // public void ThongKetheoMaPM() {
     //     double tongTien = 0;
     //     if (dsChiTiet != null) {
     //         for (int i = 0; i < n; i++) {
@@ -238,4 +242,15 @@ public int Timvitri(String maPP){
     // DOC / GHI FILE (Do Menu goi)
     // ==========================================
    
+    public void ThongKePPtheoMaPM(String maPM){
+        PhieuPhat[] ds=TimtheoMaPM(maPM);
+        if(ds== null){
+            System.out.println("Tong so phieu phat theo ma phieu muon "+maPM":0");
+            return;}
+        System.out.println("THONG KE PHIEU PHAT CO MA PM:"+maPM);  
+        for(PhieuPhat pp: ds)
+            pp.Output();
+
+        
+    }
 }

@@ -5,24 +5,22 @@ import java.util.Scanner;
 public class DSProvider{
     //----------------ATTRIBUTE-------------------------
     //---------------------------------------------------
-    private int soLuongNCC;
+    private int n;
     private Provider[] dsProvider;
-    private Scanner sc;
+    Scanner sc= new Scanner(System.in);
 
-    public DSProvider(Scanner sc) {
-        this.dsProvider = new Provider[1];
-        this.soLuongNCC = 0;
-        this.sc = sc;
-    }
+    public DSProvider() {
+        this.dsProvider = new Provider[100];
+        this.n = 0;}
 
     public DSProvider(Provider[] dsProvider, int soLuongNCC, Scanner sc) {
         this.dsProvider = dsProvider;
-        this.soLuongNCC = soLuongNCC;
+        this.n = soLuongNCC;
         this.sc = sc;
     }
 
     public int getSoLuongNCC() {
-        return soLuongNCC;
+        return n;
     }
 
     public Provider getdsProvider(int i) {
@@ -51,21 +49,21 @@ public void Input(){
         for (int i = 0; i < n; i++) {
             dsProvider[i] = new Provider();
             dsProvider[i].Input(sc, this);
-            soLuongNCC++;
+            this.n++;
         }
     }
 
     public void Output() {
         System.out.println("----------------------------------------------DANH SACH NHA CUNG CAP-------------------------------------------");
         System.out.println("---------------------------------------------------------------------------------------------------------------");
-        if (soLuongNCC == 0) {
+        if (n == 0) {
             System.out.println("DANH SACH RONG");
             System.out.println("---------------------------------------------------------------------------------------------------------------");
             return;
         }
 
         System.out.printf("|%-10S|%-30s|%-55s|%-15s|\n", "MA NCC", "TEN NCC", "DIA CHI", "SO_DIEN_THOAI");
-        for (int i = 0; i < soLuongNCC; i++) {
+        for (int i = 0; i < n; i++) {
             dsProvider[i].Output();
         }
         System.out.println("---------------------------------------------------------------------------------------------------------------");
@@ -76,17 +74,17 @@ public void Input(){
     }
 
     public void Them() {
-        if (soLuongNCC == dsProvider.length) {
+        if (n == dsProvider.length) {
             dsProvider = Arrays.copyOf(dsProvider, dsProvider.length + 1);
         }
 
-        dsProvider[soLuongNCC] = new Provider();
-        dsProvider[soLuongNCC].Input(sc, this);
-        soLuongNCC++;
+        dsProvider[n] = new Provider();
+        dsProvider[n].Input(sc, this);
+        n++;
     }
 
     public int Tim(String maNCC) {
-        for (int i = 0; i < soLuongNCC; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsProvider[i].getMaNCC().equalsIgnoreCase(maNCC)) {
                 return i;
             }
@@ -115,7 +113,7 @@ public void Input(){
         String ten = sc.nextLine().trim();
         boolean found = false;
 
-        for (int i = 0; i < soLuongNCC; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsProvider[i].getTenNCC().toLowerCase().contains(ten.toLowerCase())) {
                 if (!found) {
                     System.out.println("---------------------------------------------------------------------------------------------------------------");
@@ -138,7 +136,7 @@ public void Input(){
         String soDT = sc.nextLine().trim();
         boolean found = false;
 
-        for (int i = 0; i < soLuongNCC; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsProvider[i].getSoDienThoai().equals(soDT)) {
                 if (!found) {
                     System.out.println("---------------------------------------------------------------------------------------------------------------");
@@ -161,7 +159,7 @@ public void Input(){
         String diaChi = sc.nextLine().trim();
         boolean found = false;
 
-        for (int i = 0; i < soLuongNCC; i++) {
+        for (int i = 0; i < n; i++) {
             if (dsProvider[i].getDiaChi().toLowerCase().contains(diaChi.toLowerCase())) {
                 if (!found) {
                     System.out.println("---------------------------------------------------------------------------------------------------------------");
@@ -180,11 +178,11 @@ public void Input(){
     }
 
     private void Xoa(int vt) {
-        for (int i = vt; i < soLuongNCC - 1; i++) {
+        for (int i = vt; i < n - 1; i++) {
             dsProvider[i] = dsProvider[i + 1];
         }
-        dsProvider[soLuongNCC - 1] = null;
-        soLuongNCC--;
+        dsProvider[n - 1] = null;
+        n--;
     }
 
     public void XoaMaNCC() {
@@ -251,18 +249,18 @@ public void Input(){
 
     public void ThongkeProvider_theo_tongNCC() {
         System.out.println("THONG KE SO LUONG NHA CUNG CAP");
-        System.out.println("TONG SO NHA CUNG CAP: " + soLuongNCC);
+        System.out.println("TONG SO NHA CUNG CAP: " + n);
         Output();
     }
 
     public void Thongke_diaChi_theo_NCC() {
         System.out.println("THONG KE NHA CUNG CAP THEO DIA CHI");
-        if (soLuongNCC == 0) {
+        if (n == 0) {
             System.out.println("DANH SACH NHA CUNG CAP RONG");
             return;
         }
 
-        for (int i = 0; i < soLuongNCC; i++) {
+        for (int i = 0; i < n; i++) {
             String diaChi = dsProvider[i].getDiaChi();
             boolean daThongKe = false;
 
@@ -279,7 +277,7 @@ public void Input(){
 
             int dem = 0;
             System.out.println("THONG KE THEO DIA CHI :" + diaChi);
-            for (int j = i; j < soLuongNCC; j++) {
+            for (int j = i; j < n; j++) {
                 if (dsProvider[j].getDiaChi().equalsIgnoreCase(diaChi)) {
                     dem++;
                     dsProvider[j].Output();
