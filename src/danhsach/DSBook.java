@@ -1,15 +1,14 @@
 package danhsach;
 
-import model.Book;
-import model.EducationBook;
-import model.ReferenceBook;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
+import model.Book;
+import model.EducationBook;
+import model.ReferenceBook;
 
 public class DSBook implements DanhSach {
     private Book[] ds;
@@ -18,6 +17,7 @@ public class DSBook implements DanhSach {
     public DSBook() {
         this.ds = new Book[0];
         this.n = 0;
+        ReadFile();
     }
 
     public DSBook(Book[] ds, int n) {

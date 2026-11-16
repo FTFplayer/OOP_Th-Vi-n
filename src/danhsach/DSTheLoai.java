@@ -1,13 +1,12 @@
 package danhsach;
 
-import model.TheLoai;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
+import model.TheLoai;
 
 public class DSTheLoai implements DanhSach {
     // 1. Thuoc tinh
@@ -18,6 +17,7 @@ public class DSTheLoai implements DanhSach {
     public DSTheLoai() {
         this.n = 0;
         this.dstheloai = new TheLoai[0];
+        ReadFile();
     }
 
     public DSTheLoai(int n, TheLoai[] dstheloai) {
