@@ -3,8 +3,9 @@ package model;
 import java.util.Scanner;
 
 public class TheLoai {
-    private String MaTheLoai, TenTheLoai;
-    Scanner sc = new Scanner(System.in);
+    private String MaTheLoai;
+    private String TenTheLoai;
+    private static int tongSoTheLoai = 0;
 
     public TheLoai() {
         this.MaTheLoai = "";
@@ -14,11 +15,22 @@ public class TheLoai {
     public TheLoai(String MaTheLoai, String TenTheLoai) {
         this.MaTheLoai = MaTheLoai;
         this.TenTheLoai = TenTheLoai;
+        tongSoTheLoai++;
     }
 
     public TheLoai(TheLoai tl) {
-        this.MaTheLoai = tl.MaTheLoai;
-        this.TenTheLoai = tl.TenTheLoai;
+        if (tl != null) {
+            this.MaTheLoai = tl.MaTheLoai;
+            this.TenTheLoai = tl.TenTheLoai;
+        }
+    }
+
+    public static int getTongSoTheLoai() {
+        return tongSoTheLoai;
+    }
+
+    public static void setTongSoTheLoai(int tong) {
+        tongSoTheLoai = tong;
     }
 
     public String getMaTheLoai() {
@@ -38,13 +50,22 @@ public class TheLoai {
     }
 
     public void Input() {
-        System.out.print("Nhap ma the loai: ");
-        MaTheLoai = sc.nextLine();
-        System.out.print("Nhap ten the loai: ");
-        TenTheLoai = sc.nextLine();
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.print("Nhap ten the loai: ");
+            this.TenTheLoai = sc.nextLine().trim();
+            if (!this.TenTheLoai.isEmpty()) {
+                break;
+            }
+            System.out.println("Ten the loai khong duoc de trong!");
+        }
     }
 
     public void Output() {
         System.out.printf("| %-12s | %-25s |\n", MaTheLoai, TenTheLoai);
+    }
+
+    public String toFileString() {
+        return MaTheLoai + "," + TenTheLoai;
     }
 }

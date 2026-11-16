@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class ReferenceBook extends Book {
     private String Linhvuc;
-    Scanner sc = new Scanner(System.in);
 
     public ReferenceBook() {
         super();
@@ -20,7 +19,9 @@ public class ReferenceBook extends Book {
 
     public ReferenceBook(ReferenceBook rb) {
         super(rb);
-        this.Linhvuc = rb.Linhvuc;
+        if (rb != null) {
+            this.Linhvuc = rb.Linhvuc;
+        }
     }
 
     public String getLinhvuc() {
@@ -34,12 +35,33 @@ public class ReferenceBook extends Book {
     @Override
     public void Input() {
         super.Input();
+        nhapThongTinRieng();
+    }
+
+    @Override
+    public void InputConLai() {
+        super.InputConLai();
+        nhapThongTinRieng();
+    }
+
+    private void nhapThongTinRieng() {
+        Scanner sc = new Scanner(System.in);
         System.out.print("Nhap linh vuc tham khao: ");
-        Linhvuc = sc.nextLine();
+        this.Linhvuc = sc.nextLine().trim();
     }
 
     @Override
     public String getThongTinRieng() {
         return "Linh vuc: " + Linhvuc;
+    }
+
+    @Override
+    public String getLoaiSach() {
+        return "STK";
+    }
+
+    @Override
+    public String toFileString() {
+        return super.toFileString() + "," + Linhvuc;
     }
 }

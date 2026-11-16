@@ -1,7 +1,7 @@
 package quanly;
 
-import java.util.Scanner;
 import danhsach.*;
+import java.util.Scanner;
 
 public class QLThuVien {
     Scanner sc = new Scanner(System.in);
@@ -16,9 +16,9 @@ public class QLThuVien {
     DSPhieuPhat dsPP = new DSPhieuPhat();
     DSChiTietPhieuPhat dsCTPP = new DSChiTietPhieuPhat();
     DSQuyDinhPhat dsQDP = new DSQuyDinhPhat();
-    DSProvider dsProvider = new DSProvider();
-    // of Hưng
-    ListPhieuMuon dsPM = new ListPhieuMuon();
+    // DSProvider dsProvider = new DSProvider();
+    // // of Hưng
+    // ListPhieuMuon dsPM = new ListPhieuMuon();
 
     public void menu() {
     }
@@ -28,5 +28,7 @@ public class QLThuVien {
         dsEmployee.ReadFile();
         dsPublisher.ReadFile();
         dsReader.ReadFile();
+        dsBook.ReadFile();
+        dstl.ReadFile();
     }
 }

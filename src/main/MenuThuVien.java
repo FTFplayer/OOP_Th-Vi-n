@@ -1,7 +1,7 @@
 package main;
 
-import quanly.*;
 import java.util.Scanner;
+import quanly.*;
 
 public class MenuThuVien {
     Scanner sc = new Scanner(System.in);
@@ -20,10 +20,11 @@ public class MenuThuVien {
             System.out.println("| 4) Xem thong tin nha xuat ban             |");
             System.out.println("| 5) Xem thong tin sach                     |");
             System.out.println("| 6) Xem thong tin phieu muon               |");
+            System.out.println("| 7) Xem thong tin the loai                 |");
             System.out.println("| 0) Thoat.                                 |");
             System.out.println("+-------------------------------------------+");
 
-            System.out.print("Nhap lua chon tu 0 - 6: ");
+            System.out.print("Nhap lua chon tu 0 - 7: ");
             choice = nhapLuaChon();
 
             switch (choice) {
@@ -44,13 +45,15 @@ public class MenuThuVien {
                     qltv.menu();
                     break;
                 case 5:
-
+                    qltv = new QLBook();
+                    qltv.menu();
                     break;
                 case 6:
 
                     break;
                 case 7:
-
+                    qltv = new QLTheLoai();
+                    qltv.menu();
                     break;
 
                 default:

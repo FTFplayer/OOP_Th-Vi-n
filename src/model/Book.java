@@ -1,12 +1,15 @@
 package model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public abstract class Book {
     private String MaSach, TenSach, MaTheLoai, MaTG, NgayXB, TrangThai, MaNXB;
     private double DonGia;
     private int SoLuong, SoLuongConLai;
-    Scanner sc = new Scanner(System.in);
+    private static int tongSoDauSach = 0;
 
     public Book() {
         this.MaSach = "";
@@ -14,7 +17,7 @@ public abstract class Book {
         this.MaTheLoai = "";
         this.MaTG = "";
         this.NgayXB = "";
-        this.TrangThai = "";
+        this.TrangThai = "Het sach";
         this.MaNXB = "";
         this.DonGia = 0;
         this.SoLuong = 0;
@@ -33,19 +36,41 @@ public abstract class Book {
         this.DonGia = donGia;
         this.SoLuong = soLuong;
         this.SoLuongConLai = soLuongConLai;
+        updateStatus();
+        tongSoDauSach++;
     }
 
     public Book(Book b) {
-        this.MaSach = b.MaSach;
-        this.TenSach = b.TenSach;
-        this.MaTheLoai = b.MaTheLoai;
-        this.MaTG = b.MaTG;
-        this.NgayXB = b.NgayXB;
-        this.TrangThai = b.TrangThai;
-        this.MaNXB = b.MaNXB;
-        this.DonGia = b.DonGia;
-        this.SoLuong = b.SoLuong;
-        this.SoLuongConLai = b.SoLuongConLai;
+        if (b != null) {
+            this.MaSach = b.MaSach;
+            this.TenSach = b.TenSach;
+            this.MaTheLoai = b.MaTheLoai;
+            this.MaTG = b.MaTG;
+            this.NgayXB = b.NgayXB;
+            this.TrangThai = b.TrangThai;
+            this.MaNXB = b.MaNXB;
+            this.DonGia = b.DonGia;
+            this.SoLuong = b.SoLuong;
+            this.SoLuongConLai = b.SoLuongConLai;
+        }
+    }
+
+    public static int getTongSoDauSach() {
+        return tongSoDauSach;
+    }
+
+    public static void setTongSoDauSach(int tong) {
+        tongSoDauSach = tong;
+    }
+
+    public static boolean kiemTraNgayHopLe(String ngay) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            LocalDate.parse(ngay, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     public String getMaSach() {
@@ -126,43 +151,119 @@ public abstract class Book {
 
     public void setSoLuongConLai(int SoLuongConLai) {
         this.SoLuongConLai = SoLuongConLai;
+        updateStatus();
     }
 
     public void Input() {
-        System.out.print("Nhap ma sach: ");
-        MaSach = sc.nextLine();
+        Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten sach: ");
-        TenSach = sc.nextLine();
+        this.TenSach = sc.nextLine().trim();
         System.out.print("Nhap ma the loai: ");
-        MaTheLoai = sc.nextLine();
+        this.MaTheLoai = sc.nextLine().trim();
         System.out.print("Nhap ma tac gia: ");
-        MaTG = sc.nextLine();
+        this.MaTG = sc.nextLine().trim();
         System.out.print("Nhap ma NXB: ");
-        MaNXB = sc.nextLine();
-        System.out.print("Nhap ngay xuat ban(dd/mm/yyyy): ");
-        NgayXB = sc.nextLine();
-        System.out.print("Nhap don gia: ");
-        DonGia = sc.nextDouble();
-        System.out.print("Nhap so luong: ");
-        SoLuong = sc.nextInt();
-        sc.nextLine();
-        SoLuongConLai = SoLuong;
+        this.MaNXB = sc.nextLine().trim();
+        InputConLai();
+    }
+
+    // Dùng khi DSBook đã kiểm tra hợp lệ và gán sẵn MaSach, MaTheLoai, MaTG, MaNXB
+    public void InputConLai() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            System.out.print("Nhap ten sach: ");
+            this.TenSach = sc.nextLine().trim();
+            if (!this.TenSach.isEmpty()) {
+                break;
+            }
+            System.out.println("Ten sach khong duoc de trong!");
+        }
+
+        while (true) {
+            System.out.print("Nhap ngay xuat ban (dd/MM/yyyy): ");
+            this.NgayXB = sc.nextLine().trim();
+            if (kiemTraNgayHopLe(this.NgayXB)) {
+                break;
+            }
+            System.out.println("Ngay xuat ban khong dung dinh dang dd/MM/yyyy. Vui long nhap lai!");
+        }
+
+        while (true) {
+            System.out.print("Nhap don gia: ");
+            try {
+                this.DonGia = Double.parseDouble(sc.nextLine().trim());
+                if (this.DonGia > 0) {
+                    break;
+                }
+                System.out.println("Don gia phai lon hon 0!");
+            } catch (NumberFormatException e) {
+                System.out.println("Vui long nhap so hop le cho don gia!");
+            }
+        }
+
+        while (true) {
+            System.out.print("Nhap so luong: ");
+            try {
+                this.SoLuong = Integer.parseInt(sc.nextLine().trim());
+                if (this.SoLuong >= 0) {
+                    break;
+                }
+                System.out.println("So luong khong duoc am!");
+            } catch (NumberFormatException e) {
+                System.out.println("Vui long nhap so nguyen hop le!");
+            }
+        }
+
+        this.SoLuongConLai = this.SoLuong;
         updateStatus();
     }
 
     public void updateStatus() {
-        if (this.SoLuongConLai > 0)
+        if (this.SoLuongConLai > 0) {
             this.TrangThai = "Con sach";
-        else
+        } else {
             this.TrangThai = "Het sach";
+        }
     }
 
     public abstract String getThongTinRieng();
 
-    public void Output() {
+    public abstract String getLoaiSach();
+
+    public String toFileString() {
         updateStatus();
-        System.out.printf("| %-4s | %-12s | %-8s | %-4s | %-8s | %-7.0f | %-3d | %-3d | %-10s | %-18s |\n",
-                MaSach, TenSach, MaTheLoai, MaTG, NgayXB, DonGia, SoLuong, SoLuongConLai, TrangThai,
-                getThongTinRieng());
+        return getLoaiSach() + "," + MaSach + "," + TenSach + "," + MaTheLoai + "," + MaTG + ","
+                + NgayXB + "," + TrangThai + "," + MaNXB + "," + (long) DonGia + "," + SoLuong + "," + SoLuongConLai;
+    }
+
+    private String catChuoi(String s, int maxLen) {
+        if (s == null) {
+            return "";
+        }
+        if (s.length() <= maxLen) {
+            return s;
+        }
+        return s.substring(0, maxLen - 2) + "..";
+    }
+
+    public void Output() {
+        Output(MaTheLoai, MaTG, MaNXB);
+    }
+
+    public void Output(String tenTheLoai, String tenTacGia, String tenNXB) {
+        updateStatus();
+        System.out.printf("| %-5s | %-24s | %-20s | %-18s | %-12s | %-10s | %-9.0f | %-4d | %-4d | %-9s | %-25s |\n",
+                catChuoi(MaSach, 5),
+                catChuoi(TenSach, 24),
+                catChuoi(tenTheLoai, 20),
+                catChuoi(tenTacGia, 18),
+                catChuoi(tenNXB, 12),
+                catChuoi(NgayXB, 10),
+                DonGia,
+                SoLuong,
+                SoLuongConLai,
+                catChuoi(TrangThai, 9),
+                catChuoi(getThongTinRieng(), 25));
     }
 }

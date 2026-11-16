@@ -3,8 +3,8 @@ package model;
 import java.util.Scanner;
 
 public class EducationBook extends Book {
-    private String TenMon, Lop;
-    Scanner sc = new Scanner(System.in);
+    private String TenMon;
+    private String Lop;
 
     public EducationBook() {
         super();
@@ -22,8 +22,10 @@ public class EducationBook extends Book {
 
     public EducationBook(EducationBook eb) {
         super(eb);
-        this.TenMon = eb.TenMon;
-        this.Lop = eb.Lop;
+        if (eb != null) {
+            this.TenMon = eb.TenMon;
+            this.Lop = eb.Lop;
+        }
     }
 
     public String getTenMon() {
@@ -45,14 +47,35 @@ public class EducationBook extends Book {
     @Override
     public void Input() {
         super.Input();
+        nhapThongTinRieng();
+    }
+
+    @Override
+    public void InputConLai() {
+        super.InputConLai();
+        nhapThongTinRieng();
+    }
+
+    private void nhapThongTinRieng() {
+        Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten mon hoc: ");
-        TenMon = sc.nextLine();
-        System.out.print("Nhap lop: ");
-        Lop = sc.nextLine();
+        this.TenMon = sc.nextLine().trim();
+        System.out.print("Nhap lop / trinh do: ");
+        this.Lop = sc.nextLine().trim();
     }
 
     @Override
     public String getThongTinRieng() {
         return "Mon: " + TenMon + " - Lop: " + Lop;
+    }
+
+    @Override
+    public String getLoaiSach() {
+        return "SGK";
+    }
+
+    @Override
+    public String toFileString() {
+        return super.toFileString() + "," + TenMon + "," + Lop;
     }
 }

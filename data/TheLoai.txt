@@ -1,0 +1,5 @@
+TL01,Cong Nghe Thong Tin
+TL02,Kinh Te - Quan Tri
+TL03,Van Hoc
+TL04,Khoa Hoc Tu Nhien
+TL05,Ngoai Ngu
