@@ -68,6 +68,19 @@ public class DSReader implements DanhSach {
         for (int i = 0; i < n; i++) {
             System.out.println("\n--- Nhap doc gia thu " + (i + 1) + " ---");
             this.dsdocgia[i] = new Reader();
+            System.out.print("Nhap ma tac gia: ");
+            String MaDG = sc.nextLine().trim();
+
+            while (CheckMaDG(MaDG) || !CheckHopLe(MaDG)) {
+                if (CheckMaDG(MaDG)) {
+                    System.out.print("Ma doc gia bi trung. Vui long nhap lai: ");
+                } else {
+                    System.out.print("Ma doc gia khong hop le (phai co dang DGxx). Vui long nhap lai: ");
+                }
+                MaDG = sc.nextLine().trim();
+            }
+
+            dsdocgia[i].setMaDocGia(MaDG);
             this.dsdocgia[i].Input();
         }
     }
@@ -114,7 +127,7 @@ public class DSReader implements DanhSach {
 
     public int TimReaderTheoMa(String MaDocGiaCanTim) {
         for (int i = 0; i < n; i++) {
-            if (this.dsdocgia[i] != null && this.dsdocgia[i].getMaDocGia().equalsIgnoreCase(MaDocGiaCanTim)) {
+            if (this.dsdocgia[i] != null && this.dsdocgia[i].getMaDocGia().equals(MaDocGiaCanTim)) {
                 return i;
             }
         }
@@ -130,7 +143,8 @@ public class DSReader implements DanhSach {
         int C = 0;
         this.PrintHeader();
         for (int i = 0; i < this.n; i++) {
-            if (dsdocgia[i] != null && dsdocgia[i].getHo().equalsIgnoreCase(HoDocGiaCanTim)) {
+            if (dsdocgia[i] != null && dsdocgia[i].getHo() != null
+                    && dsdocgia[i].getHo().equalsIgnoreCase(HoDocGiaCanTim)) {
                 C++;
                 dsdocgia[i].Output();
             }
@@ -152,7 +166,8 @@ public class DSReader implements DanhSach {
         int C = 0;
         this.PrintHeader();
         for (int i = 0; i < this.n; i++) {
-            if (dsdocgia[i] != null && dsdocgia[i].getTen().equalsIgnoreCase(TenDocGiaCanTim)) {
+            if (dsdocgia[i] != null && dsdocgia[i].getTen() != null &&
+                    dsdocgia[i].getTen().equalsIgnoreCase(TenDocGiaCanTim)) {
                 C++;
                 dsdocgia[i].Output();
             }
@@ -180,7 +195,7 @@ public class DSReader implements DanhSach {
             if (CheckMaDG(MaDG)) {
                 System.out.print("Ma doc gia bi trung. Vui long nhap lai: ");
             } else {
-                System.out.print("Ma doc gia khong hop le (phai co dang TGxx). Vui long nhap lai: ");
+                System.out.print("Ma doc gia khong hop le (phai co dang DGxx). Vui long nhap lai: ");
             }
             MaDG = sc.nextLine().trim();
         }
@@ -238,7 +253,8 @@ public class DSReader implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsdocgia[i] != null && this.dsdocgia[i].getHo().equalsIgnoreCase(HoCanXoa)) {
+            if (this.dsdocgia[i] != null && dsdocgia[i].getHo() != null &&
+                    this.dsdocgia[i].getHo().equalsIgnoreCase(HoCanXoa)) {
                 XoaReader(i);
                 i--;
                 count++;
@@ -260,7 +276,8 @@ public class DSReader implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsdocgia[i] != null && this.dsdocgia[i].getTen().equalsIgnoreCase(TenCanXoa)) {
+            if (this.dsdocgia[i] != null && dsdocgia[i].getTen() != null &&
+                    this.dsdocgia[i].getTen().equalsIgnoreCase(TenCanXoa)) {
                 XoaReader(i);
                 i--;
                 count++;
@@ -282,7 +299,8 @@ public class DSReader implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsdocgia[i] != null && this.dsdocgia[i].getDiaChi().equalsIgnoreCase(DiaChiCanXoa)) {
+            if (this.dsdocgia[i] != null && dsdocgia[i].getDiaChi() != null &&
+                    this.dsdocgia[i].getDiaChi().equalsIgnoreCase(DiaChiCanXoa)) {
                 XoaReader(i);
                 i--;
                 count++;
@@ -304,7 +322,9 @@ public class DSReader implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsdocgia[i] != null && this.dsdocgia[i].getSDT().equals(SDTCanXoa)) {
+            if (this.dsdocgia[i] != null && dsdocgia[i].getSDT() != null &&
+                    dsdocgia[i].getSDT() != null &&
+                    this.dsdocgia[i].getSDT().equals(SDTCanXoa)) {
                 XoaReader(i);
                 i--;
                 count++;
@@ -337,7 +357,8 @@ public class DSReader implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsdocgia[i] != null && this.dsdocgia[i].getNgayLapThe() != null
+            if (this.dsdocgia[i] != null &&
+                    this.dsdocgia[i].getNgayLapThe() != null
                     && this.dsdocgia[i].getNgayLapThe().equals(NgayLapTheCanXoa)) {
                 XoaReader(i);
                 i--;
@@ -406,7 +427,8 @@ public class DSReader implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsdocgia[i] != null && this.dsdocgia[i].getGioiTinh().equalsIgnoreCase(strGioiTinhCanXoa)) {
+            if (this.dsdocgia[i] != null && dsdocgia[i].getGioiTinh() != null &&
+                    this.dsdocgia[i].getGioiTinh().equalsIgnoreCase(strGioiTinhCanXoa)) {
                 XoaReader(i);
                 i--;
                 count++;
@@ -574,10 +596,12 @@ public class DSReader implements DanhSach {
 
     // -----------------------------------------------------------------------------------//
 
-    // 10. Thong ke
+    // -----------------------------------------------------------------------------------//
 
-    // 10.1 Thong ke theo ngay lap the
-    public int ThongKeReaderTheoNgayLapThe() {
+    // 10. Thống kê
+
+    // 10.1 Thống kê theo ngày lập thẻ
+    public void ThongKeReaderTheoNgayLapThe() {
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate NgayLapTheCanThongKe;
@@ -600,23 +624,37 @@ public class DSReader implements DanhSach {
                 count++;
             }
         }
-        return count;
+
+        System.out
+                .println("\n=> So luong doc gia lap the ngay " + NgayLapTheCanThongKe.format(formatter) + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dsdocgia[i] != null && this.dsdocgia[i].getNgayLapThe() != null
+                        && this.dsdocgia[i].getNgayLapThe().equals(NgayLapTheCanThongKe)) {
+                    this.dsdocgia[i].Output();
+                }
+            }
+        }
     }
 
     // 10.2 Thong ke theo tuoi
-    public int ThongKeReaderTheoTuoi() {
+    public void ThongKeReaderTheoTuoi() {
         Scanner sc = new Scanner(System.in);
         int TuoiCanThongKe;
 
         while (true) {
             System.out.print("Nhap tuoi can thong ke: ");
-            TuoiCanThongKe = sc.nextInt();
-            sc.nextLine();
-            if (TuoiCanThongKe <= 0) {
-                System.out.println("Tuoi khong duoc be hon 0. Vui long nhap lai!");
-                continue;
+            try {
+                TuoiCanThongKe = Integer.parseInt(sc.nextLine().trim());
+                if (TuoiCanThongKe <= 0) {
+                    System.out.println("Tuoi phai lon hon 0. Vui long nhap lai!");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Tuoi phai la mot so nguyen. Vui long nhap lai!");
             }
-            break;
         }
 
         int count = 0;
@@ -625,7 +663,16 @@ public class DSReader implements DanhSach {
                 count++;
             }
         }
-        return count;
+
+        System.out.println("\n=> So luong doc gia co tuoi " + TuoiCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < this.n; i++) {
+                if (dsdocgia[i] != null && dsdocgia[i].TinhTuoi() == TuoiCanThongKe) {
+                    this.dsdocgia[i].Output();
+                }
+            }
+        }
     }
 
     // 10.3 Thong ke theo gioi tinh
@@ -648,11 +695,22 @@ public class DSReader implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsdocgia[i] != null && this.dsdocgia[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)) {
+            if (this.dsdocgia[i] != null && this.dsdocgia[i].getGioiTinh() != null
+                    && this.dsdocgia[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)) {
                 count++;
             }
         }
-        System.out.println("So luong doc gia co gioi tinh " + GioiTinhCanThongKe + ": " + count);
+
+        System.out.println("\n=> So luong doc gia co gioi tinh " + GioiTinhCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dsdocgia[i] != null && this.dsdocgia[i].getGioiTinh() != null
+                        && this.dsdocgia[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)) {
+                    this.dsdocgia[i].Output();
+                }
+            }
+        }
     }
 
     // -----------------------------------------------------------------------------------//

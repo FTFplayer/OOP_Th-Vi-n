@@ -19,19 +19,19 @@ public class DSEmployee implements DanhSach {
 
     // -----------------------------------------------------------------------------------//
     // 2. Constructor
-    // 2.1 Constructor không tham số
+    // 2.1 Constructor khong tham so
     public DSEmployee() {
         this.n = 0;
         this.dsnv = new Employee[0];
     }
 
-    // 2.2 Constructor có tham số
+    // 2.2 Constructor co tham so
     public DSEmployee(int n, Employee[] dsnv) {
         this.n = n;
         this.dsnv = dsnv;
     }
 
-    // 2.3 Constructor sao chép
+    // 2.3 Constructor sao chep
     public DSEmployee(DSEmployee copy) {
         if (copy != null) {
             this.n = copy.n;
@@ -45,7 +45,7 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 3. In tiêu đề
+    // 3. In tieu de bang
     public void PrintHeader() {
         System.out.format(
                 "+----------+------------+----------+----------+------------+------------+--------------------+---------------+%n");
@@ -56,14 +56,15 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 4. Nhập danh sách
+    // 4. Nhap danh sach
     public void Input() {
         Scanner sc = new Scanner(System.in);
+        int soLuong = 0;
         while (true) {
             System.out.print("Nhap so luong nhan vien: ");
             try {
-                this.n = Integer.parseInt(sc.nextLine().trim());
-                if (this.n >= 0) {
+                soLuong = Integer.parseInt(sc.nextLine().trim());
+                if (soLuong >= 0) {
                     break;
                 }
                 System.out.println("So luong nhan vien khong duoc am. Vui long nhap lai!");
@@ -72,16 +73,31 @@ public class DSEmployee implements DanhSach {
             }
         }
 
-        this.dsnv = new Employee[n];
-        for (int i = 0; i < n; i++) {
+        this.n = 0;
+        this.dsnv = new Employee[soLuong];
+        for (int i = 0; i < soLuong; i++) {
             System.out.println("\n--- Nhap nhan vien thu " + (i + 1) + " ---");
-            this.dsnv[i] = new Employee();
-            this.dsnv[i].Input();
+            this.dsnv[this.n] = new Employee();
+            System.out.print("Nhap ma nhan vien: ");
+            String MaNV = sc.nextLine().trim();
+
+            while (CheckMaNV(MaNV) || !CheckHopLe(MaNV)) {
+                if (CheckMaNV(MaNV)) {
+                    System.out.print("Ma nhan vien bi trung. Vui long nhap lai: ");
+                } else {
+                    System.out.print("Ma nhan vien khong hop le (phai co dang NVxx). Vui long nhap lai: ");
+                }
+                MaNV = sc.nextLine().trim();
+            }
+
+            this.dsnv[this.n].setMaNV(MaNV);
+            this.dsnv[this.n].Input();
+            this.n++;
         }
     }
 
     // -----------------------------------------------------------------------------------//
-    // 5. Xuất danh sách
+    // 5. Xuat danh sach
     public void Output() {
         if (this.n == 0) {
             System.out.println("Danh sach nhan vien dang trong!");
@@ -98,9 +114,9 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 6.Tìm kiếm
+    // 6. Tim kiem
 
-    // 6.1 Tim kiếm theo mã nhân viên
+    // 6.1 Tim kiem theo ma nhan vien
     public void TimEmployeeTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma nhan vien can tim: ");
@@ -120,14 +136,15 @@ public class DSEmployee implements DanhSach {
 
     public int TimEmployeeTheoMa(String MaNVCanTim) {
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getMaNV().equalsIgnoreCase(MaNVCanTim)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getMaNV() != null
+                    && this.dsnv[i].getMaNV().equalsIgnoreCase(MaNVCanTim)) {
                 return i;
             }
         }
         return -1;
     }
 
-    // 6.2 Tìm kiếm theo họ nhân viên
+    // 6.2 Tim kiem theo ho nhan vien
     public void TimEmployeeTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho nhan vien can tim: ");
@@ -136,7 +153,8 @@ public class DSEmployee implements DanhSach {
         int count = 0;
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getHoNV().equalsIgnoreCase(HoCanTim)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getHoNV() != null
+                    && this.dsnv[i].getHoNV().equalsIgnoreCase(HoCanTim)) {
                 this.dsnv[i].Output();
                 count++;
             }
@@ -149,7 +167,7 @@ public class DSEmployee implements DanhSach {
         }
     }
 
-    // 6.3 Tìm kiếm theo tên nhân viên
+    // 6.3 Tim kiem theo ten nhan vien
     public void TimEmployeeTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten nhan vien can tim: ");
@@ -158,7 +176,8 @@ public class DSEmployee implements DanhSach {
         int count = 0;
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getTenNV().equalsIgnoreCase(TenCanTim)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getTenNV() != null
+                    && this.dsnv[i].getTenNV().equalsIgnoreCase(TenCanTim)) {
                 this.dsnv[i].Output();
                 count++;
             }
@@ -171,7 +190,7 @@ public class DSEmployee implements DanhSach {
         }
     }
 
-    // 6.4 Tìm kiếm theo số điện thoại
+    // 6.4 Tim kiem theo so dien thoai
     public void TimEmployeeTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap SDT nhan vien can tim: ");
@@ -191,7 +210,8 @@ public class DSEmployee implements DanhSach {
 
     public int TimEmployeeTheoSDT(String SDTCanTim) {
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getSDT().equals(SDTCanTim)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getSDT() != null
+                    && this.dsnv[i].getSDT().equals(SDTCanTim)) {
                 return i;
             }
         }
@@ -199,21 +219,21 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 7. Thêm
+    // 7. Them
 
     public void ThemEmployee() {
         Scanner sc = new Scanner(System.in);
         dsnv = Arrays.copyOf(dsnv, n + 1);
         dsnv[n] = new Employee();
         System.out.println("Nhap thong tin nhan vien moi:");
-        System.out.println("Nhap thong tin ma nhan vien: ");
+        System.out.print("Nhap ma nhan vien: ");
         String MaNV = sc.nextLine().trim();
 
         while (CheckMaNV(MaNV) || !CheckHopLe(MaNV)) {
             if (CheckMaNV(MaNV)) {
-                System.out.print("Ma tac gia bi trung. Vui long nhap lai: ");
+                System.out.print("Ma nhan vien bi trung. Vui long nhap lai: ");
             } else {
-                System.out.print("Ma tac gia khong hop le (phai co dang TGxx). Vui long nhap lai: ");
+                System.out.print("Ma nhan vien khong hop le (phai co dang NVxx). Vui long nhap lai: ");
             }
             MaNV = sc.nextLine().trim();
         }
@@ -224,7 +244,7 @@ public class DSEmployee implements DanhSach {
     }
 
     public void ThemEmployee(Employee employee) {
-        if (employee != null && CheckMaNV(employee.getMaNV())) {
+        if (employee != null && !CheckMaNV(employee.getMaNV())) {
             dsnv = Arrays.copyOf(dsnv, n + 1);
             dsnv[n] = new Employee(employee);
             n++;
@@ -232,7 +252,7 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 8. Xóa
+    // 8. Xoa
 
     public void XoaEmployee(int pos) {
         if (pos >= n || pos < 0) {
@@ -248,7 +268,7 @@ public class DSEmployee implements DanhSach {
         dsnv = Arrays.copyOf(dsnv, n);
     }
 
-    // 8.1 Xóa theo mã nhân viên
+    // 8.1 Xoa theo ma nhan vien
     public void XoaEmployeeTheoMa() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma nhan vien can xoa: ");
@@ -263,7 +283,7 @@ public class DSEmployee implements DanhSach {
         }
     }
 
-    // 8.2 Xóa theo họ nhân viên
+    // 8.2 Xoa theo ho nhan vien
     public void XoaEmployeeTheoHo() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ho nhan vien can xoa: ");
@@ -271,7 +291,8 @@ public class DSEmployee implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getHoNV().equalsIgnoreCase(HoCanXoa)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getHoNV() != null
+                    && this.dsnv[i].getHoNV().equalsIgnoreCase(HoCanXoa)) {
                 XoaEmployee(i);
                 i--;
                 count++;
@@ -285,7 +306,7 @@ public class DSEmployee implements DanhSach {
         }
     }
 
-    // 8.3 Xóa theo tên nhân viên
+    // 8.3 Xoa theo ten nhan vien
     public void XoaEmployeeTheoTen() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ten nhan vien can xoa: ");
@@ -293,7 +314,8 @@ public class DSEmployee implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getTenNV().equalsIgnoreCase(TenCanXoa)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getTenNV() != null
+                    && this.dsnv[i].getTenNV().equalsIgnoreCase(TenCanXoa)) {
                 XoaEmployee(i);
                 i--;
                 count++;
@@ -307,18 +329,18 @@ public class DSEmployee implements DanhSach {
         }
     }
 
-    // 8.4 Xóa theo giới tính nhân viên
+    // 8.4 Xoa theo gioi tinh nhan vien
     public void XoaEmployeeTheoGioiTinh() {
         Scanner sc = new Scanner(System.in);
         String GioiTinhCanXoa;
         while (true) {
             System.out.print("Nhap gioi tinh can xoa (Nam/Nu): ");
-            GioiTinhCanXoa = sc.nextLine().trim();
+            String input = sc.nextLine().trim();
 
-            if (GioiTinhCanXoa.equalsIgnoreCase("Nam")) {
+            if (input.equalsIgnoreCase("Nam")) {
                 GioiTinhCanXoa = "Nam";
                 break;
-            } else if (GioiTinhCanXoa.equalsIgnoreCase("Nu")) {
+            } else if (input.equalsIgnoreCase("Nu")) {
                 GioiTinhCanXoa = "Nu";
                 break;
             }
@@ -327,7 +349,8 @@ public class DSEmployee implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanXoa)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getGioiTinh() != null
+                    && this.dsnv[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanXoa)) {
                 XoaEmployee(i);
                 i--;
                 count++;
@@ -341,7 +364,7 @@ public class DSEmployee implements DanhSach {
         }
     }
 
-    // 8.5 Xóa theo ngày sinh nhân viên
+    // 8.5 Xoa theo ngay sinh nhan vien
     public void XoaEmployeeTheoNgaySinh() {
         Scanner sc = new Scanner(System.in);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -371,11 +394,11 @@ public class DSEmployee implements DanhSach {
         if (count == 0) {
             System.out.println("Khong tim thay nhan vien co ngay sinh nay.");
         } else {
-            System.out.println("Da xoa " + count + " nhan vien co ngay sinh thoa dieu kien.");
+            System.out.println("Da xoa " + count + " nhan vien thoa dieu kien.");
         }
     }
 
-    // 8.6 Xóa theo SDT
+    // 8.6 Xoa theo SDT
     public void XoaEmployeeTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap so dien thoai nhan vien can xoa: ");
@@ -383,7 +406,8 @@ public class DSEmployee implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getSDT().equals(SDTCanXoa)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getSDT() != null
+                    && this.dsnv[i].getSDT().equals(SDTCanXoa)) {
                 XoaEmployee(i);
                 i--;
                 count++;
@@ -397,7 +421,7 @@ public class DSEmployee implements DanhSach {
         }
     }
 
-    // 8.7 Xóa theo địa chỉ
+    // 8.7 Xoa theo dia chi
     public void XoaEmployeeTheoDiaChi() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap dia chi nhan vien can xoa: ");
@@ -405,7 +429,8 @@ public class DSEmployee implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getDiaChi().equalsIgnoreCase(DiaChiCanXoa)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getDiaChi() != null
+                    && this.dsnv[i].getDiaChi().equalsIgnoreCase(DiaChiCanXoa)) {
                 XoaEmployee(i);
                 i--;
                 count++;
@@ -420,7 +445,7 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 9. Sửa
+    // 9. Sua
     public void SuaEmployee() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma nhan vien can sua: ");
@@ -558,20 +583,20 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 10. Thống kê
+    // 10. Thong ke (In so luong + Show bang chi tiet)
 
-    // 10.1 Thống kê theo giới tính
+    // 10.1 Thong ke theo gioi tinh
     public void ThongKeEmployeeTheoGioiTinh() {
         Scanner sc = new Scanner(System.in);
         String GioiTinhCanThongKe;
         while (true) {
             System.out.print("Nhap gioi tinh can thong ke (Nam/Nu): ");
-            GioiTinhCanThongKe = sc.nextLine().trim();
+            String input = sc.nextLine().trim();
 
-            if (GioiTinhCanThongKe.equalsIgnoreCase("Nam")) {
+            if (input.equalsIgnoreCase("Nam")) {
                 GioiTinhCanThongKe = "Nam";
                 break;
-            } else if (GioiTinhCanThongKe.equalsIgnoreCase("Nu")) {
+            } else if (input.equalsIgnoreCase("Nu")) {
                 GioiTinhCanThongKe = "Nu";
                 break;
             }
@@ -580,15 +605,28 @@ public class DSEmployee implements DanhSach {
 
         int count = 0;
         for (int i = 0; i < n; i++) {
-            if (this.dsnv[i] != null && this.dsnv[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)) {
+            if (this.dsnv[i] != null && this.dsnv[i].getGioiTinh() != null
+                    && this.dsnv[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)) {
                 count++;
             }
         }
-        System.out.println("So luong nhan vien co gioi tinh " + GioiTinhCanThongKe + ": " + count);
+
+        System.out.println("\n=> So luong nhan vien co gioi tinh " + GioiTinhCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dsnv[i] != null && this.dsnv[i].getGioiTinh() != null
+                        && this.dsnv[i].getGioiTinh().equalsIgnoreCase(GioiTinhCanThongKe)) {
+                    this.dsnv[i].Output();
+                }
+            }
+            System.out.format(
+                    "+----------+------------+----------+----------+------------+------------+--------------------+---------------+%n");
+        }
     }
 
-    // 10.2 Thống kê theo tuổi
-    public int ThongKeEmployeeTheoTuoi() {
+    // 10.2 Thong ke theo tuoi
+    public void ThongKeEmployeeTheoTuoi() {
         Scanner sc = new Scanner(System.in);
         int TuoiCanThongKe;
 
@@ -597,12 +635,12 @@ public class DSEmployee implements DanhSach {
             try {
                 TuoiCanThongKe = Integer.parseInt(sc.nextLine().trim());
                 if (TuoiCanThongKe <= 0) {
-                    System.out.println("Tuoi khong duoc be hon hoac bang 0. Vui long nhap lai!");
+                    System.out.println("Tuoi phai lon hon 0. Vui long nhap lai!");
                     continue;
                 }
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Tuoi phai la mot so nguyen hop le!");
+                System.out.println("Tuoi phai la mot so nguyen. Vui long nhap lai!");
             }
         }
 
@@ -612,11 +650,22 @@ public class DSEmployee implements DanhSach {
                 count++;
             }
         }
-        return count;
+
+        System.out.println("\n=> So luong nhan vien co tuoi " + TuoiCanThongKe + ": " + count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < this.n; i++) {
+                if (this.dsnv[i] != null && this.dsnv[i].TinhTuoi() == TuoiCanThongKe) {
+                    this.dsnv[i].Output();
+                }
+            }
+            System.out.format(
+                    "+----------+------------+----------+----------+------------+------------+--------------------+---------------+%n");
+        }
     }
 
-    // 10.3 Thống kê theo mức lương tối thiểu
-    public int ThongKeEmployeeTheoLuongToiThieu() {
+    // 10.3 Thong ke theo muc luong toi thieu
+    public void ThongKeEmployeeTheoLuongToiThieu() {
         Scanner sc = new Scanner(System.in);
         float luongMin;
 
@@ -640,13 +689,24 @@ public class DSEmployee implements DanhSach {
                 count++;
             }
         }
-        return count;
+
+        System.out.printf("\n=> So luong nhan vien co muc luong tu %.2f tro len: %d%n", luongMin, count);
+        if (count > 0) {
+            this.PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (this.dsnv[i] != null && this.dsnv[i].getLuong() >= luongMin) {
+                    this.dsnv[i].Output();
+                }
+            }
+            System.out.format(
+                    "+----------+------------+----------+----------+------------+------------+--------------------+---------------+%n");
+        }
     }
 
     // -----------------------------------------------------------------------------------//
-    // 11. Đọc và ghi file
+    // 11. Doc va ghi file
 
-    // 11.1 Đọc file Employee/Employee.txt
+    // 11.1 Doc file data/Employee.txt
     public void ReadFile() {
         int count = 0;
         Scanner sc = null;
@@ -700,7 +760,7 @@ public class DSEmployee implements DanhSach {
 
             this.n = count;
         } catch (FileNotFoundException e) {
-            System.out.println("Loi: Khong tim thay file Employee/Employee.txt!");
+            System.out.println("Loi: Khong tim thay file data/Employee.txt!");
         } finally {
             if (sc != null) {
                 sc.close();
@@ -708,7 +768,7 @@ public class DSEmployee implements DanhSach {
         }
     }
 
-    // 11.2 Ghi file Employee/Employee.txt
+    // 11.2 Ghi file data/Employee.txt
     public void WriteFile() {
         if (this.n == 0) {
             System.out.println("Danh sach nhan vien dang trong, khong co du lieu de ghi!");
@@ -751,11 +811,13 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 12. Kiểm tra mã trùng
-
+    // 12. Kiem tra ma trung
     public boolean CheckMaNV(String MaNV) {
+        if (MaNV == null)
+            return false;
         for (int i = 0; i < this.n; i++) {
-            if (dsnv[i] != null && dsnv[i].getMaNV().equals(MaNV)) {
+            if (dsnv[i] != null && dsnv[i].getMaNV() != null
+                    && dsnv[i].getMaNV().equalsIgnoreCase(MaNV)) {
                 return true;
             }
         }
@@ -763,9 +825,9 @@ public class DSEmployee implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 13. Kiểm tra tính hợp lệ của mã
+    // 13. Kiem tra tinh hop le cua ma (Dang NVxx)
     public boolean CheckHopLe(String MaNV) {
-        if (MaNV.length() < 3 || !MaNV.substring(0, 2).equals("NV")) {
+        if (MaNV == null || MaNV.length() < 3 || !MaNV.substring(0, 2).equals("NV")) {
             return false;
         }
 

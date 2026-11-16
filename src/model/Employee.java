@@ -6,9 +6,9 @@ import java.time.format.DateTimeParseException;
 import java.time.Period;
 import java.util.Scanner;
 
-//MaNV, Ho, Ten, NgaySinh, GioiTinh, SoDienThoai, DiaChi, Luong
+// MaNV, HoNV, TenNV, GioiTinh, NgaySinh, SDT, DiaChi, Luong
 public class Employee {
-    // 1. Thuộc tính
+    // 1. Thuoc tinh
     private String MaNV;
     private String HoNV;
     private String TenNV;
@@ -19,9 +19,8 @@ public class Employee {
     private float Luong;
 
     // -----------------------------------------------------------------------------------//
-
     // 2. Constructors
-    // 2.1 Constructor không tham số (mặc định)
+    // 2.1 Constructor mac dinh
     public Employee() {
         this.MaNV = "";
         this.HoNV = "";
@@ -33,34 +32,33 @@ public class Employee {
         this.Luong = 0;
     }
 
-    // 2.2 Constructor đầy đủ tham số
+    // 2.2 Constructor day du tham so
     public Employee(String MaNV, String HoNV, String TenNV, String GioiTinh, LocalDate NgaySinh, String SDT,
             String DiaChi, float Luong) {
         this.MaNV = MaNV;
         this.HoNV = HoNV;
         this.TenNV = TenNV;
         this.GioiTinh = GioiTinh;
-        this.SDT = SDT;
         this.NgaySinh = NgaySinh;
+        this.SDT = SDT;
         this.DiaChi = DiaChi;
         this.Luong = Luong;
     }
 
-    // 2.3 Constructor sao chép
+    // 2.3 Constructor sao chep
     public Employee(Employee copy) {
         this.MaNV = copy.MaNV;
         this.HoNV = copy.HoNV;
         this.TenNV = copy.TenNV;
-        this.NgaySinh = copy.NgaySinh;
         this.GioiTinh = copy.GioiTinh;
+        this.NgaySinh = copy.NgaySinh;
         this.SDT = copy.SDT;
         this.DiaChi = copy.DiaChi;
         this.Luong = copy.Luong;
     }
 
     // -----------------------------------------------------------------------------------//
-
-    // 3. Getter and Setter
+    // 3. Getter va Setter
     public String getMaNV() {
         return MaNV;
     }
@@ -85,7 +83,6 @@ public class Employee {
         this.TenNV = tenNV;
     }
 
-    // Đã đổi từ isGioiTinh() sang getGioiTinh()
     public String getGioiTinh() {
         return GioiTinh;
     }
@@ -94,7 +91,6 @@ public class Employee {
         this.GioiTinh = GioiTinh;
     }
 
-    // Bổ sung Getter và Setter cho NgaySinh bị thiếu
     public LocalDate getNgaySinh() {
         return NgaySinh;
     }
@@ -128,24 +124,19 @@ public class Employee {
     }
 
     // -----------------------------------------------------------------------------------//
-
-    // 4. Input
+    // 4. Phuong thuc nhap
     public void Input() {
         Scanner sc = new Scanner(System.in);
 
-        // 4.1 Nhập mã nhân viên
-        // System.out.print("Nhap ma nhan vien: ");
-        // this.MaNV = sc.nextLine().trim();
-
-        // 4.2 Nhập họ nhân viên
+        // 4.1 Nhap ho nhan vien
         System.out.print("Nhap ho nhan vien: ");
         this.HoNV = sc.nextLine().trim();
 
-        // 4.3 Nhập tên nhân viên
+        // 4.2 Nhap ten nhan vien
         System.out.print("Nhap ten nhan vien: ");
         this.TenNV = sc.nextLine().trim();
 
-        // 4.4 Nhập giới tính nhân viên
+        // 4.3 Nhap gioi tinh nhan vien
         while (true) {
             System.out.print("Nhap gioi tinh (Nam/Nu): ");
             String strGioiTinh = sc.nextLine().trim();
@@ -160,7 +151,7 @@ public class Employee {
             System.out.println("Gioi tinh khong hop le. Vui long nhap lai (Nam/Nu).");
         }
 
-        // 4.5 Nhập ngày sinh nhân viên
+        // 4.4 Nhap ngay sinh nhan vien
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         while (true) {
             System.out.print("Nhap ngay sinh (dd/MM/yyyy): ");
@@ -179,13 +170,13 @@ public class Employee {
             }
         }
 
-        // 4.6 Bổ sung phần nhập số điện thoại
+        // 4.5 Nhap so dien thoai
         while (true) {
             System.out.print("Nhap so dien thoai: ");
             this.SDT = sc.nextLine().trim();
 
-            if (this.SDT.isEmpty() || this.SDT.length() != 10 || this.SDT.charAt(0) != '0') {
-                System.out.println("So dien thoai phai du 10 ky tu va bat dau bang so 0. Vui long nhap lai!");
+            if (this.SDT.length() != 10 || this.SDT.charAt(0) != '0') {
+                System.out.println("So dien thoai phai du 10 chu so va bat dau bang so 0. Vui long nhap lai!");
                 continue;
             }
 
@@ -199,32 +190,34 @@ public class Employee {
             }
 
             if (!isDigit) {
-                System.out.println("So dien thoai chi duoc chua ky tu so. Vui long nhap lai!");
+                System.out.println("So dien thoai bi sai ky tu. Vui long nhap lai!");
                 continue;
             }
             break;
         }
 
-        // 4.7 Nhập địa chỉ nhân viên
+        // 4.6 Nhap dia chi nhan vien
         System.out.print("Nhap dia chi nhan vien: ");
         this.DiaChi = sc.nextLine().trim();
 
-        // 4.8 Nhập lương nhân viên
+        // 4.7 Nhap luong nhan vien
         while (true) {
-            System.out.println("Nhap muc luong cua ban: ");
-            this.Luong = sc.nextFloat();
-
-            if (Luong < 0) {
-                System.out.println("Muc luong cua ban khong duoc am. Vui long nhap lai");
-                continue;
+            System.out.print("Nhap muc luong nhan vien: ");
+            try {
+                this.Luong = Float.parseFloat(sc.nextLine().trim());
+                if (this.Luong < 0) {
+                    System.out.println("Muc luong khong duoc am. Vui long nhap lai!");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Muc luong phai la mot con so hop le. Vui long nhap lai!");
             }
-
-            break;
         }
     }
 
     // -----------------------------------------------------------------------------------//
-    // 5. Output
+    // 5. Phuong thuc xuat
     public void Output() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormat = "|%-10s|%-12s|%-10s|%-10s|%-12s|%-12s|%-20s|%-15.2f|%n";
@@ -235,7 +228,7 @@ public class Employee {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 6. Tính tuổi
+    // 6. Tinh tuoi nhan vien
     public int TinhTuoi() {
         if (this.NgaySinh == null) {
             return 0;
@@ -243,5 +236,4 @@ public class Employee {
         LocalDate today = LocalDate.now();
         return Period.between(this.NgaySinh, today).getYears();
     }
-
 }

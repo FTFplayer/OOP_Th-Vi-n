@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class MenuThuVien {
     Scanner sc = new Scanner(System.in);
-    QLThuVien qltv;
+    QLThuVien qltv = new QLThuVien();
 
     public void menu() {
         int choice;
