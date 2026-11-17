@@ -1,0 +1,120 @@
+package danhsach;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Scanner;
+import model.ChiTietPhieuNhapHang;
+
+public class DSChiTietPhieuNhapHang {
+    private ChiTietPhieuNhapHang[] danhSach;
+    private int soLuong;
+
+    public DSChiTietPhieuNhapHang() {
+        danhSach = new ChiTietPhieuNhapHang[10];
+        soLuong = 0;
+    }
+
+    public int getSoLuong() { return soLuong; }
+    public ChiTietPhieuNhapHang get(int index) {
+        return index >= 0 && index < soLuong ? danhSach[index] : null;
+    }
+
+    public ChiTietPhieuNhapHang TimTheoMaCT(String maCT) {
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i].getMaCT().equalsIgnoreCase(maCT)) return danhSach[i];
+        }
+        return null;
+    }
+
+    public ChiTietPhieuNhapHang[] TimTheoMaPNH(String maPNH) {
+        int count = 0;
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i].getMaPNH().equalsIgnoreCase(maPNH)) count++;
+        }
+        ChiTietPhieuNhapHang[] result = new ChiTietPhieuNhapHang[count];
+        int index = 0;
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i].getMaPNH().equalsIgnoreCase(maPNH)) result[index++] = danhSach[i];
+        }
+        return result;
+    }
+
+    public boolean Them(ChiTietPhieuNhapHang item) {
+        if (item == null || item.getMaCT() == null || item.getMaCT().trim().isEmpty()
+                || TimTheoMaCT(item.getMaCT()) != null) return false;
+        moRongNeuCan();
+        danhSach[soLuong++] = item;
+        return true;
+    }
+
+    public void Them(Scanner sc) {
+        ChiTietPhieuNhapHang item = new ChiTietPhieuNhapHang();
+        item.Input(sc);
+        System.out.println(Them(item) ? "Them chi tiet phieu nhap thanh cong!" : "Ma chi tiet da ton tai.");
+    }
+
+    public boolean Xoa(String maCT) {
+        int index = indexOf(maCT);
+        if (index < 0) return false;
+        for (int i = index; i < soLuong - 1; i++) danhSach[i] = danhSach[i + 1];
+        danhSach[--soLuong] = null;
+        return true;
+    }
+
+    public double TinhTongTien(String maPNH) {
+        double total = 0;
+        ChiTietPhieuNhapHang[] items = TimTheoMaPNH(maPNH);
+        for (ChiTietPhieuNhapHang item : items) total += item.getThanhTien();
+        return total;
+    }
+
+    private int indexOf(String maCT) {
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i].getMaCT().equalsIgnoreCase(maCT)) return i;
+        }
+        return -1;
+    }
+
+    private void moRongNeuCan() {
+        if (soLuong == danhSach.length) danhSach = Arrays.copyOf(danhSach, danhSach.length * 2);
+    }
+
+    public void Output() {
+        System.out.printf("%-12s %-12s %-12s %-10s %-15s %-15s%n",
+                "MA CT", "MA PNH", "MA SACH", "SO LUONG", "DON GIA", "THANH TIEN");
+        for (int i = 0; i < soLuong; i++) danhSach[i].output();
+    }
+
+    public void ghiFile(String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            for (int i = 0; i < soLuong; i++) {
+                ChiTietPhieuNhapHang item = danhSach[i];
+                writer.println(String.join(";", item.getMaCT(), item.getMaPNH(), item.getMaSach(),
+                        String.valueOf(item.getSoLuong()), String.valueOf(item.getDonGia())));
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Khong the ghi chi tiet phieu nhap.", e);
+        }
+    }
+
+    public void docFile(String filename) {
+        soLuong = 0;
+        Arrays.fill(danhSach, null);
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";", -1);
+                if (parts.length != 5) throw new IOException("Du lieu chi tiet phieu nhap khong hop le.");
+                ChiTietPhieuNhapHang item = new ChiTietPhieuNhapHang(parts[0], parts[1], parts[2],
+                        Integer.parseInt(parts[3]), Double.parseDouble(parts[4]));
+                if (!Them(item)) throw new IOException("Trung ma chi tiet: " + parts[0]);
+            }
+        } catch (IOException | NumberFormatException e) {
+            throw new IllegalStateException("Khong the doc chi tiet phieu nhap.", e);
+        }
+    }
+}
