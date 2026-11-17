@@ -57,7 +57,7 @@ public class ReferenceBook extends Book {
 
     @Override
     public String getLoaiSach() {
-        return "STK";
+        return "RB";
     }
 
     @Override

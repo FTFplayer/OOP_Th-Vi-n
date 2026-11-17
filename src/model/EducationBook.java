@@ -71,7 +71,7 @@ public class EducationBook extends Book {
 
     @Override
     public String getLoaiSach() {
-        return "SGK";
+        return "EB";
     }
 
     @Override

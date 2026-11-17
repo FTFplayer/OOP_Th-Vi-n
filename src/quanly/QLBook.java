@@ -7,8 +7,6 @@ public class QLBook extends QLThuVien {
 
     @Override
     public void menu() {
-        dsBook.ReadFile();
-        dstl.ReadFile();
         int choice;
         do {
             System.out.println();
