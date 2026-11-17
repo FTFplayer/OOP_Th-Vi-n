@@ -773,12 +773,12 @@ public class DSBook implements DanhSach {
                     int soLuongConLai = Integer.parseInt(data[10].trim());
 
                     Book b = null;
-                    if (loai.equalsIgnoreCase("EB") && data.length >= 13) {
+                    if (loai.equalsIgnoreCase("SGK") && data.length >= 13) {
                         String tenMon = data[11].trim();
                         String lop = data[12].trim();
                         b = new EducationBook(maSach, tenSach, maTL, maTG, ngayXB, trangThai, maNXB,
                                 donGia, soLuong, soLuongConLai, tenMon, lop);
-                    } else if (loai.equalsIgnoreCase("RB")) {
+                    } else if (loai.equalsIgnoreCase("STK")) {
                         String linhVuc = data[11].trim();
                         b = new ReferenceBook(maSach, tenSach, maTL, maTG, ngayXB, trangThai, maNXB,
                                 donGia, soLuong, soLuongConLai, linhVuc);
