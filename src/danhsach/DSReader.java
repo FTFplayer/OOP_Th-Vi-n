@@ -26,9 +26,9 @@ public class DSReader implements DanhSach {
     }
 
     // 2.2 Constructor có tham số
-    public DSReader(int n, Reader[] dsdocgia) {
+    public DSReader(int n) {
         this.n = n;
-        this.dsdocgia = dsdocgia;
+        this.dsdocgia = new Reader[this.n];
     }
 
     // 2.3 Constructor sao chép
@@ -225,9 +225,9 @@ public class DSReader implements DanhSach {
         for (int i = pos; i < n - 1; i++) {
             dsdocgia[i] = dsdocgia[i + 1];
         }
-        dsdocgia[n - 1] = null;
-        n--;
-        dsdocgia = Arrays.copyOf(dsdocgia, n);
+        dsdocgia[this.n - 1] = null;
+        this.n--;
+        dsdocgia = Arrays.copyOf(dsdocgia, this.n);
     }
 
     // Xóa độc giả theo mã
@@ -318,7 +318,32 @@ public class DSReader implements DanhSach {
     public void XoaReaderTheoSDT() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap so dien thoai doc gia can xoa: ");
-        String SDTCanXoa = sc.nextLine().trim();
+        String SDTCanXoa;
+        while (true) {
+            System.out.print("Nhap so dien thoai cua doc gia: ");
+            SDTCanXoa = sc.nextLine().trim();
+
+            // Sửa thành != '0'
+            if (SDTCanXoa.length() != 10 || SDTCanXoa.charAt(0) != '0') {
+                System.out.println("So dien thoai phai gom dung 10 chu so va bat dau bang so 0. Vui long nhap lai!");
+                continue;
+            }
+
+            boolean isDigit = true;
+            for (int i = 0; i < SDTCanXoa.length(); i++) {
+                char c = SDTCanXoa.charAt(i);
+                if (c < '0' || c > '9') {
+                    isDigit = false;
+                    break;
+                }
+            }
+
+            if (!isDigit) {
+                System.out.println("So dien thoai bi sai ky tu. Vui long nhap lai!");
+                continue;
+            }
+            break;
+        }
 
         int count = 0;
         for (int i = 0; i < n; i++) {
@@ -502,14 +527,16 @@ public class DSReader implements DanhSach {
 
                             if (ngaySinh.isAfter(LocalDate.now())) {
                                 System.out.println("Ngay sinh khong the o tuong lai. Vui long nhap lai.");
-                            } else if (this.dsdocgia[index].getNgayLapThe() != null
+                                continue;
+                            }
+                            if (this.dsdocgia[index].getNgayLapThe() != null
                                     && ngaySinh.isAfter(this.dsdocgia[index].getNgayLapThe())) {
                                 System.out.println("Ngay sinh khong duoc sau ngay lap the. Vui long nhap lai.");
-                            } else {
-                                this.dsdocgia[index].setNgaySinh(ngaySinh);
-                                System.out.println("Cap nhat ngay sinh thanh cong!");
-                                break;
+                                continue;
                             }
+                            this.dsdocgia[index].setNgaySinh(ngaySinh);
+                            System.out.println("Cap nhat ngay sinh thanh cong!");
+                            break;
                         } catch (DateTimeParseException e) {
                             System.out.println("Ngay sinh khong dung dinh dang. Vui long nhap lai.");
                         }
@@ -635,6 +662,8 @@ public class DSReader implements DanhSach {
                     this.dsdocgia[i].Output();
                 }
             }
+            System.out.format(
+                    "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
         }
     }
 
@@ -672,6 +701,8 @@ public class DSReader implements DanhSach {
                     this.dsdocgia[i].Output();
                 }
             }
+            System.out.format(
+                    "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
         }
     }
 
@@ -710,6 +741,8 @@ public class DSReader implements DanhSach {
                     this.dsdocgia[i].Output();
                 }
             }
+            System.out.format(
+                    "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
         }
     }
 
