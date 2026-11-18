@@ -1,10 +1,5 @@
 package danhsach;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 import model.ChiTietPhieuPhat;
@@ -13,6 +8,7 @@ public class DSChiTietPhieuPhat {
   
     private ChiTietPhieuPhat[] dsChiTiet;
     private int n;
+    Scanner sc= new Scanner(System.in);
 
 
 
@@ -50,7 +46,7 @@ public class DSChiTietPhieuPhat {
     // IN / OUT / HIỂN THỊ
     // ==========================================
     // Khong tham so (In toan bo danh sach)
-    public void Input(String maPPCurrent, DSQuyDinhPhat listQD,DSBook dsBook, Scanner sc) {
+    public void Input(String maPPCurrent, DSQuyDinhPhat listQD,DSBook dsBook) {
         System.out.print("Nhap so luong sach vi pham: ");
         int sl = Integer.parseInt(sc.nextLine());
         dsChiTiet= new ChiTietPhieuPhat[sl];
@@ -58,7 +54,7 @@ public class DSChiTietPhieuPhat {
         for ( int i=0; i<sl; i++){
             System.out.println("  Sach vi pham thu " + (i + 1) + ":");
             dsChiTiet[i] = new ChiTietPhieuPhat();
-            dsChiTiet[i].Input(maPPCurrent, listQD, dsBook, sc);
+            dsChiTiet[i].Input(maPPCurrent, listQD, dsBook);
         }
     }
     public void Output() {
@@ -132,7 +128,7 @@ public class DSChiTietPhieuPhat {
             }
         }
         return ketQua;}
-    public void Tim(Scanner sc) {
+    public void Tim() {
         System.out.print("Nhap ma phieu phat can tim: ");
         String maPP = sc.nextLine().trim();
         Output(maPP);}
@@ -158,7 +154,7 @@ public boolean Xoa(String maPP, String maSach) {
         dsChiTiet[--n] = null;
         return true;
     }    
-public void Xoa(Scanner sc) {
+public void Xoa() {
         System.out.print("Nhap ma phieu phat can xoa: ");
         String maPP = sc.nextLine().trim();
         System.out.print("Nhap ma sach can xoa: ");
@@ -175,7 +171,7 @@ public void Xoa(Scanner sc) {
     // ==========================================
     // SUA / EDIT
     // ==========================================
-        public void Sua(Scanner sc, DSQuyDinhPhat listQD, DSBook dsBook) {
+        public void Sua( DSQuyDinhPhat listQD, DSBook dsBook) {
         System.out.print("Nhap ma phieu phat can sua: ");
         String maPP = sc.nextLine().trim();
         System.out.print("Nhap ma sach can sua: ");
@@ -196,7 +192,7 @@ public void Xoa(Scanner sc) {
         }
         System.out.println("Nhap thong tin moi:");
         ChiTietPhieuPhat ctMoi = new ChiTietPhieuPhat();
-        ctMoi.Input(maPP, listQD, dsBook, sc);
+        ctMoi.Input(maPP, listQD, dsBook);
         dsChiTiet[idx] = ctMoi;
         System.out.println("Sua thanh cong!");
     }
@@ -208,9 +204,9 @@ public void Xoa(Scanner sc) {
         double tongTien = 0;
         ChiTietPhieuPhat[] ds = Tim(maPP);
         if (ds != null) {
-            for (int i = 0; i < ds.length; i++) {
-                if (ds[i] != null) {
-                    tongTien += ds[i].getTienPhat();
+            for ( ChiTietPhieuPhat i:ds) {
+                if (i != null) {
+                    tongTien += i.getTienPhat();
                 }
             }
         }
@@ -227,53 +223,6 @@ public void Xoa(Scanner sc) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-        public void ghiFile(String filename) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
-            pw.println(n);
-            for (int i = 0; i < n; i++) {
-                if (dsChiTiet[i] != null) {
-                    ChiTietPhieuPhat ct = dsChiTiet[i];
-                    pw.println(ct.getMaPP() + ";" + ct.getMaSach() + ";" + ct.getTienPhat() + ";" + ct.getMaLD());
-                }
-            }
-            System.out.println("-> Ghi file chi tiet thanh cong!");
-        } catch (IOException e) {
-            System.out.println("-> Loi ghi file: " + e.getMessage());
-        }
-    }
-
-    public void docFile(String filename) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String line = br.readLine();
-            if (line == null) return;
-            n = 0;
-            int sl = Integer.parseInt(line.trim());
-            dsChiTiet = new ChiTietPhieuPhat[Math.max(1, sl)];
-            for (int i = 0; i < sl; i++) {
-                String fileLine = br.readLine();
-                if (fileLine == null) break;
-                String[] p = fileLine.split(";", -1);
-                if (p.length >= 4) {
-                    ChiTietPhieuPhat ct = new ChiTietPhieuPhat(p[0], p[1], Double.parseDouble(p[2]), p[3]);
-                    dsChiTiet[n++] = ct;
-                }
-            }
-            System.out.println("-> Doc file chi tiet thanh cong!");
-        } catch (IOException e) {
-            System.out.println("-> Loi doc file (hoac file chua ton tai): " + e.getMessage());
-        }
-    }
 
 
     //update Tổng tiền 1 PP theo mã PP

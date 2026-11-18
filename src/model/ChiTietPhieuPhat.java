@@ -63,11 +63,14 @@ public class ChiTietPhieuPhat {
     }
 
     // Input all thông tin
-    public void Input(String maPP, DSQuyDinhPhat dsQDP) {
+    public void Input(String maPP, DSQuyDinhPhat dsQDP,DSBook dsBook) {
         this.maPP = maPP;
           //nhập mã sách
+          do{
          System.out.print("Nhap ma sach: ");
          maSach = sc.nextLine().trim();
+          }
+          while(dsBook.timkiem(maSach)== -1);
           // nhập mã lý do phạt
           dsQDP.Output();
           do{
@@ -99,7 +102,7 @@ public class ChiTietPhieuPhat {
         //     double giaSach = book.getDonGia();
         //     this.tienPhat = qd.tinhTienChiTiet(giaSach, 0);
         // }
-    }
+    
 
     public void Output() {
         System.out.printf("| %-8s | %-10s | %-15.2f | %-8s |\n", maPP, maSach, tienPhat, maLD);

@@ -1,6 +1,8 @@
 package model;
 
 import java.util.Scanner;
+
+import danhsach.DSProvider;
 public class Provider{
 //1.Atrribute
     private String MaNCC, tenNCC, diaChi, soDienThoai;
@@ -8,55 +10,33 @@ public class Provider{
     
 
 // 2.Contructor
- public Provider(String MaNCC, String tenNCC, String diaChi, String soDienThoai) {
+    public Provider(String MaNCC, String tenNCC, String diaChi, String soDienThoai) {
         this.MaNCC = MaNCC;
         this.tenNCC = tenNCC;
         this.diaChi = diaChi;
         this.soDienThoai = soDienThoai;
     }
+    public Provider() {}
+ 
 
-
- public Provider() {
- }
-
-//3.Method
+//------------------.Method----------------------
 //1.GET-SET
-public String getMaNCC(){
-  return MaNCC;
-  }
-public void setMaNCC(String MaNCC){
- this.MaNCC= MaNCC;
-}  
-    
-public String getTenNCC(){
-    return tenNCC;
-}
-public void setTenNCC(String tenNCC)
-{
-    this.tenNCC= tenNCC;
-}
+public String getMaNCC(){ return MaNCC; }
+public void setMaNCC(String MaNCC){ this.MaNCC = MaNCC; }
+
+public String getTenNCC(){ return tenNCC; }
+public void setTenNCC(String tenNCC){ this.tenNCC = tenNCC; }
+
+public String getDiaChi(){ return diaChi; }
+public void setDiaChi(String diaChi){ this.diaChi = diaChi; }
+
+public String getSoDienThoai(){ return soDienThoai; }
+public void setSoDienThoai(String soDienThoai){ this.soDienThoai = soDienThoai; }
 
 
-public String getDiaChi(){
-    return diaChi;
-}
-public void setDicChi(String diaChi){
-  this.diaChi= diaChi;
-}
-
-public String getSoDienThoai()
-{
-    return soDienThoai;
-
-}
-public void setSoDienThoai(String soDienThoai){
-    this.soDienThoai= soDienThoai;
-}
-
-//4.INPUT<OUTPUT>
+//2.INPUT<OUTPUT>
 public void Input(Scanner sc, DSProvider ds){
-    System.out.print("---------TIEN HANH NHAP THONG TIN_PROVIDER---------\n");
-    sc.nextLine();
+    System.out.println("Tien hanh nhap thong tin Provider");
     do{
     System.out.print("MA NHA CUNG CAP: ");
     MaNCC= sc.nextLine();

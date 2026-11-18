@@ -78,7 +78,7 @@ public class DSQuyDinhPhat {
         return quyDinh;
     }
 
-    public void TimQuyDinh(Scanner sc) {
+    public void TimQuyDinh() {
         QuyDinhPhat quyDinh = Tim(sc);
         if (quyDinh != null) {
             quyDinh.Output();
@@ -86,7 +86,7 @@ public class DSQuyDinhPhat {
             System.out.println("Khong tim thay quy dinh phat");
     }
 
-    public void Them(Scanner sc) {
+    public void Them() {
         QuyDinhPhat quyDinh = new QuyDinhPhat();
         quyDinh.Input(sc);
         while (quyDinh.getMaLD().isEmpty() || Tim(quyDinh.getMaLD()) != null) {
@@ -120,7 +120,7 @@ public class DSQuyDinhPhat {
         return true;
     }
 
-    public void Xoa(Scanner sc) {
+    public void Xoa() {
         System.out.print("Nhap ma ly do can xoa: ");
         String maLD = sc.nextLine().trim();
         if (Xoa(maLD))
@@ -130,7 +130,7 @@ public class DSQuyDinhPhat {
         }
     }
 
-    public void Sua(Scanner sc) {
+    public void Sua() {
         QuyDinhPhat quyDinh = Tim(sc);
         if (quyDinh == null) {
             return;
@@ -150,11 +150,10 @@ public class DSQuyDinhPhat {
     public double TinhTienPhat(String maLD, double soNgayTre, String maSach, DSBook dsb) {
         if (TimViTri(maLD) == -1)
             return -1;
-        QuyDinhPhat qd = Tim(maLD);
-        if (maLD.equals("QD01"))
-            return soNgayTre * 10;
-        double giaSach = dsb.timkiemBook(maSach).getDonGia();
-        if (maLD.equals("QD02"))
+        if(maLD.equals("QD01"))
+            return soNgayTre* 10;
+        double giaSach=dsb.timkiemBook(maSach).getDonGia();
+        if(maLD.equals("QD02"))
             return giaSach;
         else
             return giaSach * 2;
