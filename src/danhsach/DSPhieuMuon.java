@@ -37,6 +37,7 @@ public class DSPhieuMuon {
     public boolean Them(PhieuMuon item) {
         if (item == null || item.getMaPM() == null || item.getMaPM().trim().isEmpty()
                 || TimTheoMa(item.getMaPM()) != null) return false;
+           if (!laDuLieuHopLe(item)) return false;
         moRongNeuCan();
         danhSach[soLuong++] = item;
         return true;
@@ -59,10 +60,24 @@ public class DSPhieuMuon {
         int index = indexOf(maPM);
         if (index < 0 || itemMoi == null) return false;
         if (!maPM.equalsIgnoreCase(itemMoi.getMaPM()) && TimTheoMa(itemMoi.getMaPM()) != null) return false;
+        if (!laDuLieuHopLe(itemMoi)) return false;
         danhSach[index] = itemMoi;
         return true;
     }
 
+    private boolean laDuLieuHopLe(PhieuMuon item) {
+        if (!PhieuMuon.isValidDate(item.getNgayMuon())
+                || !PhieuMuon.isValidDate(item.getNgayTra())
+                || PhieuMuon.isBefore(item.getNgayTra(), item.getNgayMuon())) {
+            return false;
+        }
+        String ngayThucTra = item.getNgayThucTra();
+        return ngayThucTra == null
+                || ngayThucTra.trim().isEmpty()
+                || PhieuMuon.isValidNgayThucTra(ngayThucTra.trim(),
+                        item.getNgayMuon(), item.getNgayTra());
+    }
+    
     private int indexOf(String maPM) {
         for (int i = 0; i < soLuong; i++) {
             if (danhSach[i].getMaPM().equalsIgnoreCase(maPM)) return i;
