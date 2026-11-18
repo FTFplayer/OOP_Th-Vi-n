@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ReferenceBook extends Book {
@@ -10,7 +11,7 @@ public class ReferenceBook extends Book {
         this.Linhvuc = "";
     }
 
-    public ReferenceBook(String maSach, String tenSach, String theLoai, String maTG, String ngayXB,
+    public ReferenceBook(String maSach, String tenSach, String theLoai, String maTG, LocalDate ngayXB,
             String trangThai, String maNXB, double donGia, int soLuong, int soLuongConLai,
             String linhvuc) {
         super(maSach, tenSach, theLoai, maTG, ngayXB, trangThai, maNXB, donGia, soLuong, soLuongConLai);

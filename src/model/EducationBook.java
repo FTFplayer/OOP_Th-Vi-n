@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class EducationBook extends Book {
@@ -12,7 +13,7 @@ public class EducationBook extends Book {
         this.Lop = "";
     }
 
-    public EducationBook(String maSach, String tenSach, String theLoai, String maTG, String ngayXB,
+    public EducationBook(String maSach, String tenSach, String theLoai, String maTG, LocalDate ngayXB,
             String trangThai, String maNXB, double donGia, int soLuong, int soLuongConLai,
             String tenMon, String lop) {
         super(maSach, tenSach, theLoai, maTG, ngayXB, trangThai, maNXB, donGia, soLuong, soLuongConLai);

@@ -6,7 +6,8 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public abstract class Book {
-    private String MaSach, TenSach, MaTheLoai, MaTG, NgayXB, TrangThai, MaNXB;
+    private String MaSach, TenSach, MaTheLoai, MaTG, TrangThai, MaNXB;
+    private LocalDate NgayXB;
     private double DonGia;
     private int SoLuong, SoLuongConLai;
     private static int tongSoDauSach = 0;
@@ -16,7 +17,7 @@ public abstract class Book {
         this.TenSach = "";
         this.MaTheLoai = "";
         this.MaTG = "";
-        this.NgayXB = "";
+        this.NgayXB = null;
         this.TrangThai = "Het sach";
         this.MaNXB = "";
         this.DonGia = 0;
@@ -24,7 +25,7 @@ public abstract class Book {
         this.SoLuongConLai = 0;
     }
 
-    public Book(String maSach, String tenSach, String MaTheLoai, String maTG, String ngayXB,
+    public Book(String maSach, String tenSach, String MaTheLoai, String maTG, LocalDate ngayXB,
             String trangThai, String maNXB, double donGia, int soLuong, int soLuongConLai) {
         this.MaSach = maSach;
         this.TenSach = tenSach;
@@ -105,11 +106,11 @@ public abstract class Book {
         this.MaTG = MaTG;
     }
 
-    public String getNgayXB() {
+    public LocalDate getNgayXB() {
         return NgayXB;
     }
 
-    public void setNgayXB(String NgayXB) {
+    public void setNgayXB(LocalDate NgayXB) {
         this.NgayXB = NgayXB;
     }
 
@@ -180,13 +181,21 @@ public abstract class Book {
             System.out.println("Ten sach khong duoc de trong!");
         }
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         while (true) {
             System.out.print("Nhap ngay xuat ban (dd/MM/yyyy): ");
-            this.NgayXB = sc.nextLine().trim();
-            if (kiemTraNgayHopLe(this.NgayXB)) {
+            String strNgay = sc.nextLine().trim();
+            try {
+                LocalDate temp = LocalDate.parse(strNgay, formatter);
+                if (temp.isAfter(LocalDate.now())) {
+                    System.out.println("Ngay xuat ban khong the lon hon ngay hien tai. Vui long nhap lai!");
+                    continue;
+                }
+                this.NgayXB = temp;
                 break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Ngay xuat ban khong dung dinh dang dd/MM/yyyy. Vui long nhap lai!");
             }
-            System.out.println("Ngay xuat ban khong dung dinh dang dd/MM/yyyy. Vui long nhap lai!");
         }
 
         while (true) {
@@ -232,10 +241,12 @@ public abstract class Book {
     public abstract String getLoaiSach();
 
     public String toFileString() {
-        updateStatus();
-        return getLoaiSach() + "," + MaSach + "," + TenSach + "," + MaTheLoai + "," + MaTG + ","
-                + NgayXB + "," + TrangThai + "," + MaNXB + "," + (long) DonGia + "," + SoLuong + "," + SoLuongConLai;
-    }
+    updateStatus();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    String strNgayXB = (NgayXB != null) ? NgayXB.format(formatter) : "";
+    return getLoaiSach() + "," + MaSach + "," + TenSach + "," + MaTheLoai + "," + MaTG + ","
+            + strNgayXB + "," + TrangThai + "," + MaNXB + "," + (long) DonGia + "," + SoLuong + "," + SoLuongConLai;
+}
 
     private String catChuoi(String s, int maxLen) {
         if (s == null) {
@@ -260,7 +271,7 @@ public abstract class Book {
                 catChuoi(tenTheLoai, 19),
                 catChuoi(tenTacGia, 15),
                 catChuoi(tenNXB, 8),
-                catChuoi(NgayXB, 10),
+                catChuoi(NgayXB != null ? NgayXB.toString() : "", 10),
                 DonGia,
                 SoLuong,
                 SoLuongConLai,

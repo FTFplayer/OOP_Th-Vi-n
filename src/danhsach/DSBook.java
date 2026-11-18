@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Scanner;
 import model.Book;
@@ -704,15 +707,22 @@ public class DSBook implements DanhSach {
                     System.out.println("Cap nhat ma NXB thanh cong!");
                     break;
                 case 5:
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                     while (true) {
                         System.out.print("Nhap ngay xuat ban moi (dd/MM/yyyy): ");
                         String ngay = sc.nextLine().trim();
-                        if (Book.kiemTraNgayHopLe(ngay)) {
-                            ds[vt].setNgayXB(ngay);
+                        try {
+                            LocalDate temp = LocalDate.parse(ngay, formatter);
+                            if (temp.isAfter(LocalDate.now())) {
+                                System.out.println("Ngay xuat ban khong the o tuong lai!");
+                                continue;
+                            }
+                            ds[vt].setNgayXB(temp);
                             System.out.println("Cap nhat ngay xuat ban thanh cong!");
                             break;
+                        } catch (DateTimeParseException e) {
+                            System.out.println("Ngay khong dung dinh dang dd/MM/yyyy!");
                         }
-                        System.out.println("Ngay khong dung dinh dang dd/MM/yyyy!");
                     }
                     break;
                 case 6:
@@ -917,6 +927,7 @@ public class DSBook implements DanhSach {
         try {
             inStream = new FileInputStream("data/Book.txt");
             sc = new Scanner(inStream);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             this.ds = new Book[0];
 
             while (sc.hasNextLine()) {
@@ -931,7 +942,17 @@ public class DSBook implements DanhSach {
                     String tenSach = data[2].trim();
                     String maTL = data[3].trim();
                     String maTG = data[4].trim();
-                    String ngayXB = data[5].trim();
+
+                    String strNgayXB = data[5].trim();
+                    LocalDate ngayXB = null;
+                    if (!strNgayXB.isEmpty()) {
+                        try {
+                            ngayXB = LocalDate.parse(strNgayXB, formatter);
+                        } catch (DateTimeParseException e) {
+                            ngayXB = null;
+                        }
+                    }
+
                     String trangThai = data[6].trim();
                     String maNXB = data[7].trim();
                     double donGia = Double.parseDouble(data[8].trim());
