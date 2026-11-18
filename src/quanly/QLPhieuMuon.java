@@ -104,12 +104,42 @@ public class QLPhieuMuon {
         item.setMaDG(sc.nextLine().trim());
         System.out.print("Nhap ma nhan vien moi: ");
         item.setMaNV(sc.nextLine().trim());
-        System.out.print("Nhap ngay muon moi: ");
-        item.setNgayMuon(sc.nextLine().trim());
-        System.out.print("Nhap ngay tra moi: ");
-        item.setNgayTra(sc.nextLine().trim());
+       String ngayMuon;
+        while (true) {
+            System.out.print("Nhap ngay muon moi (dd/MM/yyyy): ");
+            ngayMuon = sc.nextLine().trim();
+            if (PhieuMuon.isValidDate(ngayMuon)) break;
+            System.out.println("Ngay khong hop le.");
+        }
+        String ngayTra;
+        while (true) {
+            System.out.print("Nhap ngay tra moi (dd/MM/yyyy): ");
+            ngayTra = sc.nextLine().trim();
+            if (!PhieuMuon.isValidDate(ngayTra)) {
+                System.out.println("Ngay khong hop le.");
+            } else if (PhieuMuon.isBefore(ngayTra, ngayMuon)) {
+                System.out.println("Ngay tra khong the truoc ngay muon.");
+            } else {
+                break;
+            }
+        }
+         String ngayThucTra;
+        while (true) {
+            System.out.print("Nhap ngay thuc tra moi (dd/MM/yyyy): ");
+            ngayThucTra = sc.nextLine().trim();
+            if (!PhieuMuon.isValidNgayThucTra(ngayThucTra, ngayMuon, ngayTra)) {
+                System.out.println("Ngay thuc tra phai nam trong khoang tu ngay muon den ngay tra.");
+            } else {
+                break;
+            }
+        }
+
+        item.setNgayMuon(ngayMuon);
+        item.setNgayTra(ngayTra);
+        item.setNgayThucTra(ngayThucTra);
         System.out.println("Sua phieu muon thanh cong.");
     }
+    
 
     private void xoaPhieuMuon(Scanner sc) {
         System.out.print("Nhap ma phieu muon can xoa: ");
