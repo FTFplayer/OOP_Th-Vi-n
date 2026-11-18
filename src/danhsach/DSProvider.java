@@ -1,32 +1,29 @@
 package danhsach;
+import model.Provider;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class DSProvider{
-    //----------------ATTRIBUTE-------------------------
-    //---------------------------------------------------
+    //1.Atrribute
     private int n;
     private Provider[] dsProvider;
     Scanner sc= new Scanner(System.in);
 
+
+    //2.Constructor
     public DSProvider() {
         this.dsProvider = new Provider[100];
         this.n = 0;}
-
-    public DSProvider(Provider[] dsProvider, int soLuongNCC, Scanner sc) {
+    public DSProvider(Provider[] dsProvider, int n) {
         this.dsProvider = dsProvider;
-        this.n = soLuongNCC;
-        this.sc = sc;
-    }
-
-    public int getSoLuongNCC() {
-        return n;
-    }
-
-    public Provider getdsProvider(int i) {
-        return dsProvider[i];
-    }
-//-------------------METHOD---------------------//
+        this.n = n;}
+    
+    //3.Get_Set
+    public int getN() {return n;}
+    public void setN(int n){this.n=n;}
+    public Provider getProvider(int i) {return dsProvider[i];}
+   
+//-------------------METHOD-----------------------------
 //0.INPUT và SHOW
 // ```
 // Input()
@@ -35,16 +32,15 @@ public class DSProvider{
 
 public void Input(){
         System.out.print("Nhap so luong NCC: ");
-        int n;
+        int sl;
         try {
-            n = Integer.parseInt(sc.nextLine().trim());
+            this.n = Integer.parseInt(sc.nextLine().trim());
         } catch (NumberFormatException e) {
             System.out.println("So luong khong hop le. Dat ve 0.");
-            n = 0;
+            this.n = 0;
         }
-
-        dsProvider = Arrays.copyOf(dsProvider, Math.max(1, n));
-        System.out.println("---------------TIEN HANH NHAP DANH SACH PROVIDER--------------");
+        this.dsProvider= new Provider[n];
+        System.out.println("Tien hanh nhap danh sach Provider");
 
         for (int i = 0; i < n; i++) {
             dsProvider[i] = new Provider();

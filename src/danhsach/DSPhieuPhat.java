@@ -1,10 +1,15 @@
 package danhsach;
 
-import model.PhieuPhat;
-
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Scanner;
+import model.PhieuPhat;
 
 public class DSPhieuPhat {
     private int n;
@@ -20,14 +25,14 @@ public class DSPhieuPhat {
         dsPhieuPhat= new PhieuPhat[100];
          this.n=0;}
          
-    //2.Getset
+    //2.GETSET
     public int getN() {return n;}
-    public void setSoLuong(int n){this.n= n;}
-    public PhieuPhat getPhieuPhat(int vt){if(vt>-1 && vt < n) return dsPhieuPhat[vt]; return null;}
-    public PhieuPhat[] getDanhSachPP(){ return dsPhieuPhat;}
+    public void setN(int n){this.n= n;}
+    public PhieuPhat getPhieuPhat(int vt){if(vt>-1 && vt < n) return this.dsPhieuPhat[vt]; return null;}
+    public PhieuPhat[] getDanhSachPP(){ return this.dsPhieuPhat;}
     
 
-    // ===========================================
+  
     // 2. INPUT
     // ===========================================
     public void Input(DSPhieuMuon dspm) {
@@ -35,13 +40,13 @@ public class DSPhieuPhat {
         int sl = Integer.parseInt(sc.nextLine().trim());
         dsPhieuPhat = new PhieuPhat[sl];
         this.n = 0;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < sl; i++) {
             System.out.println("Nhap phieu phat thu " + (i + 1) + ":");
             Them(dspm);
         }
     }
 
-    // ==========================================
+  
     // 3. ADD
     // ==========================================
     public void Them(DSPhieuMuon dspm){
@@ -52,19 +57,20 @@ public class DSPhieuPhat {
     
     }
     public void Them(PhieuPhat pp){
-        if (n >= dsPhieuPhat.length) {
+        if (n >= dsPhieuPhat.length) 
              dsPhieuPhat = Arrays.copyOf(dsPhieuPhat, dsPhieuPhat.length + 1);
         dsPhieuPhat[n++]= pp;   
-    }}
+    }
 
-    // ==========================================
+   
     // 4.. OUTPUT
     // ==========================================
 
     //Xuất tất cả phiếu phạt trong danh sách
     public void Output() {
+         System.out.println("+------------------------------------------------------------------+");
         System.out.println("DANH SACH PHIEU PHAT");
-        System.out.printf("|%-12s|%-14s|%-14s|%-14s|%n", "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
+        this.PrintHeader();
         for (int i = 0; i < n; i++) {
             if (dsPhieuPhat[i] != null) {
                 dsPhieuPhat[i].Output();
@@ -73,25 +79,26 @@ public class DSPhieuPhat {
         if (n == 0) {
             System.out.println("DANH SACH RONG");
         }
+        System.out.println("+------------------------------------------------------------------+");
     }
 
 
     
-    // ==========================================
-    // 4. TIM KIEM
-    //  4.1|- theo mã pp
-    //  4.2|- theo mã pm(fk)
+    // 4. TÌM KIẾM
+    //      4.1|- theo mã pp
+    //      4.2|- theo mã pm(fk)
+    //      4.3|-theo ngày phạt
     // ==========================================
 
-//4.1 
+          //4.1 theo mã phiếu phạt
 
    //return vị trí
-public int Timvitri(String maPP){
+     public int Timvitri(String maPP){
     for (int i =0; i<n; i++)
-        if (dsPhieuPhat[i].getMaPhieuPhat().equalsIgnoreCase(maPP))
+        if (dsPhieuPhat[i].getMaPP().equalsIgnoreCase(maPP))
             return i;
     return -1;    
-}
+     }
     //return 1 object PhieuPhat
         public PhieuPhat TimtheoMaPP(String maPP) {
             for (int i = 0; i < n; i++) {
@@ -110,7 +117,7 @@ public int Timvitri(String maPP){
         dsPhieuPhat[vt].Output();
         }
 
-//4.2.theo mã Phiếu mượn 
+        //4.2.theo mã Phiếu mượn 
     // tham chiếu mã ,return ds PhieuPhat
     public PhieuPhat[] TimtheoMaPM(String maPM) {
         int count = 0;
@@ -126,8 +133,8 @@ public int Timvitri(String maPP){
 
         return ds;}
     
-    // nhập mã pm , in ra danh sách
-    public void TimtheoMaPM(Scanner sc) {
+       // nhập mã pm , in ra danh sách
+    public void TimtheoMaPM() {
         System.out.println("Nhap ma phieu muon:");
         String maPM = sc.nextLine();
         PhieuPhat[] ds = TimtheoMaPM(maPM);
@@ -135,15 +142,42 @@ public int Timvitri(String maPP){
             System.out.println("Ma PM:" + maPM + "khong co phieu phat");
             return;
         }
-        System.out.printf("|%-12s|%-14s|%-14s|%-14s|%n", "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
-        for (int i = 0; i < ds.length; i++) {
-
-            ds[i].Output();
+        System.out.println("      DANH SACH PHIEU PHAT( MA PHIEU MUON: "+maPM+" )");
+        this.PrintHeader();
+        for (PhieuPhat pp: ds) {
+                pp.Output();
         }
+        System.out.println("+------------------------------------------------------------------+");
 
     }
+          
+        //4.3 Theo ngày phạt:
+        //có tham số
+    public void TimTheoNgayPhat(LocalDate ngay){
+    boolean found = false;
+    for(int i = 0; i < this.n; i++){
+        if(dsPhieuPhat[i].getNgayPhat().equals(ngay)){
+            dsPhieuPhat[i].Output();
+            found = true;
+        }
+    }
+    if(!found)
+        System.out.println("Khong tim thay!");
+    }
 
-    // 5. XOA / DELETE
+        //ko tham số
+    public void TimTheoNgayPhat(){
+
+    DateTimeFormatter f =DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    try{
+        System.out.print("Nhap ngay phat: ");
+        LocalDate ngay =LocalDate.parse(sc.nextLine().trim(),f);
+        TimTheoNgayPhat(ngay);
+    }catch(DateTimeParseException e){
+        System.out.println("Ngay khong hop le!");
+    }
+}
+    // 5. DELETE
     // ==========================================
     public boolean Xoa(String maPP) {
         int viTri = Timvitri(maPP);
@@ -157,7 +191,7 @@ public int Timvitri(String maPP){
         return true;
     }
 
-    public void Xoa(Scanner sc) {
+    public void Xoa() {
         System.out.print("Nhap ma phieu phat can xoa: ");
         String maPP = sc.nextLine().trim();
         if (Xoa(maPP)) {
@@ -167,7 +201,6 @@ public int Timvitri(String maPP){
         }
     }
 
-    // ==========================================
     // 6. EDIT
     // ============================================
     public void Sua() {
@@ -198,59 +231,233 @@ public int Timvitri(String maPP){
             }
 
             switch(chon){
-                case 1:
+                case 1->{
                      System.out.print("Nhap ma phieu muon moi (FK): ");
                      p.setMaPM(sc.nextLine().trim());
-                     System.out.println("Da sua ma phieu muon.");
-                     break;
-                case 2:
+                     System.out.println("Da sua ma phieu muon.");}
+                   
+                case 2->{
+                     DateTimeFormatter f =DateTimeFormatter.ofPattern("dd/MM/yyyy");
                      System.out.print("Nhap ngay phat moi: ");
-                     p.setNgayPhat(LocalDate.parse(sc.nextLine().trim()));
-                     System.out.println("Da sua ngay tao phieu phat.");
-                     break;  
+                     p.setNgayPhat(LocalDate.parse(sc.nextLine().trim(),f));
+                     System.out.println("Da sua ngay tao phieu phat.");}  
             }}
             while(chon !=0);
 
         System.out.println("Sua phieu phat thanh cong!");
     }
 
-   
-    // ==========================================
-    // 7. THONG KE
-    // ==========================================
-    // public void ThongKetheoMaPM() {
-    //     double tongTien = 0;
-    //     if (dsChiTiet != null) {
-    //         for (int i = 0; i < n; i++) {
-    //             if (dsPhieuPhat[i] != null) {
-    //                 dsPhieuPhat[i].capNhatTongTienPhat(dsChiTiet);
-    //                 tongTien += dsPhieuPhat[i].getSoTienPhat();
-    //             }
-    //         }
-    //     } else {
-    //         for (int i = 0; i < n; i++) {
-    //             if (dsPhieuPhat[i] != null) {
-    //                 tongTien += dsPhieuPhat[i].getSoTienPhat();
-    //             }
-    //         }
-    //     }
-    //     System.out.println("Tong so phieu phat: " + n);
-    //     System.out.printf("Tong so tien phat: %.2f%n", tongTien);
-    // }
 
-    // ==========================================
-    // DOC / GHI FILE (Do Menu goi)
-    // ==========================================
-   
+    // 7. THONG KE
+    //===========================================
+  
+   //0.Thống kê theo mã phiếu mượn
     public void ThongKePPtheoMaPM(String maPM){
         PhieuPhat[] ds=TimtheoMaPM(maPM);
         if(ds.length == 0){
             System.out.println("Tong so phieu phat theo ma phieu muon " + maPM + ": 0");
             return;}
-        System.out.println("THONG KE PHIEU PHAT CO MA PM:"+maPM);  
+        System.out.println("+------------------------------------------------------------------+");
+        System.out.println("        THONG KE PHIEU PHAT CO MA PM:"+maPM);  
+        this.PrintHeader();
         for(PhieuPhat pp: ds)
             pp.Output();
+        System.out.println("+------------------------------------------------------------------+");
+      }
+    public void ThongKePPtheoMaPM(){
+            System.out.print("Nhap ma phieu muon:");
+            String maPM= sc.nextLine();
+             ThongKePPtheoMaPM(maPM);
+     }  
+    //1.Thống kê tổng số phiếu phạt
+    public void ThongKeTongSoPP() {
+    System.out.println("Tong so phieu phat: " + n);}
+    //2.Thống kê tổng số tiền phạt:
+    public double TongTienPhat() {
+    double tong = 0;
 
-        
+    for(int i = 0; i < n; i++) {
+        tong += dsPhieuPhat[i].getTongSoTienPhat();
     }
+    return tong;}
+    public void ThongKeTongTienPhat() {
+    System.out.println("Tong tien phat: " + TongTienPhat());}
+    //3.Phiếu phạt có tiền phạt cao nhất
+    public PhieuPhat TimPhieuPhatMax() {
+        if(n == 0)
+        return null;
+
+    PhieuPhat max = dsPhieuPhat[0];
+
+    for(int i = 1; i < n; i++) {
+        if(dsPhieuPhat[i].getTongSoTienPhat()
+                > max.getTongSoTienPhat()) {
+            max = dsPhieuPhat[i];
+        }
+    }
+
+    return max;
+}
+   public void ThongKePhieuPhatMax(){
+        PhieuPhat max=TimPhieuPhatMax();
+        if(max == null){
+            System.out.println("Danh sach phieu phat rong !!");
+            return;}
+        System.out.println("+------------------------------------------------------------------+");
+        System.out.println("|                      PHIEU PHAT: TIEN PHẠT LỚN NHẤT              |");    
+        this.PrintHeader();    
+        max.Output();    
+        System.out.println("+------------------------------------------------------------------+");
+
+   }
+     //4. Thống kê theo khoảng ngày
+    public void ThongKeTheoKhoangNgay(LocalDate tuNgay, LocalDate denNgay) {
+
+    boolean found = false;
+
+    System.out.println("THONG KE PHIEU PHAT TU "
+            + tuNgay + " DEN " + denNgay);
+
+    System.out.printf("|%-12s|%-14s|%-14s|%-14s|%n",
+            "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
+
+    for(int i = 0; i < n; i++) {
+
+        LocalDate ngay = dsPhieuPhat[i].getNgayPhat();
+
+        if((ngay.isEqual(tuNgay) || ngay.isAfter(tuNgay))
+        && (ngay.isEqual(denNgay) || ngay.isBefore(denNgay))) {
+
+            dsPhieuPhat[i].Output();
+            found = true;
+        }
+    }
+
+    if(!found)
+        System.out.println("Khong co phieu phat nao trong khoang nay!");
+    }
+
+
+    public void ThongKeTheoKhoangNgay() {
+
+    DateTimeFormatter f =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    try {
+
+        System.out.print("Nhap tu ngay: ");
+        LocalDate tuNgay =
+                LocalDate.parse(sc.nextLine().trim(), f);
+
+        System.out.print("Nhap den ngay: ");
+        LocalDate denNgay =
+                LocalDate.parse(sc.nextLine().trim(), f);
+
+        ThongKeTheoKhoangNgay(tuNgay, denNgay);
+
+    } catch(DateTimeParseException e) {
+
+        System.out.println("Ngay khong hop le!");
+    }
+    }
+
+    //5.Thống kê tổng hợp
+    public void ThongKeTongHop(){
+    System.out.println("+-----------------------------------------+");
+    System.out.println("|      THONG KE PHIEU PHAT    v           |");
+    System.out.println("+-----------------------------------------+");
+    System.out.println("| Tong so phieu phat : " + n);
+    System.out.println("| Tong tien phat     : " + TongTienPhat());
+    System.out.println("+-----------------------------------------+");
+}
+
+
+
+     
+
+
+  
+    //8.READ/WRITEFILE
+
+    public void ReadFile() {
+    int count = 0;
+
+    try (Scanner fileScanner =
+            new Scanner(new FileInputStream("data/PhieuPhat.txt"))) {
+
+        DateTimeFormatter f =
+                DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        this.dsPhieuPhat = new PhieuPhat[0];
+
+        while (fileScanner.hasNextLine()) {
+            String[] data = fileScanner.nextLine().trim().split(",");
+
+            if (data.length >= 4) {
+                dsPhieuPhat = Arrays.copyOf(dsPhieuPhat, count + 1);
+                dsPhieuPhat[count] = new PhieuPhat();
+
+                dsPhieuPhat[count].setMaPP(data[0].trim());
+                dsPhieuPhat[count].setMaPM(data[1].trim());
+
+                try {
+                    dsPhieuPhat[count].setNgayPhat(
+                            LocalDate.parse(data[2].trim(), f));
+                } catch (DateTimeParseException e) {
+                    dsPhieuPhat[count].setNgayPhat(null);
+                }
+
+                dsPhieuPhat[count].setTongSoTienPhat(
+                        Double.parseDouble(data[3].trim()));
+
+                count++;
+            }
+        }
+
+        this.n = count;
+
+    } catch (FileNotFoundException e) {
+        System.out.println("Khong tim thay file!");
+    }
+}
+
+public void WriteFile() {
+
+    DateTimeFormatter f =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    try (PrintWriter writer = new PrintWriter(new FileOutputStream("data/PhieuPhat.txt"))) {  
+           for (int i = 0; i < n; i++) {
+            
+            String ngayPhat =
+                    dsPhieuPhat[i].getNgayPhat() != null
+                    ? dsPhieuPhat[i]
+                            .getNgayPhat()
+                            .format(f)
+                    : "";
+
+            writer.println(
+                    dsPhieuPhat[i].getMaPP() + ","
+                    + dsPhieuPhat[i].getMaPM() + ","
+                    + ngayPhat + ","
+                    + dsPhieuPhat[i].getTongSoTienPhat()
+            );
+    }
+
+} catch (FileNotFoundException e) {
+    System.out.println("Khong tim thay file!");
+}
+}
+
+
+
+ //9.Format phieu phạt:
+   public void PrintHeader(){
+    System.out.println("+------------------------------------------------------------------+");
+    System.out.printf("| %-12s | %-14s | %-14s | %-14s |%n",
+        "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
+    System.out.println("+------------------------------------------------------------------+");
+   }
+   
+
+
 }
