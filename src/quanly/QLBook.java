@@ -79,14 +79,15 @@ public class QLBook extends QLThuVien {
             System.out.println("+--------------------------------------------+");
             System.out.println("| 1) Tim kiem theo ma sach.                  |");
             System.out.println("| 2) Tim kiem theo ten sach.                 |");
-            System.out.println("| 3) Tim kiem theo the loai (chon ma TL).    |");
-            System.out.println("| 4) Tim kiem theo loai sach (1-SGK | 2-STK).|");
+            System.out.println("| 3) Tim kiem theo loai sach (1-SGK | 2-STK).|");
+            System.out.println("| 4) Tim kiem theo ma the loai.              |");
             System.out.println("| 5) Tim kiem theo ma tac gia.               |");
-            System.out.println("| 6) Tim kiem theo khoang gia.               |");
+            System.out.println("| 6) Tim kiem theo ma NXB.                   |");
+            System.out.println("| 7) Tim kiem theo khoang gia.               |");
             System.out.println("| 0) Quay lai.                               |");
             System.out.println("+--------------------------------------------+");
 
-            System.out.print("Nhap lua chon tu 0 - 6: ");
+            System.out.print("Nhap lua chon tu 0 - 7: ");
             choice = nhapLuaChon();
 
             switch (choice) {
@@ -97,22 +98,25 @@ public class QLBook extends QLThuVien {
                     dsBook.timTheoTenSach();
                     break;
                 case 3:
-                    dsBook.timTheoTheLoai();
-                    break;
-                case 4:
                     dsBook.timTheoLoaiSach();
+                    break;
+                case 4:    
+                    dsBook.timTheoTheLoai();
                     break;
                 case 5:
                     dsBook.timTheoTacGia();
                     break;
                 case 6:
+                    dsBook.timTheoNXB();
+                    break;
+                case 7:
                     dsBook.timTheoKhoangGia();
                     break;
                 case 0:
                     System.out.println("Quay lai menu quan ly sach.");
                     break;
                 default:
-                    System.out.println("Lua chon khong hop le. Vui long chon lai tu 0 den 6!");
+                    System.out.println("Lua chon khong hop le. Vui long chon lai tu 0 den 7!");
             }
         } while (choice != 0);
     }
@@ -157,7 +161,7 @@ public class QLBook extends QLThuVien {
             System.out.println("+-------------------------------------------+");
             System.out.println("|            MENU THONG KE SACH             |");
             System.out.println("+-------------------------------------------+");
-            System.out.println("| 1) Thong ke theo loai sach (SGK/TK).      |");
+            System.out.println("| 1) Thong ke theo loai sach (SGK/STK).     |");
             System.out.println("| 2) Thong ke tinh trang kho.               |");
             System.out.println("| 3) Thong ke theo muc gia.                 |");
             System.out.println("| 0) Quay lai.                              |");

@@ -58,7 +58,7 @@ public class DSBook implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // Ho tro tra cuu ten The Loai, Tac Gia, NXB de hien thi len bang
+    // Ho tro tra cuu ten va hien thi danh sach chon cho The Loai, Tac Gia, NXB
     private String layTenTheLoai(String maTL, DSTheLoai dstl) {
         if (dstl != null) {
             return dstl.timTenTheLoai(maTL);
@@ -114,6 +114,54 @@ public class DSBook implements DanhSach {
         return maNXB;
     }
 
+    public void hienThiDanhSachTacGiaChon() {
+        System.out.println("\n--- DANH SACH TAC GIA HIEN CO ---");
+        Scanner scFile = null;
+        try {
+            scFile = new Scanner(new FileInputStream("data/Author.txt"));
+            while (scFile.hasNextLine()) {
+                String line = scFile.nextLine().trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                String[] data = line.split(",");
+                if (data.length >= 3) {
+                    System.out.println(data[0].trim() + " : " + data[1].trim() + " " + data[2].trim());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Khong tim thay file data/Author.txt!");
+        } finally {
+            if (scFile != null) {
+                scFile.close();
+            }
+        }
+    }
+
+    public void hienThiDanhSachNXBChon() {
+        System.out.println("\n--- DANH SACH NHA XUAT BAN HIEN CO ---");
+        Scanner scFile = null;
+        try {
+            scFile = new Scanner(new FileInputStream("data/Publisher.txt"));
+            while (scFile.hasNextLine()) {
+                String line = scFile.nextLine().trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                String[] data = line.split(",");
+                if (data.length >= 2) {
+                    System.out.println(data[0].trim() + " : " + data[1].trim());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Khong tim thay file data/Publisher.txt!");
+        } finally {
+            if (scFile != null) {
+                scFile.close();
+            }
+        }
+    }
+
     private DSTheLoai taoDSTheLoaiDaDoc() {
         DSTheLoai dstl = new DSTheLoai();
         dstl.ReadFile();
@@ -121,20 +169,20 @@ public class DSBook implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // In khung tieu de rong 163 ky tu khop voi terminal
+    // In khung tieu de rong 144 ky tu (vua khit terminal 147x37, khong tran dong)
     public void PrintHeader() {
         System.out.println(
-                "+-------+--------------------------+----------------------+--------------------+--------------+------------+-----------+------+------+-----------+---------------------------+");
-        System.out.printf("| %-5s | %-24s | %-20s | %-18s | %-12s | %-10s | %-9s | %-4s | %-4s | %-9s | %-25s |\n",
-                "Ma", "Ten Sach", "The Loai", "Tac Gia", "NXB", "Ngay XB", "Don Gia", "SL", "Con", "TrangThai",
+                "+-----+---------------------+---------------------+-----------------+----------+------------+---------+----+-----+----------+--------------------------------+");
+        System.out.printf("| %-3s | %-19s | %-19s | %-15s | %-8s | %-10s | %-7s | %-2s | %-3s | %-8s | %-30s |\n",
+                "Ma", "Ten Sach", "The Loai", "Tac Gia", "NXB", "Ngay XB", "Don Gia", "SL", "Con", "T.Thai",
                 "Thong Tin Rieng");
         System.out.println(
-                "+-------+--------------------------+----------------------+--------------------+--------------+------------+-----------+------+------+-----------+---------------------------+");
+                "+-----+---------------------+---------------------+-----------------+----------+------------+---------+----+-----+----------+--------------------------------+");
     }
 
     private void PrintFooter() {
         System.out.println(
-                "+-------+--------------------------+----------------------+--------------------+--------------+------------+-----------+------+------+-----------+---------------------------+");
+                "+-----+---------------------+---------------------+-----------------+----------+------------+---------+----+-----+----------+--------------------------------+");
     }
 
     private void inDongSach(Book b, DSTheLoai dstl) {
@@ -180,7 +228,7 @@ public class DSBook implements DanhSach {
         }
         DSTheLoai dstl = taoDSTheLoaiDaDoc();
         System.out.println(
-                "\n                                                                    DANH SACH QUAN LY SACH                                                                    ");
+                "\n                                                          DANH SACH QUAN LY SACH                                                          ");
         PrintHeader();
         for (int i = 0; i < n; i++) {
             inDongSach(ds[i], dstl);
@@ -245,6 +293,7 @@ public class DSBook implements DanhSach {
     }
 
     private String nhapMaTacGiaHopLe(Scanner sc, DSAuthor dsAuthor) {
+        hienThiDanhSachTacGiaChon();
         System.out.print("Nhap ma tac gia (VD: TG01): ");
         String maTG = sc.nextLine().trim();
         while (!dsAuthor.CheckHopLe(maTG) || !dsAuthor.CheckMaTG(maTG)) {
@@ -259,6 +308,7 @@ public class DSBook implements DanhSach {
     }
 
     private String nhapMaNXBHopLe(Scanner sc, DSPublisher dsPublisher) {
+        hienThiDanhSachNXBChon();
         System.out.print("Nhap ma NXB (VD: NXB01): ");
         String maNXB = sc.nextLine().trim();
         while (!dsPublisher.CheckHopLe(maNXB) || !dsPublisher.CheckMaNXB(maNXB)) {
@@ -452,6 +502,7 @@ public class DSBook implements DanhSach {
 
     public void timTheoTacGia() {
         Scanner sc = new Scanner(System.in);
+        hienThiDanhSachTacGiaChon();
         System.out.print("Nhap ma tac gia can tim (VD: TG01): ");
         String maTG = sc.nextLine().trim();
         DSTheLoai dstl = taoDSTheLoaiDaDoc();
@@ -470,6 +521,30 @@ public class DSBook implements DanhSach {
             PrintFooter();
         } else {
             System.out.println("Khong tim thay sach cua tac gia: " + maTG);
+        }
+    }
+
+    public void timTheoNXB() {
+        Scanner sc = new Scanner(System.in);
+        hienThiDanhSachNXBChon();
+        System.out.print("Nhap ma NXB can tim (VD: NXB01): ");
+        String maNXB = sc.nextLine().trim();
+        DSTheLoai dstl = taoDSTheLoaiDaDoc();
+        boolean found = false;
+        for (int i = 0; i < n; i++) {
+            if (ds[i] != null && ds[i].getMaNXB().equalsIgnoreCase(maNXB)) {
+                if (!found) {
+                    System.out.println("\n===== DANH SACH TIM THAY =====");
+                    PrintHeader();
+                    found = true;
+                }
+                inDongSach(ds[i], dstl);
+            }
+        }
+        if (found) {
+            PrintFooter();
+        } else {
+            System.out.println("Khong tim thay sach cua NXB: " + maNXB);
         }
     }
 
@@ -535,6 +610,10 @@ public class DSBook implements DanhSach {
 
     public void xoaTheoTheLoai() {
         Scanner sc = new Scanner(System.in);
+        DSTheLoai dstl = taoDSTheLoaiDaDoc();
+        if (dstl.getN() > 0) {
+            dstl.hienThiDanhSachChon();
+        }
         System.out.print("Nhap ma the loai can xoa sach: ");
         String tl = sc.nextLine().trim();
         int count = 0;
@@ -558,7 +637,7 @@ public class DSBook implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // Sua sach (co check hop le TL, TG, NXB)
+    // Sua sach (co check hop le TL, TG, NXB va option 9 sua toan bo thong tin)
     public void sua() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap ma sach can sua: ");
@@ -593,9 +672,10 @@ public class DSBook implements DanhSach {
             System.out.println("| 6) Sua don gia.                           |");
             System.out.println("| 7) Sua so luong & so luong con lai.       |");
             System.out.println("| 8) Sua thong tin rieng (Mon/Lop/LinhVuc). |");
+            System.out.println("| 9) Sua TOAN BO thong tin sach.            |");
             System.out.println("| 0) Hoan tat & quay lai.                   |");
             System.out.println("+-------------------------------------------+");
-            System.out.print("Nhap lua chon tu 0 - 8: ");
+            System.out.print("Nhap lua chon tu 0 - 9: ");
 
             int choice;
             try {
@@ -682,6 +762,14 @@ public class DSBook implements DanhSach {
                     }
                     System.out.println("Cap nhat thong tin rieng thanh cong!");
                     break;
+                case 9:
+                    System.out.println("\n--- NHAP LAI TOAN BO THONG TIN CHO SACH MA " + ds[vt].getMaSach() + " ---");
+                    ds[vt].setMaTheLoai(nhapMaTheLoaiHopLe(sc, dstl));
+                    ds[vt].setMaTG(nhapMaTacGiaHopLe(sc, dsAuthor));
+                    ds[vt].setMaNXB(nhapMaNXBHopLe(sc, dsPublisher));
+                    ds[vt].InputConLai();
+                    System.out.println("=> Cap nhat toan bo thong tin sach thanh cong!");
+                    break;
                 case 0:
                     return;
                 default:
@@ -691,8 +779,9 @@ public class DSBook implements DanhSach {
     }
 
     // -----------------------------------------------------------------------------------//
-    // Thong ke
+    // Thong ke: In tong so cuon o dau roi in bang danh sach cac cuon sach tim duoc
     public void thongKeLoaiSach() {
+        DSTheLoai dstl = taoDSTheLoaiDaDoc();
         int sgk = 0, stk = 0;
         for (int i = 0; i < n; i++) {
             if (ds[i] instanceof EducationBook) {
@@ -701,13 +790,35 @@ public class DSBook implements DanhSach {
                 stk++;
             }
         }
-        System.out.println("\n===== THONG KE THEO LOAI SACH =====");
-        System.out.println("Tong so dau sach               : " + n);
-        System.out.println("Sach giao khoa (EducationBook) : " + sgk + " dau sach");
-        System.out.println("Sach tham khao (ReferenceBook) : " + stk + " dau sach");
+
+        System.out.println("\n================ THONG KE THEO LOAI SACH ================");
+        System.out.println("Tong so dau sach trong thu vien: " + n + " cuon");
+
+        System.out.println("\n1. SACH GIAO KHOA (EducationBook) - Tong cong: " + sgk + " cuon");
+        if (sgk > 0) {
+            PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (ds[i] instanceof EducationBook) {
+                    inDongSach(ds[i], dstl);
+                }
+            }
+            PrintFooter();
+        }
+
+        System.out.println("\n2. SACH THAM KHAO (ReferenceBook) - Tong cong: " + stk + " cuon");
+        if (stk > 0) {
+            PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (ds[i] instanceof ReferenceBook) {
+                    inDongSach(ds[i], dstl);
+                }
+            }
+            PrintFooter();
+        }
     }
 
     public void thongKeTinhTrang() {
+        DSTheLoai dstl = taoDSTheLoaiDaDoc();
         int con = 0, het = 0;
         for (int i = 0; i < n; i++) {
             if (ds[i] != null && ds[i].getSoLuongConLai() > 0) {
@@ -716,12 +827,35 @@ public class DSBook implements DanhSach {
                 het++;
             }
         }
-        System.out.println("\n===== THONG KE TINH TRANG KHO =====");
-        System.out.println("Sach con trong kho : " + con + " ma sach");
-        System.out.println("Sach da het hang   : " + het + " ma sach (Can nhap them!)");
+
+        System.out.println("\n================ THONG KE TINH TRANG KHO ================");
+        System.out.println("Tong so dau sach trong thu vien: " + n + " cuon");
+
+        System.out.println("\n1. SACH CON TRONG KHO - Tong cong: " + con + " cuon");
+        if (con > 0) {
+            PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (ds[i] != null && ds[i].getSoLuongConLai() > 0) {
+                    inDongSach(ds[i], dstl);
+                }
+            }
+            PrintFooter();
+        }
+
+        System.out.println("\n2. SACH DA HET HANG (Can nhap them) - Tong cong: " + het + " cuon");
+        if (het > 0) {
+            PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (ds[i] != null && ds[i].getSoLuongConLai() <= 0) {
+                    inDongSach(ds[i], dstl);
+                }
+            }
+            PrintFooter();
+        }
     }
 
     public void thongKeGiaTien() {
+        DSTheLoai dstl = taoDSTheLoaiDaDoc();
         int re = 0, trungBinh = 0, cao = 0;
         for (int i = 0; i < n; i++) {
             if (ds[i] != null) {
@@ -735,10 +869,42 @@ public class DSBook implements DanhSach {
                 }
             }
         }
-        System.out.println("\n===== THONG KE THEO MUC GIA =====");
-        System.out.println("Sach duoi 50.000 VND         : " + re + " dau sach");
-        System.out.println("Sach tu 50.000 - 150.000 VND : " + trungBinh + " dau sach");
-        System.out.println("Sach tren 150.000 VND        : " + cao + " dau sach");
+
+        System.out.println("\n================ THONG KE THEO MUC GIA ================");
+        System.out.println("Tong so dau sach trong thu vien: " + n + " cuon");
+
+        System.out.println("\n1. SACH GIA RE (Duoi 50.000 VND) - Tong cong: " + re + " cuon");
+        if (re > 0) {
+            PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (ds[i] != null && ds[i].getDonGia() < 50000) {
+                    inDongSach(ds[i], dstl);
+                }
+            }
+            PrintFooter();
+        }
+
+        System.out.println("\n2. SACH GIA TRUNG BINH (50.000 - 150.000 VND) - Tong cong: " + trungBinh + " cuon");
+        if (trungBinh > 0) {
+            PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (ds[i] != null && ds[i].getDonGia() >= 50000 && ds[i].getDonGia() <= 150000) {
+                    inDongSach(ds[i], dstl);
+                }
+            }
+            PrintFooter();
+        }
+
+        System.out.println("\n3. SACH GIA CAO (Tren 150.000 VND) - Tong cong: " + cao + " cuon");
+        if (cao > 0) {
+            PrintHeader();
+            for (int i = 0; i < n; i++) {
+                if (ds[i] != null && ds[i].getDonGia() > 150000) {
+                    inDongSach(ds[i], dstl);
+                }
+            }
+            PrintFooter();
+        }
     }
 
     // -----------------------------------------------------------------------------------//
@@ -773,12 +939,12 @@ public class DSBook implements DanhSach {
                     int soLuongConLai = Integer.parseInt(data[10].trim());
 
                     Book b = null;
-                    if (loai.equalsIgnoreCase("SGK") && data.length >= 13) {
+                    if ((loai.equalsIgnoreCase("SGK") || loai.equalsIgnoreCase("EB")) && data.length >= 13) {
                         String tenMon = data[11].trim();
                         String lop = data[12].trim();
                         b = new EducationBook(maSach, tenSach, maTL, maTG, ngayXB, trangThai, maNXB,
                                 donGia, soLuong, soLuongConLai, tenMon, lop);
-                    } else if (loai.equalsIgnoreCase("STK")) {
+                    } else if (loai.equalsIgnoreCase("STK") || loai.equalsIgnoreCase("RB")) {
                         String linhVuc = data[11].trim();
                         b = new ReferenceBook(maSach, tenSach, maTL, maTG, ngayXB, trangThai, maNXB,
                                 donGia, soLuong, soLuongConLai, linhVuc);

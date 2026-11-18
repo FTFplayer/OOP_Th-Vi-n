@@ -66,7 +66,7 @@ public class EducationBook extends Book {
 
     @Override
     public String getThongTinRieng() {
-        return "Mon: " + TenMon + " - Lop: " + Lop;
+        return "Mon: " + TenMon + " (" + Lop + ")";
     }
 
     @Override

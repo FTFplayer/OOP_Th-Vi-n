@@ -167,7 +167,7 @@ public abstract class Book {
         InputConLai();
     }
 
-    // Dùng khi DSBook đã kiểm tra hợp lệ và gán sẵn MaSach, MaTheLoai, MaTG, MaNXB
+    // Dung khi DSBook da kiem tra hop le va gan san MaSach, MaTheLoai, MaTG, MaNXB
     public void InputConLai() {
         Scanner sc = new Scanner(System.in);
 
@@ -251,19 +251,20 @@ public abstract class Book {
         Output(MaTheLoai, MaTG, MaNXB);
     }
 
+    // Khung bang rong 146 ky tu (vua khit terminal 147x37, khong bi dau ..)
     public void Output(String tenTheLoai, String tenTacGia, String tenNXB) {
         updateStatus();
-        System.out.printf("| %-5s | %-24s | %-20s | %-18s | %-12s | %-10s | %-9.0f | %-4d | %-4d | %-9s | %-25s |\n",
-                catChuoi(MaSach, 5),
-                catChuoi(TenSach, 24),
-                catChuoi(tenTheLoai, 20),
-                catChuoi(tenTacGia, 18),
-                catChuoi(tenNXB, 12),
+        System.out.printf("| %-3s | %-19s | %-19s | %-15s | %-8s | %-10s | %-7.0f | %-2d | %-3d | %-8s | %-30s |\n",
+                catChuoi(MaSach, 3),
+                catChuoi(TenSach, 19),
+                catChuoi(tenTheLoai, 19),
+                catChuoi(tenTacGia, 15),
+                catChuoi(tenNXB, 8),
                 catChuoi(NgayXB, 10),
                 DonGia,
                 SoLuong,
                 SoLuongConLai,
-                catChuoi(TrangThai, 9),
-                catChuoi(getThongTinRieng(), 25));
+                catChuoi(TrangThai, 8),
+                catChuoi(getThongTinRieng(), 30));
     }
 }
