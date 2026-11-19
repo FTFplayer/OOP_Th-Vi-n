@@ -1,9 +1,13 @@
 package danhsach;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 import model.Provider;
 
-public class DSProvider{
+public class DSProvider implements DanhSach {
     //1.Atrribute
     private int n;
     private Provider[] dsProvider;
@@ -280,6 +284,65 @@ public void Input(){
                 }
             }
             System.out.println("SO LUONG NCC CO DIA CHI: " + diaChi + ":" + dem);
+        }
+    }
+    @Override
+    public void ReadFile() {
+        Scanner scFile = null;
+        FileInputStream inStream = null;
+        try {
+            inStream = new FileInputStream("data/Provider.txt");
+            scFile = new Scanner(inStream);
+            this.n = 0;
+            while (scFile.hasNextLine()) {
+                String line = scFile.nextLine().trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                String[] data = line.split(",");
+                if (data.length >= 4) {
+                    if (n == dsProvider.length) {
+                        dsProvider = Arrays.copyOf(dsProvider, dsProvider.length + 1);
+                    }
+                    dsProvider[n] = new Provider(
+                            data[0].trim(),
+                            data[1].trim(),
+                            data[2].trim(),
+                            data[3].trim());
+                    n++;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Loi: Khong tim thay file data/Provider.txt!");
+        } finally {
+            if (scFile != null) {
+                scFile.close();
+            }
+        }
+    }
+
+    @Override
+    public void WriteFile() {
+        FileOutputStream outStream = null;
+        PrintWriter writer = null;
+        try {
+            outStream = new FileOutputStream("data/Provider.txt");
+            writer = new PrintWriter(outStream);
+            for (int i = 0; i < this.n; i++) {
+                if (dsProvider[i] != null) {
+                    writer.println(
+                            dsProvider[i].getMaNCC() + ","
+                            + dsProvider[i].getTenNCC() + ","
+                            + dsProvider[i].getDiaChi() + ","
+                            + dsProvider[i].getSoDienThoai());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Loi: Khong tim thay duong dan file data/Provider.txt de ghi!");
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
         }
     }
 }

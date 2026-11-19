@@ -39,6 +39,6 @@ public class QLThuVien {
         // dsPP.ReadFile();
         // dsCTPP.ReadFile();
         dsQDP.ReadFile();
-        // dsProvider.ReadFile();
+        dsProvider.ReadFile();
     }
 }
