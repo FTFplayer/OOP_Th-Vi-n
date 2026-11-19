@@ -75,7 +75,7 @@ public class DSPhieuNhapHang {
     }
 
     public void ghiFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(PhieuNhapHang))) {
             for (int i = 0; i < soLuong; i++) {
                 PhieuNhapHang item = danhSach[i];
                 writer.println(String.join(";", item.getMaPNH(), item.getMaNCC(), item.getMaNV(),
@@ -89,7 +89,7 @@ public class DSPhieuNhapHang {
     public void docFile(String filename) {
         soLuong = 0;
         Arrays.fill(danhSach, null);
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PhieuNhapHang.txt))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";", -1);
