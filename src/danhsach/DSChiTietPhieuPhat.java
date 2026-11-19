@@ -49,8 +49,7 @@ public class DSChiTietPhieuPhat implements DanhSach {
 
     @Override
     public void Output() {
-        System.out.println("
-DANH SACH CHI TIET PHIEU PHAT:");
+        System.out.println("DANH SACH CHI TIET PHIEU PHAT:");
         System.out.println("+----------+------------+-----------------+----------+");
         System.out.printf("| %-8s | %-10s | %-15s | %-8s |%n", "MA PP", "MA SACH", "TIEN PHAT", "MA LYDO");
         System.out.println("+----------+------------+-----------------+----------+");

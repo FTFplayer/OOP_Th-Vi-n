@@ -34,8 +34,7 @@ public class QLChiTietPP extends QLThuVien {
     public void Menu(Scanner sc, DSQuyDinhPhat listQD, DSBook dsBook) {
         int choice;
         do {
-            System.out.println("
---- QUAN LY CHI TIET PHIEU PHAT ---");
+            System.out.println("--- QUAN LY CHI TIET PHIEU PHAT ---");
             System.out.println("1. Nhap danh sach chi tiet phieu phat");
             System.out.println("2. Xuat danh sach chi tiet");
             System.out.println("3. Them chi tiet moi");

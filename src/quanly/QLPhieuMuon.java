@@ -35,8 +35,7 @@ public class QLPhieuMuon extends QLThuVien {
     public void Menu(Scanner sc) {
         int choice;
         do {
-            System.out.println("
-+-------------------------------------------+");
+            System.out.println("+-------------------------------------------+");
             System.out.println("|          MENU QUAN LY PHIEU MUON          |");
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1)  Xuat danh sach phieu muon             |");

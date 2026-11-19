@@ -71,8 +71,7 @@ public class DSPhieuPhat implements DanhSach {
     // 4. Output
     @Override
     public void Output() {
-        System.out.println("
-DANH SACH PHIEU PHAT");
+        System.out.println("DANH SACH PHIEU PHAT");
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
             if (dsPhieuPhat[i] != null) {

@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import model.PhieuNhapHang;
 
-public class DSPhieuNhapHang {
+public class DSPhieuNhapHang implements DanhSach {
     private PhieuNhapHang[] danhSach;
     private int soLuong;
 
@@ -68,14 +68,40 @@ public class DSPhieuNhapHang {
         if (soLuong == danhSach.length) danhSach = Arrays.copyOf(danhSach, danhSach.length * 2);
     }
 
+    @Override
     public void Output() {
-        System.out.printf("%-12s %-12s %-12s %-14s %-15s%n",
+        if (soLuong == 0) {
+            System.out.println("Danh sach phieu nhap hang dang trong!");
+            return;
+        }
+        System.out.println("+------------+------------+------------+--------------+----------------+");
+        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-14s |%n",
                 "MA PNH", "MA NCC", "MA NV", "NGAY NHAP", "TONG TIEN");
+        System.out.println("+------------+------------+------------+--------------+----------------+");
         for (int i = 0; i < soLuong; i++) danhSach[i].output();
+        System.out.println("+------------+------------+------------+--------------+----------------+");
+    }
+
+    @Override
+    public void ReadFile() {
+        try {
+            docFile("data/PhieuNhapHang.txt");
+        } catch (IllegalStateException e) {
+            System.out.println("Loi doc file data/PhieuNhapHang.txt: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void WriteFile() {
+        try {
+            ghiFile("data/PhieuNhapHang.txt");
+        } catch (IllegalStateException e) {
+            System.out.println("Loi ghi file data/PhieuNhapHang.txt: " + e.getMessage());
+        }
     }
 
     public void ghiFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(PhieuNhapHang))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
             for (int i = 0; i < soLuong; i++) {
                 PhieuNhapHang item = danhSach[i];
                 writer.println(String.join(";", item.getMaPNH(), item.getMaNCC(), item.getMaNV(),
@@ -89,13 +115,15 @@ public class DSPhieuNhapHang {
     public void docFile(String filename) {
         soLuong = 0;
         Arrays.fill(danhSach, null);
-        try (BufferedReader reader = new BufferedReader(new FileReader(PhieuNhapHang.txt))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
                 String[] parts = line.split(";", -1);
                 if (parts.length != 5) throw new IOException("Du lieu phieu nhap khong hop le.");
-                if (!Them(new PhieuNhapHang(parts[0], parts[1], parts[2], parts[3],
-                        Double.parseDouble(parts[4])))) {
+                if (!Them(new PhieuNhapHang(parts[0].trim(), parts[1].trim(), parts[2].trim(),
+                        parts[3].trim(), Double.parseDouble(parts[4].trim())))) {
                     throw new IOException("Trung ma phieu nhap: " + parts[0]);
                 }
             }

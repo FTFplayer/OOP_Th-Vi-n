@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import model.ChiTietPhieuNhapHang;
 
-public class DSChiTietPhieuNhapHang {
+public class DSChiTietPhieuNhapHang implements DanhSach {
     private ChiTietPhieuNhapHang[] danhSach;
     private int soLuong;
 
@@ -83,10 +83,36 @@ public class DSChiTietPhieuNhapHang {
         if (soLuong == danhSach.length) danhSach = Arrays.copyOf(danhSach, danhSach.length * 2);
     }
 
+    @Override
     public void Output() {
-        System.out.printf("%-12s %-12s %-12s %-10s %-15s %-15s%n",
+        if (soLuong == 0) {
+            System.out.println("Danh sach chi tiet phieu nhap dang trong!");
+            return;
+        }
+        System.out.println("+------------+------------+------------+----------+--------------+----------------+");
+        System.out.printf("| %-10s | %-10s | %-10s | %-8s | %-12s | %-14s |%n",
                 "MA CT", "MA PNH", "MA SACH", "SO LUONG", "DON GIA", "THANH TIEN");
+        System.out.println("+------------+------------+------------+----------+--------------+----------------+");
         for (int i = 0; i < soLuong; i++) danhSach[i].output();
+        System.out.println("+------------+------------+------------+----------+--------------+----------------+");
+    }
+
+    @Override
+    public void ReadFile() {
+        try {
+            docFile("data/ChiTietPhieuNhapHang.txt");
+        } catch (IllegalStateException e) {
+            System.out.println("Loi doc file data/ChiTietPhieuNhapHang.txt: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void WriteFile() {
+        try {
+            ghiFile("data/ChiTietPhieuNhapHang.txt");
+        } catch (IllegalStateException e) {
+            System.out.println("Loi ghi file data/ChiTietPhieuNhapHang.txt: " + e.getMessage());
+        }
     }
 
     public void ghiFile(String filename) {
@@ -107,10 +133,12 @@ public class DSChiTietPhieuNhapHang {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
                 String[] parts = line.split(";", -1);
                 if (parts.length != 5) throw new IOException("Du lieu chi tiet phieu nhap khong hop le.");
-                ChiTietPhieuNhapHang item = new ChiTietPhieuNhapHang(parts[0], parts[1], parts[2],
-                        Integer.parseInt(parts[3]), Double.parseDouble(parts[4]));
+                ChiTietPhieuNhapHang item = new ChiTietPhieuNhapHang(parts[0].trim(), parts[1].trim(),
+                        parts[2].trim(), Integer.parseInt(parts[3].trim()), Double.parseDouble(parts[4].trim()));
                 if (!Them(item)) throw new IOException("Trung ma chi tiet: " + parts[0]);
             }
         } catch (IOException | NumberFormatException e) {

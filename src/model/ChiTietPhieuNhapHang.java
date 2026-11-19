@@ -22,6 +22,16 @@ public class ChiTietPhieuNhapHang {
         setDonGia(donGia);
     }
 
+    public ChiTietPhieuNhapHang(ChiTietPhieuNhapHang copy) {
+        if (copy != null) {
+            this.maCT = copy.maCT;
+            this.maPNH = copy.maPNH;
+            this.maSach = copy.maSach;
+            this.soLuong = copy.soLuong;
+            this.donGia = copy.donGia;
+        }
+    }
+
     public String getMaCT() { return maCT; }
     public void setMaCT(String maCT) { this.maCT = maCT; }
     public String getMaPNH() { return maPNH; }
@@ -29,32 +39,64 @@ public class ChiTietPhieuNhapHang {
     public String getMaSach() { return maSach; }
     public void setMaSach(String maSach) { this.maSach = maSach; }
     public int getSoLuong() { return soLuong; }
+
     public void setSoLuong(int soLuong) {
         if (soLuong < 0) {
             throw new IllegalArgumentException("So luong khong duoc am.");
         }
         this.soLuong = soLuong;
     }
+
     public double getDonGia() { return donGia; }
+
     public void setDonGia(double donGia) {
         if (donGia < 0) {
             throw new IllegalArgumentException("Don gia khong duoc am.");
         }
         this.donGia = donGia;
     }
+
     public double getThanhTien() { return soLuong * donGia; }
 
     public void Input(Scanner sc) {
-        System.out.print("Nhap ma chi tiet: ");
-        maCT = sc.nextLine().trim();
-        System.out.print("Nhap ma phieu nhap hang: ");
+        while (true) {
+            System.out.print("Nhap ma chi tiet (VD: CTPN001): ");
+            maCT = sc.nextLine().trim();
+            if (!maCT.isEmpty()) break;
+            System.out.println("Ma chi tiet khong duoc de trong!");
+        }
+        System.out.print("Nhap ma phieu nhap hang (VD: PNH001): ");
         maPNH = sc.nextLine().trim();
-        System.out.print("Nhap ma sach: ");
+        System.out.print("Nhap ma sach (VD: S01): ");
         maSach = sc.nextLine().trim();
-        System.out.print("Nhap so luong: ");
-        setSoLuong(Integer.parseInt(sc.nextLine().trim()));
-        System.out.print("Nhap don gia: ");
-        setDonGia(Double.parseDouble(sc.nextLine().trim()));
+
+        while (true) {
+            System.out.print("Nhap so luong: ");
+            try {
+                int sl = Integer.parseInt(sc.nextLine().trim());
+                if (sl > 0) {
+                    setSoLuong(sl);
+                    break;
+                }
+                System.out.println("So luong phai lon hon 0!");
+            } catch (NumberFormatException e) {
+                System.out.println("Vui long nhap so nguyen hop le!");
+            }
+        }
+
+        while (true) {
+            System.out.print("Nhap don gia: ");
+            try {
+                double gia = Double.parseDouble(sc.nextLine().trim());
+                if (gia > 0) {
+                    setDonGia(gia);
+                    break;
+                }
+                System.out.println("Don gia phai lon hon 0!");
+            } catch (NumberFormatException e) {
+                System.out.println("Vui long nhap so hop le!");
+            }
+        }
     }
 
     public void input(Scanner sc) {
@@ -62,7 +104,7 @@ public class ChiTietPhieuNhapHang {
     }
 
     public void Output() {
-        System.out.printf("%-12s %-12s %-12s %-10d %-15.2f %-15.2f%n",
+        System.out.printf("| %-10s | %-10s | %-10s | %-8d | %-12.0f | %-14.0f |%n",
                 maCT, maPNH, maSach, soLuong, donGia, getThanhTien());
     }
 

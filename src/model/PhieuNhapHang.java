@@ -22,6 +22,16 @@ public class PhieuNhapHang {
         setTongTien(tongTien);
     }
 
+    public PhieuNhapHang(PhieuNhapHang copy) {
+        if (copy != null) {
+            this.maPNH = copy.maPNH;
+            this.maNCC = copy.maNCC;
+            this.maNV = copy.maNV;
+            this.ngayNhap = copy.ngayNhap;
+            this.tongTien = copy.tongTien;
+        }
+    }
+
     public String getMaPNH() { return maPNH; }
     public void setMaPNH(String maPNH) { this.maPNH = maPNH; }
     public String getMaPhieuNhapHang() { return maPNH; }
@@ -32,6 +42,7 @@ public class PhieuNhapHang {
     public String getNgayNhap() { return ngayNhap; }
     public void setNgayNhap(String ngayNhap) { this.ngayNhap = ngayNhap; }
     public double getTongTien() { return tongTien; }
+
     public void setTongTien(double tongTien) {
         if (tongTien < 0) {
             throw new IllegalArgumentException("Tong tien khong duoc am.");
@@ -40,11 +51,15 @@ public class PhieuNhapHang {
     }
 
     public void Input(Scanner sc) {
-        System.out.print("Nhap ma phieu nhap hang: ");
-        maPNH = sc.nextLine().trim();
-        System.out.print("Nhap ma nha cung cap: ");
+        while (true) {
+            System.out.print("Nhap ma phieu nhap hang (VD: PNH001): ");
+            maPNH = sc.nextLine().trim();
+            if (!maPNH.isEmpty()) break;
+            System.out.println("Ma phieu nhap khong duoc de trong!");
+        }
+        System.out.print("Nhap ma nha cung cap (VD: NCC01): ");
         maNCC = sc.nextLine().trim();
-        System.out.print("Nhap ma nhan vien: ");
+        System.out.print("Nhap ma nhan vien (VD: NV01): ");
         maNV = sc.nextLine().trim();
         ngayNhap = nhapNgay(sc);
         tongTien = 0;
@@ -57,12 +72,12 @@ public class PhieuNhapHang {
             if (PhieuMuon.isValidDate(value)) {
                 return value;
             }
-            System.out.println("Ngay khong hop le.");
+            System.out.println("Ngay khong hop le (dd/MM/yyyy).");
         }
     }
 
     public void output() {
-        System.out.printf("%-12s %-12s %-12s %-14s %-15.2f%n",
+        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-14.0f |%n",
                 maPNH, maNCC, maNV, ngayNhap, tongTien);
     }
 
