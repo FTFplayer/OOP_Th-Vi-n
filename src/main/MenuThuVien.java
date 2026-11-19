@@ -36,7 +36,6 @@ public class MenuThuVien {
             choice = nhapLuaChon();
 
             switch (choice) {
-                // --- DANH SACH CHINH ---
                 case 1:
                     qltv = new QLBook();
                     qltv.menu();
@@ -50,17 +49,17 @@ public class MenuThuVien {
                     qltv.menu();
                     break;
                 case 4:
-                    // Quan ly phieu muon
+                    qltv = new QLPhieuMuon();
+                    qltv.menu();
                     break;
                 case 5:
                     qltv = new QLPhieuPhat();
                     qltv.menu();
                     break;
                 case 6:
-                    // Quan ly phieu nhap hang
+                    qltv = new QLPhieuNhapHang();
+                    qltv.menu();
                     break;
-
-                // --- DANH SACH PHU ---
                 case 7:
                     qltv = new QLTheLoai();
                     qltv.menu();
@@ -81,7 +80,6 @@ public class MenuThuVien {
                     qltv = new QLQuyDinhPhat();
                     qltv.menu();
                     break;
-
                 case 0:
                     System.out.println("Da thoat chuong trinh quan ly thu vien.");
                     break;
@@ -89,7 +87,6 @@ public class MenuThuVien {
                     System.out.println("Nhap khong hop le!! Vui long nhap lai tu 0 - 11.");
                     break;
             }
-
         } while (choice != 0);
     }
 

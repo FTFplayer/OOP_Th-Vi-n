@@ -43,6 +43,13 @@ public class PhieuMuon {
     public String getNgayThucTra() { return ngayThucTra; }
     public void setNgayThucTra(String ngayThucTra) { this.ngayThucTra = ngayThucTra; }
 
+    public LocalDate getNgayTraLocalDate() {
+        if (!isValidDate(ngayTra)) {
+            return null;
+        }
+        return parseDate(ngayTra);
+    }
+
     public void Input(Scanner sc) {
         System.out.print("Nhap ma phieu muon: ");
         maPM = sc.nextLine().trim();
@@ -51,14 +58,14 @@ public class PhieuMuon {
         System.out.print("Nhap ma nhan vien: ");
         maNV = sc.nextLine().trim();
         ngayMuon = nhapNgay(sc, "Nhap ngay muon (dd/MM/yyyy): ");
-        while(true) {
-        ngayTra = nhapNgay(sc, "Nhap ngay tra (dd/MM/yyyy): ");
-            if(!isBefore(NgayTra, NgayMuon)) {
+        while (true) {
+            ngayTra = nhapNgay(sc, "Nhap ngay tra (dd/MM/yyyy): ");
+            if (!isBefore(ngayTra, ngayMuon)) {
                 break;
             }
-            System.out.println("Ngay tra khong the truoc ngay muon !! ");
+            System.out.println("Ngay tra khong the truoc ngay muon!!");
         }
-        NgayThucTra = NhapNgayThucTra(sc);
+        ngayThucTra = nhapNgayThucTra(sc);
     }
 
     private String nhapNgay(Scanner sc, String prompt) {
@@ -74,15 +81,20 @@ public class PhieuMuon {
 
     public String nhapNgayThucTra(Scanner sc) {
         while (true) {
-            String value = nhapNgay(sc, "Nhap ngay thuc tra (dd/MM/yyyy): ");
-            if (isValidNgayThucTra(value, ngayMuon, ngayTra)) {
+            System.out.print("Nhap ngay thuc tra (dd/MM/yyyy, de trong neu chua tra): ");
+            String value = sc.nextLine().trim();
+            if (value.isEmpty()) {
+                return "";
+            }
+            if (isValidDate(value) && !isBefore(value, ngayMuon)) {
                 return value;
             }
-            System.out.println("Ngay thuc tra phai nam trong khoang tu ngay muon den ngay tra.");
+            System.out.println("Ngay thuc tra khong hop le hoac truoc ngay muon.");
         }
     }
-    
+
     public static boolean isValidDate(String value) {
+        if (value == null || value.isEmpty()) return false;
         try {
             LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/MM/uuuu")
                     .withResolverStyle(ResolverStyle.STRICT));
@@ -105,17 +117,16 @@ public class PhieuMuon {
         }
         LocalDate thucTra = parseDate(ngayThucTra);
         LocalDate muon = parseDate(ngayMuon);
-        LocalDate tra = parseDate(ngayTra);
-        return !thucTra.isBefore(muon) && !thucTra.isAfter(tra);
+        return !thucTra.isBefore(muon);
     }
 
-    private static LocalDate parseDate(String value) {
+    public static LocalDate parseDate(String value) {
         return LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/MM/uuuu")
                 .withResolverStyle(ResolverStyle.STRICT));
     }
-    
+
     public void output() {
-        System.out.printf("%-12s %-12s %-12s %-14s %-14s %-14s%n",
+        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-12s | %-12s |%n",
                 maPM, maDG, maNV, ngayMuon, ngayTra, ngayThucTra);
     }
 

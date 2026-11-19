@@ -1,25 +1,41 @@
 package quanly;
-import danhsach.DSChiTietPhieuPhat;
+
 import danhsach.DSBook;
+import danhsach.DSChiTietPhieuPhat;
 import danhsach.DSQuyDinhPhat;
 import java.util.Scanner;
 
-public class QLChiTietPP {
+public class QLChiTietPP extends QLThuVien {
     private final DSChiTietPhieuPhat dsChiTiet;
 
+    public QLChiTietPP() {
+        super();
+        this.dsChiTiet = this.dsCTPP;
+    }
+
+    public QLChiTietPP(DSChiTietPhieuPhat dsChiTiet) {
+        this.dsChiTiet = dsChiTiet;
+    }
+
     public QLChiTietPP(int length) {
-        dsChiTiet = new DSChiTietPhieuPhat(length);
-        dsChiTiet.ReadFile("ChiTietPhieuPhat.txt");
+        this.dsChiTiet = new DSChiTietPhieuPhat(length);
+        this.dsChiTiet.ReadFile();
     }
 
     public DSChiTietPhieuPhat getDsChiTiet() {
         return dsChiTiet;
     }
 
+    @Override
+    public void menu() {
+        Menu(sc, dsQDP, dsBook);
+    }
+
     public void Menu(Scanner sc, DSQuyDinhPhat listQD, DSBook dsBook) {
         int choice;
         do {
-            System.out.println("\n--- QUAN LY CHI TIET PHIEU PHAT ---");
+            System.out.println("
+--- QUAN LY CHI TIET PHIEU PHAT ---");
             System.out.println("1. Nhap danh sach chi tiet phieu phat");
             System.out.println("2. Xuat danh sach chi tiet");
             System.out.println("3. Them chi tiet moi");
@@ -42,21 +58,36 @@ public class QLChiTietPP {
                 case 1 -> {
                     System.out.print("Nhap ma phieu phat chung: ");
                     String maPP = sc.nextLine().trim();
-                    dsChiTiet.Input(maPP, listQD, dsBook, sc);
+                    dsChiTiet.Input(maPP, listQD, dsBook);
+                    dsChiTiet.WriteFile();
                 }
-                case 2 -> dsChiTiet.Output();
-                case 3 -> dsChiTiet.Them(sc, listQD, dsBook);
-                case 4 -> dsChiTiet.Tim(sc);
-                case 5 -> dsChiTiet.Xoa(sc);
-                case 6 -> dsChiTiet.Sua(sc, listQD, dsBook);
+                case 2 -> {
+                    dsChiTiet.ReadFile();
+                    dsChiTiet.Output();
+                }
+                case 3 -> {
+                    System.out.print("Nhap ma phieu phat: ");
+                    String maPP = sc.nextLine().trim();
+                    dsChiTiet.Them(listQD, dsBook, maPP);
+                    dsChiTiet.WriteFile();
+                }
+                case 4 -> dsChiTiet.Tim();
+                case 5 -> {
+                    dsChiTiet.Xoa();
+                    dsChiTiet.WriteFile();
+                }
+                case 6 -> {
+                    dsChiTiet.Sua(listQD, dsBook);
+                    dsChiTiet.WriteFile();
+                }
                 case 7 -> {
                     System.out.print("Nhap ma phieu phat can thong ke: ");
                     String maPP = sc.nextLine().trim();
                     double tong = dsChiTiet.Thongke_tienPhat_theo_MaPhieuPhat(maPP);
-                    System.out.println("-> Tong tien phat cho ma PP [" + maPP + "] la: " + tong);
+                    System.out.printf("-> Tong tien phat cho ma PP [%s] la: %.0f%n", maPP, tong);
                 }
-                case 8 -> dsChiTiet.WriteFile("ChiTietPhieuPhat.txt");
-                case 9 -> dsChiTiet.ReadFile("ChiTietPhieuPhat.txt");
+                case 8 -> dsChiTiet.WriteFile();
+                case 9 -> dsChiTiet.ReadFile();
                 case 0 -> System.out.println("Thoat menu chi tiet phieu phat.");
                 default -> System.out.println("Lua chon khong hop le.");
             }

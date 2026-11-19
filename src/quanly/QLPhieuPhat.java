@@ -1,18 +1,18 @@
 package quanly;
+
 import danhsach.*;
 import model.*;
-  
-public class QLPhieuPhat extends QLThuVien {
-    //1.constructor , get
-     //=================================================
-    public QLPhieuPhat() {}
 
-    //2.Menu
-     //=================================================
-    public void Menu() {
+public class QLPhieuPhat extends QLThuVien {
+    public QLPhieuPhat() {
+        super();
+    }
+
+    @Override
+    public void menu() {
         int choice;
         do {
-             System.out.println();
+            System.out.println();
             System.out.println("+-------------------------------------------+");
             System.out.println("|          MENU QUAN LY PHIEU PHAT          |");
             System.out.println("+-------------------------------------------+");
@@ -22,68 +22,80 @@ public class QLPhieuPhat extends QLThuVien {
             System.out.println("| 4) Sua thong tin phieu phat.              |");
             System.out.println("| 5) Xoa phieu phat.                        |");
             System.out.println("| 6) Thong ke phieu phat.                   |");
+            System.out.println("| 7) Quan ly chi tiet phieu phat.           |");
             System.out.println("| 0) Thoat.                                 |");
             System.out.println("+-------------------------------------------+");
 
-            try {
-                System.out.print("Nhap lua chon tu 0 - 6: ");
-                choice = Integer.parseInt(sc.nextLine().trim());
-            } catch (NumberFormatException e) {
-                choice = -1;
-            }
+            System.out.print("Nhap lua chon tu 0 - 7: ");
+            choice = nhapLuaChon();
 
             switch (choice) {
-                case 1 -> dsPP.Output();
-                case 2 -> ThemPP(dsBook,dsPM,dsQDP,dsCTPP);
+                case 1 -> {
+                    dsPP.ReadFile();
+                    dsPP.Output();
+                }
+                case 2 -> {
+                    ThemPP(dsBook, dsPM, dsQDP, dsCTPP);
+                    dsPP.WriteFile();
+                    dsCTPP.WriteFile();
+                }
                 case 3 -> menuTimKiem();
-                case 4 -> dsPP.Sua();
-                case 5 -> dsPP.Xoa();
+                case 4 -> {
+                    dsPP.Sua();
+                    dsPP.WriteFile();
+                }
+                case 5 -> {
+                    dsPP.Xoa();
+                    dsPP.WriteFile();
+                }
                 case 6 -> menuThongKe();
-                case 0->
-                    System.out.println("Da thoat khoi Quan ly Phieu Phat.");
+                case 7 -> {
+                    QLChiTietPP qlct = new QLChiTietPP(dsCTPP);
+                    qlct.Menu(sc, dsQDP, dsBook);
+                }
+                case 0 -> System.out.println("Da thoat khoi Quan ly Phieu Phat.");
                 default -> System.out.println("Lua chon khong hop le.");
             }
         } while (choice != 0);
     }
 
-    //2.Them phiếu phạt:
-public void ThemPP(DSBook dsBook,DSPhieuMuon dsPM,DSQuyDinhPhat dsQDP,DSChiTietPhieuPhat dsCTPP){
-    System.out.println("THUC HIEN THEM PHIEU PHAT");
-    //Nhap pp
-    PhieuPhat pp= new PhieuPhat();
-     pp.Input(dsPP,dsPM);
-        //Nhap chi tiet phieu phat-them vào dsCT
-          //songayTre:
-        //   String maPM= pp.getMaPM();
-        //   int soNgayTre=pp.tinhSoTraNgayTre(dsPM.TimtheoMaPM(maPM).getNgayTra());   //xung đột localDate
-        int soNgayTre= 0;  // ghi tạm để code ko xung đột
-     System.out.print("Nhap so chi tiet cua phieu phat(0,+∞):");
-     int k= Integer.parseInt(sc.nextLine());
-
-     double TongTienPhat=0;
-     for ( int i=0; i<k; i++)
-     {
-        ChiTietPhieuPhat ct= new ChiTietPhieuPhat();
-        ct.Input(pp.getMaPP(),dsQDP,dsBook);
-        ct.setTienPhat(dsQDP.TinhTienPhat(ct.getMaLD(), soNgayTre, ct.getMaSach(), dsBook));
-        TongTienPhat+= ct.getTienPhat();
-        dsCTPP.Them(ct);
-     }
-
-     pp.setTongSoTienPhat(TongTienPhat);
-     dsPP.Them(pp);
-        //update TONG TIENPHAT.
+    public void Menu() {
+        menu();
     }
 
+    public void ThemPP(DSBook dsBook, DSPhieuMuon dsPM, DSQuyDinhPhat dsQDP, DSChiTietPhieuPhat dsCTPP) {
+        System.out.println("THUC HIEN THEM PHIEU PHAT");
+        PhieuPhat pp = new PhieuPhat();
+        pp.Input(dsPP, dsPM);
 
-//3.Menu Tìm kiếm
- //=================================================
- private void menuTimKiem(){
+        long soNgayTre = 0;
+        PhieuMuon pm = dsPM.TimtheoMaPM(pp.getMaPM());
+        if (pm != null && pm.getNgayTraLocalDate() != null) {
+            soNgayTre = pp.tinhSoTraNgayTre(pm.getNgayTraLocalDate());
+        }
 
+        System.out.print("Nhap so chi tiet cua phieu phat: ");
+        int k = nhapLuaChon();
+        if (k < 0) k = 0;
+
+        double tongTienPhat = 0;
+        for (int i = 0; i < k; i++) {
+            ChiTietPhieuPhat ct = new ChiTietPhieuPhat();
+            ct.Input(pp.getMaPP(), dsQDP, dsBook);
+            double tien = dsQDP.TinhTienPhat(ct.getMaLD(), soNgayTre, ct.getMaSach(), dsBook);
+            ct.setTienPhat(Math.max(0, tien));
+            tongTienPhat += ct.getTienPhat();
+            dsCTPP.Them(ct);
+        }
+
+        pp.setTongSoTienPhat(tongTienPhat);
+        dsPP.Them(pp);
+        System.out.println("=> Them phieu phat thanh cong!");
+    }
+
+    private void menuTimKiem() {
         int choice;
-
-        do{
-
+        do {
             System.out.println("+-------------------------------------------+");
             System.out.println("|         MENU TIM KIEM PHIEU PHAT          |");
             System.out.println("+-------------------------------------------+");
@@ -97,25 +109,18 @@ public void ThemPP(DSBook dsBook,DSPhieuMuon dsPM,DSQuyDinhPhat dsQDP,DSChiTietP
             choice = nhapLuaChon();
 
             switch (choice) {
-    case 1 -> dsPP.TimtheoMaPP();
-    case 2 -> dsPP.TimtheoMaPM();
-    case 3 -> dsPP.TimTheoNgayPhat();
-    case 0 -> System.out.println("Quay lai menu quan ly.");
-    default -> System.out.println("Lua chon khong hop le!");
-}
-      }while(choice != 0);
+                case 1 -> dsPP.TimtheoMaPP();
+                case 2 -> dsPP.TimtheoMaPM();
+                case 3 -> dsPP.TimTheoNgayPhat();
+                case 0 -> System.out.println("Quay lai menu quan ly.");
+                default -> System.out.println("Lua chon khong hop le!");
+            }
+        } while (choice != 0);
     }
 
-   
-    //4. MENU THONG KE
-    //=================================================
-
-    private void menuThongKe(){
-
+    private void menuThongKe() {
         int choice;
-
-        do{
-
+        do {
             System.out.println("+-------------------------------------------+");
             System.out.println("|          MENU THONG KE PHIEU PHAT         |");
             System.out.println("+-------------------------------------------+");
@@ -132,35 +137,23 @@ public void ThemPP(DSBook dsBook,DSPhieuMuon dsPM,DSQuyDinhPhat dsQDP,DSChiTietP
             choice = nhapLuaChon();
 
             switch (choice) {
-    case 1 -> dsPP.ThongKeTongSoPP();
-    case 2 -> dsPP.ThongKeTongTienPhat();
-    case 3 -> dsPP.ThongKePhieuPhatMax();
-    case 4 -> dsPP.ThongKePPtheoMaPM();
-    case 5 -> dsPP.ThongKeTheoKhoangNgay();
-    case 6 -> dsPP.ThongKeTongHop();
-    case 0 -> System.out.println("Quay lai menu quan ly.");
-    default -> System.out.println("Lua chon khong hop le!");
-        }}while(choice != 0);
+                case 1 -> dsPP.ThongKeTongSoPP();
+                case 2 -> dsPP.ThongKeTongTienPhat();
+                case 3 -> dsPP.ThongKePhieuPhatMax();
+                case 4 -> dsPP.ThongKePPtheoMaPM();
+                case 5 -> dsPP.ThongKeTheoKhoangNgay();
+                case 6 -> dsPP.ThongKeTongHop();
+                case 0 -> System.out.println("Quay lai menu quan ly.");
+                default -> System.out.println("Lua chon khong hop le!");
+            }
+        } while (choice != 0);
     }
 
-
-
-
-
-    //Nhập lựa chọn
-    private int nhapLuaChon(){
-
-        try{
+    private int nhapLuaChon() {
+        try {
             return Integer.parseInt(sc.nextLine().trim());
-        }
-        catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return -1;
         }
     }
 }
-
-// 1. Nhập Phiếu Phạt
-// 2. Thêm vào DSPhieuPhat
-// 3. Nhập n Chi Tiết
-// 4. Thêm vào DSChiTietPhieuPhat
-// 5. Update tổng tiền

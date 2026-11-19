@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import model.ChiTietPhieuMuon;
 
-public class DSChiTietPhieuMuon {
+public class DSChiTietPhieuMuon implements DanhSach {
     private ChiTietPhieuMuon[] danhSach;
     private int soLuong;
 
@@ -83,9 +83,32 @@ public class DSChiTietPhieuMuon {
         if (soLuong == danhSach.length) danhSach = Arrays.copyOf(danhSach, danhSach.length * 2);
     }
 
+    @Override
     public void Output() {
+        if (soLuong == 0) {
+            System.out.println("Danh sach chi tiet phieu muon dang trong!");
+            return;
+        }
         System.out.printf("%-12s %-12s %-12s %-10s%n", "MA CT", "MA PM", "MA SACH", "SO LUONG");
         for (int i = 0; i < soLuong; i++) danhSach[i].output();
+    }
+
+    @Override
+    public void ReadFile() {
+        try {
+            docFile("data/ChiTietPhieuMuon.txt");
+        } catch (IllegalStateException e) {
+            System.out.println("Loi doc file data/ChiTietPhieuMuon.txt: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void WriteFile() {
+        try {
+            ghiFile("data/ChiTietPhieuMuon.txt");
+        } catch (IllegalStateException e) {
+            System.out.println("Loi ghi file data/ChiTietPhieuMuon.txt: " + e.getMessage());
+        }
     }
 
     public void ghiFile(String filename) {
@@ -106,9 +129,12 @@ public class DSChiTietPhieuMuon {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
                 String[] parts = line.split(";", -1);
                 if (parts.length != 4) throw new IOException("Du lieu chi tiet phieu muon khong hop le.");
-                if (!Them(new ChiTietPhieuMuon(parts[0], parts[1], parts[2], Integer.parseInt(parts[3])))) {
+                if (!Them(new ChiTietPhieuMuon(parts[0].trim(), parts[1].trim(), parts[2].trim(),
+                        Integer.parseInt(parts[3].trim())))) {
                     throw new IOException("Trung ma chi tiet: " + parts[0]);
                 }
             }
