@@ -1,21 +1,11 @@
 package quanly;
 
 import java.util.Scanner;
+public class QLProvider extends QLThuVien{
+    Scanner sc = new Scanner(System.in);
 
-public class QLProvider {
-    private final DSProvider dsProvider;
-    private final Scanner sc;
-
-    public QLProvider(DSProvider dsProvider, Scanner sc) {
-        this.dsProvider = dsProvider;
-        this.sc = sc;
-    }
-
-    public QLProvider(DSProvider dsProvider, Object dsPNH, Scanner sc) {
-        this(dsProvider, sc);
-    }
-
-    public void HienThiMenu() {
+    @Override
+    public void menu() {
         int chon;
 
         do {

@@ -9,7 +9,7 @@ public class QLChiTietPP {
 
     public QLChiTietPP(int length) {
         dsChiTiet = new DSChiTietPhieuPhat(length);
-        dsChiTiet.docFile("ChiTietPhieuPhat.txt");
+        dsChiTiet.ReadFile("ChiTietPhieuPhat.txt");
     }
 
     public DSChiTietPhieuPhat getDsChiTiet() {
@@ -55,8 +55,8 @@ public class QLChiTietPP {
                     double tong = dsChiTiet.Thongke_tienPhat_theo_MaPhieuPhat(maPP);
                     System.out.println("-> Tong tien phat cho ma PP [" + maPP + "] la: " + tong);
                 }
-                case 8 -> dsChiTiet.ghiFile("ChiTietPhieuPhat.txt");
-                case 9 -> dsChiTiet.docFile("ChiTietPhieuPhat.txt");
+                case 8 -> dsChiTiet.WriteFile("ChiTietPhieuPhat.txt");
+                case 9 -> dsChiTiet.ReadFile("ChiTietPhieuPhat.txt");
                 case 0 -> System.out.println("Thoat menu chi tiet phieu phat.");
                 default -> System.out.println("Lua chon khong hop le.");
             }

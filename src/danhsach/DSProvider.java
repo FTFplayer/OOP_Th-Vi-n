@@ -1,7 +1,7 @@
 package danhsach;
-import model.Provider;
 import java.util.Arrays;
 import java.util.Scanner;
+import model.Provider;
 
 public class DSProvider{
     //1.Atrribute
@@ -230,7 +230,7 @@ public void Input(){
                 }
                 case 2 -> {
                     System.out.print("Nhap dia chi moi:");
-                    dsProvider[vt].setDicChi(sc.nextLine());
+                    dsProvider[vt].setDiaChi(sc.nextLine());
                     System.out.println("Sua dia chi thanh cong");
                 }
                 case 3 -> {
