@@ -19,7 +19,9 @@ public class QLThuVien {
     DSProvider dsProvider = new DSProvider();
     // // of Hưng
     DSPhieuMuon dsPM = new DSPhieuMuon();
-
+    DSChiTietPhieuMuon dsCTPM = new DSChiTietPhieuMuon();
+    DSPhieuNhapHang dsPNH = new DSPhieuNhapHang();
+    DSChiTietPhieuNhapHang dsCTPNH = new DSChiTietPhieuNhapHang();
     public void menu() {
     }
 
@@ -30,5 +32,13 @@ public class QLThuVien {
         dsReader.ReadFile();
         dsBook.ReadFile();
         dstl.ReadFile();
+        // dsPM.ReadFile();
+        // dsCTPM.ReadFile();
+        // dsPNH.ReadFile();
+        // dsCTPNH.ReadFile();
+        // dsPP.ReadFile();
+        // dsCTPP.ReadFile();
+        dsQDP.ReadFile();
+        // dsProvider.ReadFile();
     }
 }

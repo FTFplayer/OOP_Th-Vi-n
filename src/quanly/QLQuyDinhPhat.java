@@ -1,36 +1,29 @@
 package quanly;
 
-import danhsach.DSQuyDinhPhat;
-
 import java.util.Scanner;
 
-public class QLQuyDinhPhat {
-    private final DSQuyDinhPhat listQD;
+public class QLQuyDinhPhat extends QLThuVien {
+    Scanner sc = new Scanner(System.in);
 
-    public QLQuyDinhPhat(int length) {
-        listQD = new DSQuyDinhPhat(length);
-        listQD.docFile("quydinh.txt");
-    }
-
-    public DSQuyDinhPhat getListQD() {
-        return listQD;
-    }
-
-    public void Menu(Scanner sc) {
+    @Override
+    public void menu() {
         int choice;
         do {
-            System.out.println("\n--- QUAN LY QUY DINH PHAT ---");
-            System.out.println("1. Nhap danh sach quy dinh");
-            System.out.println("2. Xuat danh sach quy dinh");
-            System.out.println("3. Them quy dinh moi");
-            System.out.println("4. Tim quy dinh theo ma");
-            System.out.println("5. Xoa quy dinh theo ma");
-            System.out.println("6. Sua quy dinh theo ma");
-            System.out.println("7. Thong ke so quy dinh");
-            System.out.println("8. Ghi file");
-            System.out.println("9. Doc file");
-            System.out.println("0. Thoat menu quy dinh");
-            System.out.print("Chon: ");
+            System.out.println("\n+-------------------------------------------+");
+            System.out.println("|         MENU QUAN LY QUY DINH PHAT        |");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1) Nhap danh sach quy dinh                |");
+            System.out.println("| 2) Xuat danh sach quy dinh                |");
+            System.out.println("| 3) Them quy dinh moi                      |");
+            System.out.println("| 4) Tim quy dinh theo ma                   |");
+            System.out.println("| 5) Xoa quy dinh theo ma                   |");
+            System.out.println("| 6) Sua quy dinh theo ma                   |");
+            System.out.println("| 7) Thong ke so quy dinh                   |");
+            System.out.println("| 8) Ghi file                               |");
+            System.out.println("| 9) Doc file                               |");
+            System.out.println("| 0) Thoat menu quy dinh                    |");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Nhap lua chon tu 0 - 9: ");
 
             try {
                 choice = Integer.parseInt(sc.nextLine().trim());
@@ -39,15 +32,30 @@ public class QLQuyDinhPhat {
             }
 
             switch (choice) {
-                case 1 -> listQD.Input(sc);
-                case 2 -> listQD.Output();
-                case 3 -> listQD.Them(sc);
-                case 4 -> listQD.TimQuyDinh(sc);
-                case 5 -> listQD.Xoa(sc);
-                case 6 -> listQD.Sua(sc);
-                case 7 -> listQD.ThongKe();
-                case 8 -> listQD.ghiFile("quydinh.txt");
-                case 9 -> listQD.docFile("quydinh.txt");
+                case 1 -> {
+                    dsQDP.Input();
+                    dsQDP.WriteFile();
+                }
+                case 2 -> {
+                    dsQDP.ReadFile();
+                    dsQDP.Output();
+                }
+                case 3 -> {
+                    dsQDP.Them();
+                    dsQDP.WriteFile();
+                }
+                case 4 -> dsQDP.TimQuyDinh();
+                case 5 -> {
+                    dsQDP.Xoa();
+                    dsQDP.WriteFile();
+                }
+                case 6 -> {
+                    dsQDP.Sua();
+                    dsQDP.WriteFile();
+                }
+                case 7 -> dsQDP.ThongKe();
+                case 8 -> dsQDP.WriteFile();
+                case 9 -> dsQDP.ReadFile();
                 case 0 -> System.out.println("Thoat menu quy dinh phat.");
                 default -> System.out.println("Lua chon khong hop le.");
             }

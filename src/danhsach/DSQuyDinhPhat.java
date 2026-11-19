@@ -2,12 +2,12 @@ package danhsach;
 
 import java.io.FileInputStream;
 import java.io.PrintWriter;
-// Mở luồng đọc file ký tự
-import java.util.Arrays; // Đọc từng dòng văn bản tối ưu, nhanh chóng
-import java.util.Scanner; // Mở luồng ghi file ký tự
-import model.QuyDinhPhat; // Ghi dữ liệu dạng dòng văn bản (println, printf)
+import java.util.Arrays;
+import java.util.Scanner;
+import model.Book;
+import model.QuyDinhPhat;
 
-public class DSQuyDinhPhat {
+public class DSQuyDinhPhat implements DanhSach {
     private QuyDinhPhat[] dsQDP;
     private int n;
     Scanner sc = new Scanner(System.in);
@@ -35,37 +35,42 @@ public class DSQuyDinhPhat {
 
     public void Input() {
         System.out.print("Nhap so luong quy dinh phat: ");
-        int sl = Integer.parseInt(sc.nextLine());
-        this.dsQDP = new QuyDinhPhat[sl];
-        n = 0;
+        int sl = Integer.parseInt(sc.nextLine().trim());
+        this.dsQDP = new QuyDinhPhat[Math.max(sl, 1)];
+        this.n = 0;
         for (int i = 0; i < sl; i++) {
-            Them(sc);
+            Them();
         }
-
     }
 
+    @Override
     public void Output() {
-        System.out.println("DANH SACH QUY DINH PHAT");
-        System.out.printf("|%-10s|%-30s|%-14s|%n", "MA QDP", "TEN LY DO", "CACH THUC PHAT");
+        System.out.println("\nDANH SACH QUY DINH PHAT");
+        System.out.println("+----------+------------------------------+------------------------------+");
+        System.out.printf("|%-10s|%-30s|%-30s|%n", "MA QDP", "TEN LY DO", "CACH THUC PHAT");
+        System.out.println("+----------+------------------------------+------------------------------+");
         for (int i = 0; i < n; i++) {
-            dsQDP[i].Output();
+            if (dsQDP[i] != null) {
+                dsQDP[i].Output();
+            }
         }
         if (n == 0) {
             System.out.println(" Thu vien chua co quy dinh phat!!");
         }
+        System.out.println("+----------+------------------------------+------------------------------+");
     }
 
-    public int TimViTri(String maLD) {
+    public int TimViTri(String maQDP) {
         for (int i = 0; i < n; i++) {
-            if (dsQDP[i].getMaLD().equalsIgnoreCase(maLD)) {
+            if (dsQDP[i] != null && dsQDP[i].getMaQDP().equalsIgnoreCase(maQDP)) {
                 return i;
             }
         }
         return -1;
     }
 
-    public QuyDinhPhat Tim(String maLD) {
-        int viTri = TimViTri(maLD);
+    public QuyDinhPhat Tim(String maQDP) {
+        int viTri = TimViTri(maQDP);
         return viTri == -1 ? null : dsQDP[viTri];
     }
 
@@ -81,35 +86,37 @@ public class DSQuyDinhPhat {
     public void TimQuyDinh() {
         QuyDinhPhat quyDinh = Tim(sc);
         if (quyDinh != null) {
+            System.out.println("+----------+------------------------------+------------------------------+");
+            System.out.printf("|%-10s|%-30s|%-30s|%n", "MA QDP", "TEN LY DO", "CACH THUC PHAT");
+            System.out.println("+----------+------------------------------+------------------------------+");
             quyDinh.Output();
-        } else
-            System.out.println("Khong tim thay quy dinh phat");
+            System.out.println("+----------+------------------------------+------------------------------+");
+        }
     }
 
     public void Them() {
         QuyDinhPhat quyDinh = new QuyDinhPhat();
-        quyDinh.Input(sc);
-        while (quyDinh.getMaLD().isEmpty() || Tim(quyDinh.getMaLD()) != null) {
-            System.out.println("Ma ly do rong hoac da ton tai.");
-            System.out.print("Nhap lai ma ly do: ");
-            quyDinh.setMaLD(sc.nextLine().trim());
+        quyDinh.Input();
+        while (quyDinh.getMaQDP().isEmpty() || Tim(quyDinh.getMaQDP()) != null) {
+            System.out.println("Ma quy dinh rong hoac da ton tai.");
+            System.out.print("Nhap lai ma quy dinh: ");
+            quyDinh.setMaQDP(sc.nextLine().trim());
         }
         Them(quyDinh);
     }
 
     public void Them(QuyDinhPhat quyDinh) {
-        if (Tim(quyDinh.getMaLD()) != null) {
-            throw new IllegalArgumentException("Ma ly do phat da ton tai.");
+        if (Tim(quyDinh.getMaQDP()) != null) {
+            throw new IllegalArgumentException("Ma quy dinh phat da ton tai.");
         }
         if (n == dsQDP.length) {
             dsQDP = Arrays.copyOf(dsQDP, dsQDP.length + 1);
         }
         dsQDP[n++] = quyDinh;
-
     }
 
-    public boolean Xoa(String maLD) {
-        int viTri = TimViTri(maLD);
+    public boolean Xoa(String maQDP) {
+        int viTri = TimViTri(maQDP);
         if (viTri == -1) {
             return false;
         }
@@ -121,11 +128,11 @@ public class DSQuyDinhPhat {
     }
 
     public void Xoa() {
-        System.out.print("Nhap ma ly do can xoa: ");
-        String maLD = sc.nextLine().trim();
-        if (Xoa(maLD))
+        System.out.print("Nhap ma quy dinh can xoa: ");
+        String maQDP = sc.nextLine().trim();
+        if (Xoa(maQDP)) {
             System.out.println("Xoa quy dinh thanh cong.");
-        else {
+        } else {
             System.out.println("Khong tim thay quy dinh phat.");
         }
     }
@@ -137,8 +144,8 @@ public class DSQuyDinhPhat {
         }
         System.out.print("Nhap ten ly do moi: ");
         quyDinh.setTenLD(sc.nextLine().trim());
-        System.out.print("Nhap so tien quy dinh moi: ");
-        quyDinh.setSoTien(Double.parseDouble(sc.nextLine()));
+        System.out.print("Nhap mo ta / cach thuc phat moi: ");
+        quyDinh.setMoTa(sc.nextLine().trim());
         System.out.println("Sua quy dinh thanh cong.");
     }
 
@@ -146,84 +153,77 @@ public class DSQuyDinhPhat {
         System.out.println("Tong so quy dinh: " + n);
     }
 
-    // Hàm tính tiền phạt dựa theo mã lý do phạt
-    public double TinhTienPhat(String maLD, double soNgayTre, String maSach, DSBook dsb) {
-        if (TimViTri(maLD) == -1)
+    // Ham tinh tien phat dua theo ma quy dinh phat
+    public double TinhTienPhat(String maQDP, double soNgayTre, String maSach, DSBook dsb) {
+        if (TimViTri(maQDP) == -1) {
             return -1;
-        if(maLD.equals("QD01"))
-            return soNgayTre* 10;
-        double giaSach=dsb.timkiemBook(maSach).getDonGia();
-        if(maLD.equals("QD02"))
+        }
+        if (maQDP.equalsIgnoreCase("QD01")) {
+            return soNgayTre * 10000;
+        }
+        Book sach = dsb.timkiemBook(maSach);
+        if (sach == null) {
+            return 0;
+        }
+        double giaSach = sach.getDonGia();
+        if (maQDP.equalsIgnoreCase("QD02")) {
             return giaSach;
-        else
+        } else {
             return giaSach * 2;
-
+        }
     }
 
+    @Override
     public void WriteFile() {
         PrintWriter pw = null;
-
         try {
-
             pw = new PrintWriter("data/QuyDinhPhat.txt");
-
             for (int i = 0; i < n; i++) {
-
-                pw.println(
-                        dsQDP[i].getMaQDP() + "," +
-                                dsQDP[i].getTenLD() + "," +
-                                dsQDP[i].getMoTa());
+                if (dsQDP[i] != null) {
+                    pw.println(
+                            dsQDP[i].getMaQDP() + "," +
+                            dsQDP[i].getTenLD() + "," +
+                            dsQDP[i].getMoTa());
+                }
             }
-
             System.out.println("Ghi file thanh cong!");
-
         } catch (Exception e) {
             System.out.println("Loi ghi file: " + e.getMessage());
         } finally {
-            if (pw != null)
+            if (pw != null) {
                 pw.close();
+            }
         }
     }
 
+    @Override
     public void ReadFile() {
-        Scanner sc = null;
+        Scanner scFile = null;
         FileInputStream inputStream = null;
-
         try {
             inputStream = new FileInputStream("data/QuyDinhPhat.txt");
-            sc = new Scanner(inputStream);
-
+            scFile = new Scanner(inputStream);
             n = 0;
-
-            while (sc.hasNextLine()) {
-
-                String line = sc.nextLine().trim();
-
-                if (line.isEmpty())
+            while (scFile.hasNextLine()) {
+                String line = scFile.nextLine().trim();
+                if (line.isEmpty()) {
                     continue;
-
+                }
                 String[] data = line.split(",");
-
                 if (data.length >= 3) {
-
-                    dsQDP[n] = new QuyDinhPhat();
-
-                    dsQDP[n].setMaQDP(data[0].trim());
-                    dsQDP[n].setTenLD(data[1].trim());
-                    dsQDP[n].setMoTa(data[2].trim());
-
+                    if (n == dsQDP.length) {
+                        dsQDP = Arrays.copyOf(dsQDP, dsQDP.length + 1);
+                    }
+                    dsQDP[n] = new QuyDinhPhat(data[0].trim(), data[1].trim(), data[2].trim());
                     n++;
                 }
             }
-
-            System.out.println("Doc file thanh cong!");
-
         } catch (Exception e) {
             System.out.println("Loi doc file: " + e.getMessage());
         } finally {
-            if (sc != null)
-                sc.close();
+            if (scFile != null) {
+                scFile.close();
+            }
         }
     }
-
 }
