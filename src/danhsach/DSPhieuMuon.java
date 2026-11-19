@@ -100,8 +100,8 @@ public class DSPhieuMuon {
         for (int i = 0; i < soLuong; i++) danhSach[i].output();
     }
 
-    public void ghiFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+    public void ghiFile(String PhieuMuon) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(PhieuMuon.txt))) {
             for (int i = 0; i < soLuong; i++) {
                 PhieuMuon item = danhSach[i];
                 writer.println(String.join(";", item.getMaPM(), item.getMaDG(), item.getMaNV(),
@@ -112,10 +112,10 @@ public class DSPhieuMuon {
         }
     }
 
-    public void docFile(String filename) {
+    public void docFile(String PhieuMuon) {
         soLuong = 0;
         Arrays.fill(danhSach, null);
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(PhieuMuon.txt))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";", -1);
