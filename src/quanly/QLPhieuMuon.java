@@ -49,8 +49,6 @@ public class QLPhieuMuon extends QLThuVien {
             System.out.println("| 9)  Sua chi tiet phieu muon               |");
             System.out.println("| 10) Xoa chi tiet phieu muon               |");
             System.out.println("| 11) Thong ke so sach muon                 |");
-            System.out.println("| 12) Ghi file                              |");
-            System.out.println("| 13) Doc file                              |");
             System.out.println("| 0)  Thoat                                 |");
             System.out.println("+-------------------------------------------+");
             System.out.print("Chon: ");
@@ -92,8 +90,6 @@ public class QLPhieuMuon extends QLThuVien {
                     dsCTPM.WriteFile();
                 }
                 case 11 -> thongKe(sc);
-                case 12 -> ghiFile();
-                case 13 -> docFile();
                 case 0 -> System.out.println("Thoat menu phieu muon.");
                 default -> System.out.println("Lua chon khong hop le.");
             }

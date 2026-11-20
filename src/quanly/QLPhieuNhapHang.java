@@ -49,8 +49,6 @@ public class QLPhieuNhapHang extends QLThuVien {
             System.out.println("| 9)  Sua chi tiet phieu nhap               |");
             System.out.println("| 10) Xoa chi tiet phieu nhap               |");
             System.out.println("| 11) Thong ke tong tien phieu nhap         |");
-            System.out.println("| 12) Ghi file                              |");
-            System.out.println("| 13) Doc file                              |");
             System.out.println("| 0)  Thoat                                 |");
             System.out.println("+-------------------------------------------+");
             System.out.print("Chon: ");
@@ -95,8 +93,6 @@ public class QLPhieuNhapHang extends QLThuVien {
                     dsPNH.WriteFile();
                 }
                 case 11 -> thongKe(sc);
-                case 12 -> ghiFile();
-                case 13 -> docFile();
                 case 0 -> System.out.println("Thoat menu phieu nhap hang.");
                 default -> System.out.println("Lua chon khong hop le.");
             }
