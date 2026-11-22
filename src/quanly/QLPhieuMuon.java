@@ -2,14 +2,12 @@ package quanly;
 
 import danhsach.DSChiTietPhieuMuon;
 import danhsach.DSPhieuMuon;
+import java.time.LocalDate;
 import java.util.Scanner;
 import model.ChiTietPhieuMuon;
 import model.PhieuMuon;
 
 public class QLPhieuMuon extends QLThuVien {
-    private static final String FILE_PHIEU_MUON = "data/PhieuMuon.txt";
-    private static final String FILE_CHI_TIET = "data/ChiTietPhieuMuon.txt";
-
     public QLPhieuMuon() {
         super();
     }
@@ -17,14 +15,7 @@ public class QLPhieuMuon extends QLThuVien {
     public QLPhieuMuon(DSPhieuMuon dsPhieuMuon, DSChiTietPhieuMuon dsChiTiet) {
         this.dsPM = dsPhieuMuon;
         this.dsCTPM = dsChiTiet;
-    }
-
-    public DSPhieuMuon getDsPhieuMuon() {
-        return dsPM;
-    }
-
-    public DSChiTietPhieuMuon getDsChiTiet() {
-        return dsCTPM;
+        this.dsPM.napChiTiet(this.dsCTPM);
     }
 
     @Override
@@ -35,33 +26,33 @@ public class QLPhieuMuon extends QLThuVien {
     public void Menu(Scanner sc) {
         int choice;
         do {
+            System.out.println();
             System.out.println("+-------------------------------------------+");
             System.out.println("|          MENU QUAN LY PHIEU MUON          |");
             System.out.println("+-------------------------------------------+");
-            System.out.println("| 1)  Xuat danh sach phieu muon             |");
-            System.out.println("| 2)  Them phieu muon                       |");
-            System.out.println("| 3)  Tim phieu muon theo ma                |");
-            System.out.println("| 4)  Sua phieu muon                        |");
-            System.out.println("| 5)  Xoa phieu muon                        |");
-            System.out.println("| 6)  Xuat chi tiet phieu muon              |");
-            System.out.println("| 7)  Them chi tiet phieu muon              |");
-            System.out.println("| 8)  Tim chi tiet theo ma phieu            |");
-            System.out.println("| 9)  Sua chi tiet phieu muon               |");
-            System.out.println("| 10) Xoa chi tiet phieu muon               |");
-            System.out.println("| 11) Thong ke so sach muon                 |");
-            System.out.println("| 0)  Thoat                                 |");
+            System.out.println("| 1) Xem danh sach phieu muon               |");
+            System.out.println("| 2) Them phieu muon (kem chi tiet)         |");
+            System.out.println("| 3) Tim kiem phieu muon (xem chi tiet)     |");
+            System.out.println("| 4) Sua thong tin phieu muon               |");
+            System.out.println("| 5) Xoa phieu muon                         |");
+            System.out.println("| 6) Thong ke phieu muon                    |");
+            System.out.println("| 7) Quan ly chi tiet cua phieu muon        |");
+            System.out.println("| 0) Thoat                                  |");
             System.out.println("+-------------------------------------------+");
-            System.out.print("Chon: ");
+            System.out.print("Nhap lua chon tu 0 - 7: ");
             choice = nhapSo(sc);
 
             switch (choice) {
                 case 1 -> {
                     dsPM.ReadFile();
+                    dsCTPM.ReadFile();
+                    dsPM.napChiTiet(dsCTPM);
                     dsPM.Output();
                 }
                 case 2 -> {
                     themPhieuMuon(sc);
                     dsPM.WriteFile();
+                    dsCTPM.WriteFile();
                 }
                 case 3 -> timPhieuMuon(sc);
                 case 4 -> {
@@ -71,52 +62,142 @@ public class QLPhieuMuon extends QLThuVien {
                 case 5 -> {
                     xoaPhieuMuon(sc);
                     dsPM.WriteFile();
-                }
-                case 6 -> {
-                    dsCTPM.ReadFile();
-                    dsCTPM.Output();
-                }
-                case 7 -> {
-                    dsCTPM.Them(sc);
                     dsCTPM.WriteFile();
                 }
-                case 8 -> timChiTiet(sc);
-                case 9 -> {
-                    suaChiTiet(sc);
-                    dsCTPM.WriteFile();
-                }
-                case 10 -> {
-                    xoaChiTiet(sc);
-                    dsCTPM.WriteFile();
-                }
-                case 11 -> thongKe(sc);
-                case 0 -> System.out.println("Thoat menu phieu muon.");
+                case 6 -> thongKe(sc);
+                case 7 -> menuChiTietCuaPhieu(sc);
+                case 0 -> System.out.println("Da thoat khoi Quan ly Phieu Muon.");
                 default -> System.out.println("Lua chon khong hop le.");
             }
         } while (choice != 0);
     }
 
+    private void menuChiTietCuaPhieu(Scanner sc) {
+        dsPM.ReadFile();
+        dsCTPM.ReadFile();
+        dsPM.napChiTiet(dsCTPM);
+        dsPM.Output();
+
+        System.out.print("Nhap ma phieu muon can quan ly chi tiet (VD: PM001): ");
+        String maPM = sc.nextLine().trim();
+        PhieuMuon pm = dsPM.TimTheoMa(maPM);
+        if (pm == null) {
+            System.out.println("Khong tim thay phieu muon co ma: " + maPM);
+            return;
+        }
+
+        int choice;
+        do {
+            System.out.println();
+            System.out.println("+-------------------------------------------+");
+            System.out.printf("|     CHI TIET PHIEU MUON [%-14s]  |%n", pm.getMaPM());
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1) Xem chi tiet cua phieu nay             |");
+            System.out.println("| 2) Them chi tiet vao phieu nay            |");
+            System.out.println("| 3) Sua chi tiet trong phieu nay           |");
+            System.out.println("| 4) Xoa chi tiet khoi phieu nay            |");
+            System.out.println("| 0) Quay lai menu phieu muon               |");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Nhap lua chon tu 0 - 4: ");
+            choice = nhapSo(sc);
+
+            switch (choice) {
+                case 1 -> pm.xuatChiTiet();
+                case 2 -> {
+                    ChiTietPhieuMuon ct = new ChiTietPhieuMuon();
+                    String maCTMoi = dsCTPM.taoMaCTMoi();
+                    ct.setMaCT(maCTMoi);
+                    ct.setMaPM(pm.getMaPM());
+                    System.out.println("-> Ma chi tiet tu dong: " + maCTMoi);
+                    System.out.print("Nhap ma sach (VD: S01): ");
+                    ct.setMaSach(sc.nextLine().trim());
+                    ct.setSoLuong(nhapSoDuong(sc, "Nhap so luong muon: "));
+
+                    if (dsCTPM.Them(ct)) {
+                        pm.themChiTiet(ct);
+                        dsCTPM.WriteFile();
+                        System.out.println("=> Them chi tiet " + maCTMoi + " thanh cong!");
+                    } else {
+                        System.out.println("Khong the them chi tiet!");
+                    }
+                }
+                case 3 -> {
+                    pm.xuatChiTiet();
+                    if (pm.getSoChiTiet() == 0) break;
+                    System.out.print("Nhap ma chi tiet can sua: ");
+                    String maCT = sc.nextLine().trim();
+                    ChiTietPhieuMuon ct = pm.timChiTiet(maCT);
+                    if (ct == null) {
+                        System.out.println("Khong tim thay chi tiet " + maCT + " trong phieu " + pm.getMaPM());
+                        break;
+                    }
+                    System.out.print("Nhap ma sach moi: ");
+                    ct.setMaSach(sc.nextLine().trim());
+                    ct.setSoLuong(nhapSoDuong(sc, "Nhap so luong moi: "));
+                    dsCTPM.WriteFile();
+                    System.out.println("=> Sua chi tiet thanh cong!");
+                }
+                case 4 -> {
+                    pm.xuatChiTiet();
+                    if (pm.getSoChiTiet() == 0) break;
+                    System.out.print("Nhap ma chi tiet can xoa: ");
+                    String maCT = sc.nextLine().trim();
+                    if (pm.xoaChiTiet(maCT)) {
+                        dsCTPM.Xoa(maCT);
+                        dsCTPM.WriteFile();
+                        System.out.println("=> Xoa chi tiet thanh cong!");
+                    } else {
+                        System.out.println("Khong tim thay chi tiet " + maCT + " trong phieu " + pm.getMaPM());
+                    }
+                }
+                case 0 -> System.out.println("Quay lai menu phieu muon.");
+                default -> System.out.println("Lua chon khong hop le!");
+            }
+        } while (choice != 0);
+    }
+
     private void themPhieuMuon(Scanner sc) {
-        PhieuMuon item = new PhieuMuon();
-        item.Input(sc);
-        System.out.println(dsPM.Them(item)
-                ? "Them phieu muon thanh cong!" : "Ma phieu muon da ton tai hoac ngay khong hop le.");
+        PhieuMuon pm = new PhieuMuon();
+        pm.Input(sc);
+        if (!dsPM.Them(pm)) {
+            System.out.println("Ma phieu muon da ton tai hoac ngay khong hop le.");
+            return;
+        }
+        System.out.print("Phieu nay muon bao nhieu dau sach? ");
+        int k = nhapSo(sc);
+        for (int i = 0; i < k; i++) {
+            String maCTMoi = dsCTPM.taoMaCTMoi();
+            System.out.println("--- Chi tiet sach thu " + (i + 1) + " (Ma tu dong: " + maCTMoi + ") ---");
+            ChiTietPhieuMuon ct = new ChiTietPhieuMuon();
+            ct.setMaCT(maCTMoi);
+            ct.setMaPM(pm.getMaPM());
+            System.out.print("Nhap ma sach (VD: S01): ");
+            ct.setMaSach(sc.nextLine().trim());
+            ct.setSoLuong(nhapSoDuong(sc, "Nhap so luong muon: "));
+
+            if (dsCTPM.Them(ct)) {
+                pm.themChiTiet(ct);
+            }
+        }
+        System.out.println("=> Them phieu muon kem chi tiet thanh cong!");
     }
 
     private void timPhieuMuon(Scanner sc) {
         System.out.print("Nhap ma phieu muon: ");
-        PhieuMuon item = dsPM.TimTheoMa(sc.nextLine().trim());
-        if (item == null) {
+        PhieuMuon pm = dsPM.TimTheoMa(sc.nextLine().trim());
+        if (pm == null) {
             System.out.println("Khong tim thay phieu muon.");
-        } else {
-            item.Output();
+            return;
         }
+        dsPM.PrintHeader();
+        pm.Output();
+        dsPM.PrintFooter();
+        pm.xuatChiTiet();
     }
 
     private void suaPhieuMuon(Scanner sc) {
         System.out.print("Nhap ma phieu muon can sua: ");
-        String maPM = sc.nextLine().trim();
-        PhieuMuon item = dsPM.TimTheoMa(maPM);
+        PhieuMuon item = dsPM.TimTheoMa(sc.nextLine().trim());
         if (item == null) {
             System.out.println("Khong tim thay phieu muon.");
             return;
@@ -125,102 +206,46 @@ public class QLPhieuMuon extends QLThuVien {
         item.setMaDG(sc.nextLine().trim());
         System.out.print("Nhap ma nhan vien moi: ");
         item.setMaNV(sc.nextLine().trim());
-        String ngayMuon;
         while (true) {
             System.out.print("Nhap ngay muon moi (dd/MM/yyyy): ");
-            ngayMuon = sc.nextLine().trim();
-            if (PhieuMuon.isValidDate(ngayMuon)) break;
-            System.out.println("Ngay khong hop le.");
-        }
-        String ngayTra;
-        while (true) {
-            System.out.print("Nhap ngay tra moi (dd/MM/yyyy): ");
-            ngayTra = sc.nextLine().trim();
-            if (!PhieuMuon.isValidDate(ngayTra)) {
-                System.out.println("Ngay khong hop le.");
-            } else if (PhieuMuon.isBefore(ngayTra, ngayMuon)) {
-                System.out.println("Ngay tra khong the truoc ngay muon.");
-            } else {
+            String strMuon = sc.nextLine().trim();
+            if (PhieuMuon.isValidDate(strMuon)) {
+                LocalDate nm = PhieuMuon.parseDate(strMuon);
+                item.setNgayMuon(nm); // Tu dong cap nhat ngayTra = nm + 7 ngay
+                System.out.println("-> Han tra da cap nhat tu dong (+7 ngay): " + item.getNgayTraStr());
                 break;
             }
+            System.out.println("Ngay khong hop le!");
         }
-        String ngayThucTra;
-        while (true) {
-            System.out.print("Nhap ngay thuc tra moi (dd/MM/yyyy, de trong neu chua tra): ");
-            ngayThucTra = sc.nextLine().trim();
-            if (ngayThucTra.isEmpty() || PhieuMuon.isValidNgayThucTra(ngayThucTra, ngayMuon, ngayTra)) {
-                break;
-            }
-            System.out.println("Ngay thuc tra khong hop le hoac truoc ngay muon.");
-        }
-        item.setNgayMuon(ngayMuon);
-        item.setNgayTra(ngayTra);
-        item.setNgayThucTra(ngayThucTra);
         System.out.println("Sua phieu muon thanh cong.");
     }
 
     private void xoaPhieuMuon(Scanner sc) {
         System.out.print("Nhap ma phieu muon can xoa: ");
         String maPM = sc.nextLine().trim();
-        if (dsCTPM.TimTheoMaPM(maPM).length > 0) {
-            System.out.println("Khong the xoa phieu muon dang co chi tiet.");
-        } else {
-            System.out.println(dsPM.Xoa(maPM)
-                    ? "Xoa phieu muon thanh cong." : "Khong tim thay phieu muon.");
-        }
-    }
-
-    private void timChiTiet(Scanner sc) {
-        System.out.print("Nhap ma phieu muon: ");
-        ChiTietPhieuMuon[] items = dsCTPM.TimTheoMaPM(sc.nextLine().trim());
-        if (items.length == 0) {
-            System.out.println("Khong co chi tiet cho phieu muon nay.");
+        PhieuMuon pm = dsPM.TimTheoMa(maPM);
+        if (pm == null) {
+            System.out.println("Khong tim thay phieu muon.");
             return;
         }
-        for (ChiTietPhieuMuon item : items) item.Output();
-    }
-
-    private void suaChiTiet(Scanner sc) {
-        System.out.print("Nhap ma chi tiet can sua: ");
-        ChiTietPhieuMuon item = dsCTPM.TimTheoMaCT(sc.nextLine().trim());
-        if (item == null) {
-            System.out.println("Khong tim thay chi tiet.");
-            return;
+        ChiTietPhieuMuon[] cts = dsCTPM.TimTheoMaPM(maPM);
+        for (ChiTietPhieuMuon ct : cts) {
+            dsCTPM.Xoa(ct.getMaCT());
         }
-        System.out.print("Nhap ma phieu muon moi: ");
-        item.setMaPM(sc.nextLine().trim());
-        System.out.print("Nhap ma sach moi: ");
-        item.setMaSach(sc.nextLine().trim());
-        System.out.print("Nhap so luong moi: ");
-        item.setSoLuong(Integer.parseInt(sc.nextLine().trim()));
-        System.out.println("Sua chi tiet thanh cong.");
-    }
-
-    private void xoaChiTiet(Scanner sc) {
-        System.out.print("Nhap ma chi tiet can xoa: ");
-        System.out.println(dsCTPM.Xoa(sc.nextLine().trim())
-                ? "Xoa chi tiet thanh cong." : "Khong tim thay chi tiet.");
+        dsPM.Xoa(maPM);
+        System.out.println("Da xoa phieu muon " + maPM + " va toan bo chi tiet lien quan.");
     }
 
     private void thongKe(Scanner sc) {
         System.out.print("Nhap ma phieu muon: ");
-        System.out.println("Tong so sach muon: " + dsCTPM.TongSoSachMuon(sc.nextLine().trim()));
-    }
-
-    private void ghiFile() {
-        dsPM.ghiFile(FILE_PHIEU_MUON);
-        dsCTPM.ghiFile(FILE_CHI_TIET);
-        System.out.println("Ghi file phieu muon thanh cong.");
-    }
-
-    private void docFile() {
-        try {
-            dsPM.docFile(FILE_PHIEU_MUON);
-            dsCTPM.docFile(FILE_CHI_TIET);
-            System.out.println("Doc file phieu muon thanh cong.");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi doc file: " + e.getMessage());
+        String maPM = sc.nextLine().trim();
+        PhieuMuon pm = dsPM.TimTheoMa(maPM);
+        if (pm == null) {
+            System.out.println("Khong tim thay phieu muon.");
+            return;
         }
+        System.out.println("Tong so sach muon cua phieu " + maPM + ": " + pm.tinhTongSoSach() + " cuon");
+        pm.xuatChiTiet();
     }
 
     private int nhapSo(Scanner sc) {
@@ -228,6 +253,15 @@ public class QLPhieuMuon extends QLThuVien {
             return Integer.parseInt(sc.nextLine().trim());
         } catch (NumberFormatException e) {
             return -1;
+        }
+    }
+
+    private int nhapSoDuong(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            int val = nhapSo(sc);
+            if (val > 0) return val;
+            System.out.println("Vui long nhap so nguyen > 0!");
         }
     }
 }

@@ -23,6 +23,23 @@ public class DSChiTietPhieuNhapHang implements DanhSach {
         return index >= 0 && index < soLuong ? danhSach[index] : null;
     }
 
+    // Tu dong sinh ma chi tiet tiep theo (VD: CTPN030 -> CTPN031)
+    public String taoMaCTMoi() {
+        int max = 0;
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i] != null && danhSach[i].getMaCT() != null) {
+                String digits = danhSach[i].getMaCT().replaceAll("[^0-9]", "");
+                if (!digits.isEmpty()) {
+                    try {
+                        int val = Integer.parseInt(digits);
+                        if (val > max) max = val;
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+        }
+        return String.format("CTPN%03d", max + 1);
+    }
+
     public ChiTietPhieuNhapHang TimTheoMaCT(String maCT) {
         for (int i = 0; i < soLuong; i++) {
             if (danhSach[i].getMaCT().equalsIgnoreCase(maCT)) return danhSach[i];

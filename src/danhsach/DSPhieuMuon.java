@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
+import model.ChiTietPhieuMuon;
 import model.PhieuMuon;
 
 public class DSPhieuMuon implements DanhSach {
@@ -21,6 +22,20 @@ public class DSPhieuMuon implements DanhSach {
     public int getSoLuong() { return soLuong; }
     public PhieuMuon get(int index) {
         return index >= 0 && index < soLuong ? danhSach[index] : null;
+    }
+
+    public void napChiTiet(DSChiTietPhieuMuon dsCTPM) {
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i] != null) danhSach[i].clearChiTiet();
+        }
+        if (dsCTPM == null) return;
+        for (int i = 0; i < dsCTPM.getSoLuong(); i++) {
+            ChiTietPhieuMuon ct = dsCTPM.get(i);
+            if (ct != null) {
+                PhieuMuon pm = TimTheoMa(ct.getMaPM());
+                if (pm != null) pm.themChiTiet(ct);
+            }
+        }
     }
 
     public PhieuMuon TimTheoMa(String maPM) {
@@ -56,26 +71,11 @@ public class DSPhieuMuon implements DanhSach {
         return true;
     }
 
-    public boolean Sua(String maPM, PhieuMuon itemMoi) {
-        int index = indexOf(maPM);
-        if (index < 0 || itemMoi == null) return false;
-        if (!maPM.equalsIgnoreCase(itemMoi.getMaPM()) && TimTheoMa(itemMoi.getMaPM()) != null) return false;
-        if (!laDuLieuHopLe(itemMoi)) return false;
-        danhSach[index] = itemMoi;
-        return true;
-    }
-
     private boolean laDuLieuHopLe(PhieuMuon item) {
-        if (!PhieuMuon.isValidDate(item.getNgayMuon())
-                || !PhieuMuon.isValidDate(item.getNgayTra())
-                || PhieuMuon.isBefore(item.getNgayTra(), item.getNgayMuon())) {
-            return false;
-        }
-        String ngayThucTra = item.getNgayThucTra();
-        return ngayThucTra == null
-                || ngayThucTra.trim().isEmpty()
-                || PhieuMuon.isValidNgayThucTra(ngayThucTra.trim(),
-                        item.getNgayMuon(), item.getNgayTra());
+        if (item.getNgayMuon() == null || item.getNgayTra() == null) return false;
+        if (item.getNgayTra().isBefore(item.getNgayMuon())) return false;
+        if (item.getNgayThucTra() != null && item.getNgayThucTra().isBefore(item.getNgayMuon())) return false;
+        return true;
     }
 
     private int indexOf(String maPM) {
@@ -94,18 +94,26 @@ public class DSPhieuMuon implements DanhSach {
         danhSach[--soLuong] = null;
     }
 
+    public void PrintHeader() {
+        System.out.println("+----------+----------+----------+------------+------------+------------+------------------------------+");
+        System.out.printf("| %-8s | %-8s | %-8s | %-10s | %-10s | %-10s | %-28s |%n",
+                "MA PM", "MA DG", "MA NV", "NGAY MUON", "NGAY TRA", "THUC TRA", "CAC CHI TIET");
+        System.out.println("+----------+----------+----------+------------+------------+------------+------------------------------+");
+    }
+
+    public void PrintFooter() {
+        System.out.println("+----------+----------+----------+------------+------------+------------+------------------------------+");
+    }
+
     @Override
     public void Output() {
         if (soLuong == 0) {
             System.out.println("Danh sach phieu muon dang trong!");
             return;
         }
-        System.out.println("+------------+------------+------------+--------------+--------------+--------------+");
-        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-12s | %-12s |%n",
-                "MA PM", "MA DG", "MA NV", "NGAY MUON", "NGAY TRA", "THUC TRA");
-        System.out.println("+------------+------------+------------+--------------+--------------+--------------+");
+        PrintHeader();
         for (int i = 0; i < soLuong; i++) danhSach[i].output();
-        System.out.println("+------------+------------+------------+--------------+--------------+--------------+");
+        PrintFooter();
     }
 
     @Override
@@ -130,8 +138,13 @@ public class DSPhieuMuon implements DanhSach {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
             for (int i = 0; i < soLuong; i++) {
                 PhieuMuon item = danhSach[i];
-                writer.println(String.join(";", item.getMaPM(), item.getMaDG(), item.getMaNV(),
-                        item.getNgayMuon(), item.getNgayTra(), item.getNgayThucTra()));
+                writer.println(String.join(";",
+                        item.getMaPM(),
+                        item.getMaDG(),
+                        item.getMaNV(),
+                        item.getNgayMuonStr(),
+                        item.getNgayTraStr(),
+                        item.getNgayThucTraStr()));
             }
         } catch (IOException e) {
             throw new IllegalStateException("Khong the ghi danh sach phieu muon.", e);

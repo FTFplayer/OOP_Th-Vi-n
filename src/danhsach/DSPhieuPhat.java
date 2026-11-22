@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Scanner;
+import model.ChiTietPhieuPhat;
 import model.PhieuPhat;
 
 public class DSPhieuPhat implements DanhSach {
@@ -16,7 +17,6 @@ public class DSPhieuPhat implements DanhSach {
     private PhieuPhat[] dsPhieuPhat;
     Scanner sc = new Scanner(System.in);
 
-    // 1. Constructor
     public DSPhieuPhat(PhieuPhat[] dsPhieuPhat, int n) {
         this.dsPhieuPhat = dsPhieuPhat;
         this.n = n;
@@ -27,7 +27,6 @@ public class DSPhieuPhat implements DanhSach {
         this.n = 0;
     }
 
-    // 2. Get - Set
     public int getN() { return n; }
     public void setN(int n) { this.n = n; }
     public PhieuPhat getPhieuPhat(int vt) {
@@ -36,13 +35,31 @@ public class DSPhieuPhat implements DanhSach {
     }
     public PhieuPhat[] getDanhSachPP() { return this.dsPhieuPhat; }
 
-    public void PrintHeader() {
-        System.out.println("+------------+--------------+--------------+--------------+");
-        System.out.printf("|%-12s|%-14s|%-14s|%-14s|%n", "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT");
-        System.out.println("+------------+--------------+--------------+--------------+");
+    public void napChiTiet(DSChiTietPhieuPhat dsCTPP) {
+        for (int i = 0; i < n; i++) {
+            if (dsPhieuPhat[i] != null) dsPhieuPhat[i].clearChiTiet();
+        }
+        if (dsCTPP == null) return;
+        for (int i = 0; i < dsCTPP.getSoLuong(); i++) {
+            ChiTietPhieuPhat ct = dsCTPP.getChiTiet(i);
+            if (ct != null) {
+                PhieuPhat pp = TimtheoMaPP(ct.getMaPP());
+                if (pp != null) pp.themChiTiet(ct);
+            }
+        }
     }
 
-    // 3. Input & Add
+    public void PrintHeader() {
+        System.out.println("+------------+------------+------------+--------------+------------------------------+");
+        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-28s |%n",
+                "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT", "CAC CHI TIET");
+        System.out.println("+------------+------------+------------+--------------+------------------------------+");
+    }
+
+    public void PrintFooter() {
+        System.out.println("+------------+------------+------------+--------------+------------------------------+");
+    }
+
     public void Input(DSPhieuMuon dspm) {
         System.out.print("Nhap so luong phieu phat: ");
         int sl = Integer.parseInt(sc.nextLine().trim());
@@ -68,28 +85,20 @@ public class DSPhieuPhat implements DanhSach {
         dsPhieuPhat[n++] = pp;
     }
 
-    // 4. Output
     @Override
     public void Output() {
         System.out.println("DANH SACH PHIEU PHAT");
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
-            if (dsPhieuPhat[i] != null) {
-                dsPhieuPhat[i].Output();
-            }
+            if (dsPhieuPhat[i] != null) dsPhieuPhat[i].Output();
         }
-        if (n == 0) {
-            System.out.println("DANH SACH RONG");
-        }
-        System.out.println("+------------+--------------+--------------+--------------+");
+        if (n == 0) System.out.println("DANH SACH RONG");
+        this.PrintFooter();
     }
 
-    // 5. Tim kiem
     public int Timvitri(String maPP) {
         for (int i = 0; i < n; i++) {
-            if (dsPhieuPhat[i] != null && dsPhieuPhat[i].getMaPP().equalsIgnoreCase(maPP)) {
-                return i;
-            }
+            if (dsPhieuPhat[i] != null && dsPhieuPhat[i].getMaPP().equalsIgnoreCase(maPP)) return i;
         }
         return -1;
     }
@@ -109,7 +118,8 @@ public class DSPhieuPhat implements DanhSach {
         }
         this.PrintHeader();
         dsPhieuPhat[vt].Output();
-        System.out.println("+------------+--------------+--------------+--------------+");
+        this.PrintFooter();
+        dsPhieuPhat[vt].xuatChiTiet();
     }
 
     public PhieuPhat[] TimtheoMaPM(String maPM) {
@@ -137,10 +147,8 @@ public class DSPhieuPhat implements DanhSach {
         }
         System.out.println("DANH SACH PHIEU PHAT (MA PHIEU MUON: " + maPM + ")");
         this.PrintHeader();
-        for (PhieuPhat pp : ds) {
-            pp.Output();
-        }
-        System.out.println("+------------+--------------+--------------+--------------+");
+        for (PhieuPhat pp : ds) pp.Output();
+        this.PrintFooter();
     }
 
     public void TimTheoNgayPhat(LocalDate ngay) {
@@ -155,31 +163,24 @@ public class DSPhieuPhat implements DanhSach {
                 dsPhieuPhat[i].Output();
             }
         }
-        if (found) {
-            System.out.println("+------------+--------------+--------------+--------------+");
-        } else {
-            System.out.println("Khong tim thay!");
-        }
+        if (found) this.PrintFooter();
+        else System.out.println("Khong tim thay!");
     }
 
     public void TimTheoNgayPhat() {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {
             System.out.print("Nhap ngay phat (dd/MM/yyyy): ");
-            LocalDate ngay = LocalDate.parse(sc.nextLine().trim(), f);
-            TimTheoNgayPhat(ngay);
+            TimTheoNgayPhat(LocalDate.parse(sc.nextLine().trim(), f));
         } catch (DateTimeParseException e) {
             System.out.println("Ngay khong hop le!");
         }
     }
 
-    // 6. Delete
     public boolean Xoa(String maPP) {
         int viTri = Timvitri(maPP);
         if (viTri == -1) return false;
-        for (int i = viTri; i < n - 1; i++) {
-            dsPhieuPhat[i] = dsPhieuPhat[i + 1];
-        }
+        for (int i = viTri; i < n - 1; i++) dsPhieuPhat[i] = dsPhieuPhat[i + 1];
         dsPhieuPhat[--n] = null;
         return true;
     }
@@ -187,14 +188,10 @@ public class DSPhieuPhat implements DanhSach {
     public void Xoa() {
         System.out.print("Nhap ma phieu phat can xoa: ");
         String maPP = sc.nextLine().trim();
-        if (Xoa(maPP)) {
-            System.out.println("Xoa phieu phat thanh cong!");
-        } else {
-            System.out.println("Khong tim thay phieu phat de xoa!");
-        }
+        if (Xoa(maPP)) System.out.println("Xoa phieu phat thanh cong!");
+        else System.out.println("Khong tim thay phieu phat de xoa!");
     }
 
-    // 7. Edit
     public void Sua() {
         System.out.print("Nhap ma phieu phat can sua: ");
         String maPP = sc.nextLine().trim();
@@ -221,7 +218,6 @@ public class DSPhieuPhat implements DanhSach {
             } catch (NumberFormatException e) {
                 chon = -1;
             }
-
             switch (chon) {
                 case 1 -> {
                     System.out.print("Nhap ma phieu muon moi: ");
@@ -253,7 +249,6 @@ public class DSPhieuPhat implements DanhSach {
         } while (chon != 0);
     }
 
-    // 8. Thong ke
     public void ThongKePPtheoMaPM(String maPM) {
         PhieuPhat[] ds = TimtheoMaPM(maPM);
         if (ds.length == 0) {
@@ -263,7 +258,7 @@ public class DSPhieuPhat implements DanhSach {
         System.out.println("THONG KE PHIEU PHAT CO MA PM: " + maPM + " (" + ds.length + " phieu)");
         this.PrintHeader();
         for (PhieuPhat pp : ds) pp.Output();
-        System.out.println("+------------+--------------+--------------+--------------+");
+        this.PrintFooter();
     }
 
     public void ThongKePPtheoMaPM() {
@@ -271,9 +266,7 @@ public class DSPhieuPhat implements DanhSach {
         ThongKePPtheoMaPM(sc.nextLine().trim());
     }
 
-    public void ThongKeTongSoPP() {
-        System.out.println("Tong so phieu phat: " + n);
-    }
+    public void ThongKeTongSoPP() { System.out.println("Tong so phieu phat: " + n); }
 
     public double TongTienPhat() {
         double tong = 0;
@@ -283,17 +276,13 @@ public class DSPhieuPhat implements DanhSach {
         return tong;
     }
 
-    public void ThongKeTongTienPhat() {
-        System.out.printf("Tong tien phat: %.0f VND%n", TongTienPhat());
-    }
+    public void ThongKeTongTienPhat() { System.out.printf("Tong tien phat: %.0f VND%n", TongTienPhat()); }
 
     public PhieuPhat TimPhieuPhatMax() {
         if (n == 0) return null;
         PhieuPhat max = dsPhieuPhat[0];
         for (int i = 1; i < n; i++) {
-            if (dsPhieuPhat[i].getTongSoTienPhat() > max.getTongSoTienPhat()) {
-                max = dsPhieuPhat[i];
-            }
+            if (dsPhieuPhat[i].getTongSoTienPhat() > max.getTongSoTienPhat()) max = dsPhieuPhat[i];
         }
         return max;
     }
@@ -307,7 +296,8 @@ public class DSPhieuPhat implements DanhSach {
         System.out.println("PHIEU PHAT CO TIEN PHAT LON NHAT");
         this.PrintHeader();
         max.Output();
-        System.out.println("+------------+--------------+--------------+--------------+");
+        this.PrintFooter();
+        max.xuatChiTiet();
     }
 
     public void ThongKeTheoKhoangNgay(LocalDate tuNgay, LocalDate denNgay) {
@@ -321,7 +311,7 @@ public class DSPhieuPhat implements DanhSach {
                 found = true;
             }
         }
-        System.out.println("+------------+--------------+--------------+--------------+");
+        this.PrintFooter();
         if (!found) System.out.println("Khong co phieu phat nao trong khoang nay!");
     }
 
@@ -347,7 +337,6 @@ public class DSPhieuPhat implements DanhSach {
         System.out.println("+-----------------------------------------+");
     }
 
-    // 9. Read / Write File
     @Override
     public void ReadFile() {
         int count = 0;

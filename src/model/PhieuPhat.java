@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class PhieuPhat {
@@ -15,7 +16,9 @@ public class PhieuPhat {
     private double tongSoTienPhat;
     Scanner sc = new Scanner(System.in);
 
-    // 1. Constructor
+    private ChiTietPhieuPhat[] dsChiTiet = new ChiTietPhieuPhat[0];
+    private int soChiTiet = 0;
+
     public PhieuPhat() {}
 
     public PhieuPhat(String maPM, String maPP, LocalDate ngayPhat, double tongSoTienPhat) {
@@ -25,7 +28,6 @@ public class PhieuPhat {
         this.tongSoTienPhat = tongSoTienPhat;
     }
 
-    // 2. Get - Set
     public String getMaPP() { return maPP; }
     public void setMaPP(String maPP) { this.maPP = maPP; }
 
@@ -38,23 +40,98 @@ public class PhieuPhat {
     public double getTongSoTienPhat() { return tongSoTienPhat; }
     public void setTongSoTienPhat(double tongSoTienPhat) { this.tongSoTienPhat = tongSoTienPhat; }
 
-    // 3. Input
+    public ChiTietPhieuPhat[] getDsChiTiet() { return dsChiTiet; }
+    public int getSoChiTiet() { return soChiTiet; }
+
+    public void clearChiTiet() {
+        this.dsChiTiet = new ChiTietPhieuPhat[0];
+        this.soChiTiet = 0;
+    }
+
+    public ChiTietPhieuPhat timChiTietTheoSach(String maSach) {
+        for (int i = 0; i < soChiTiet; i++) {
+            if (dsChiTiet[i] != null && dsChiTiet[i].getMaSach().equalsIgnoreCase(maSach)) {
+                return dsChiTiet[i];
+            }
+        }
+        return null;
+    }
+
+    public boolean themChiTiet(ChiTietPhieuPhat ct) {
+        if (ct == null) return false;
+        dsChiTiet = Arrays.copyOf(dsChiTiet, soChiTiet + 1);
+        dsChiTiet[soChiTiet++] = ct;
+        capNhatTongTienPhat();
+        return true;
+    }
+
+    public boolean xoaChiTietTheoSach(String maSach) {
+        for (int i = 0; i < soChiTiet; i++) {
+            if (dsChiTiet[i] != null && dsChiTiet[i].getMaSach().equalsIgnoreCase(maSach)) {
+                for (int j = i; j < soChiTiet - 1; j++) {
+                    dsChiTiet[j] = dsChiTiet[j + 1];
+                }
+                soChiTiet--;
+                dsChiTiet = Arrays.copyOf(dsChiTiet, soChiTiet);
+                capNhatTongTienPhat();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public double capNhatTongTienPhat() {
+        double tong = 0;
+        for (int i = 0; i < soChiTiet; i++) {
+            if (dsChiTiet[i] != null) tong += dsChiTiet[i].getTienPhat();
+        }
+        this.tongSoTienPhat = tong;
+        return tong;
+    }
+
+    // Chuoi liet ke cac chi tiet vi pham (MaSach-MaLD) de hien len cot "Cac chi tiet"
+    public String getChuoiCacChiTiet() {
+        if (soChiTiet == 0) return "(Trong)";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < soChiTiet; i++) {
+            if (dsChiTiet[i] != null) {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(dsChiTiet[i].getMaSach()).append("(").append(dsChiTiet[i].getMaLD()).append(")");
+            }
+        }
+        return sb.toString();
+    }
+
+    public void xuatChiTiet() {
+        if (soChiTiet == 0) {
+            System.out.println("  (Phieu phat " + maPP + " chua co chi tiet vi pham)");
+            return;
+        }
+        System.out.println("  Chi tiet phieu phat " + maPP + " (Tong tien phat: " + (long) tongSoTienPhat + " VND):");
+        System.out.println("  +----------+------------+-----------------+----------+");
+        System.out.printf("  | %-8s | %-10s | %-15s | %-8s |%n", "MA PP", "MA SACH", "TIEN PHAT", "MA LYDO");
+        System.out.println("  +----------+------------+-----------------+----------+");
+        for (int i = 0; i < soChiTiet; i++) {
+            if (dsChiTiet[i] != null) {
+                System.out.print("  ");
+                dsChiTiet[i].Output();
+            }
+        }
+        System.out.println("  +----------+------------+-----------------+----------+");
+    }
+
     public void Input(DSPhieuPhat ds1, DSPhieuMuon ds2) {
         do {
             System.out.print("Nhap ma phieu phat: ");
             this.maPP = sc.nextLine().trim();
-            if (!this.maPP.isEmpty() && ds1.Timvitri(this.maPP) == -1) {
-                break;
-            }
+            if (!this.maPP.isEmpty() && ds1.Timvitri(this.maPP) == -1) break;
             System.out.println("Ma phieu phat rong hoac da ton tai!! Vui long nhap lai.");
         } while (true);
 
         do {
             System.out.print("Nhap ma phieu muon: ");
             this.maPM = sc.nextLine().trim();
-            if (ds2.TimtheoMaPM(this.maPM) != null) {
-                break;
-            }
+            if (ds2.TimtheoMaPM(this.maPM) != null) break;
             System.out.println("Ma phieu muon khong ton tai!! Vui long nhap lai.");
         } while (true);
 
@@ -70,18 +147,24 @@ public class PhieuPhat {
         }
     }
 
-    // 4. Output
-    public void Output() {
-        String strNgay = (ngayPhat != null) ? ngayPhat.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
-        System.out.printf("|%-12s|%-14s|%-14s|%-14.0f|%n",
-                maPP, maPM, strNgay, tongSoTienPhat);
+    private String catChuoi(String s, int maxLen) {
+        if (s == null) return "";
+        if (s.length() <= maxLen) return s;
+        return s.substring(0, maxLen - 2) + "..";
     }
 
-    // 5. Tinh so ngay tra tre sach
+    public void Output() {
+        String strNgay = (ngayPhat != null) ? ngayPhat.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
+        System.out.printf("| %-10s | %-10s | %-10s | %-12.0f | %-28s |%n",
+                catChuoi(maPP, 10),
+                catChuoi(maPM, 10),
+                strNgay,
+                tongSoTienPhat,
+                catChuoi(getChuoiCacChiTiet(), 28));
+    }
+
     public long tinhSoTraNgayTre(LocalDate ngayQuyDinhTra) {
-        if (ngayQuyDinhTra == null || this.ngayPhat == null) {
-            return 0;
-        }
+        if (ngayQuyDinhTra == null || this.ngayPhat == null) return 0;
         return Math.max(0, ChronoUnit.DAYS.between(ngayQuyDinhTra, this.ngayPhat));
     }
 }

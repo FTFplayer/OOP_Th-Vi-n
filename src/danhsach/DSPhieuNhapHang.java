@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
+import model.ChiTietPhieuNhapHang;
 import model.PhieuNhapHang;
 
 public class DSPhieuNhapHang implements DanhSach {
@@ -21,6 +22,20 @@ public class DSPhieuNhapHang implements DanhSach {
     public int getSoLuong() { return soLuong; }
     public PhieuNhapHang get(int index) {
         return index >= 0 && index < soLuong ? danhSach[index] : null;
+    }
+
+    public void napChiTiet(DSChiTietPhieuNhapHang dsCTPNH) {
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i] != null) danhSach[i].clearChiTiet();
+        }
+        if (dsCTPNH == null) return;
+        for (int i = 0; i < dsCTPNH.getSoLuong(); i++) {
+            ChiTietPhieuNhapHang ct = dsCTPNH.get(i);
+            if (ct != null) {
+                PhieuNhapHang pnh = TimTheoMa(ct.getMaPNH());
+                if (pnh != null) pnh.themChiTiet(ct);
+            }
+        }
     }
 
     public PhieuNhapHang TimTheoMa(String maPNH) {
@@ -68,18 +83,26 @@ public class DSPhieuNhapHang implements DanhSach {
         if (soLuong == danhSach.length) danhSach = Arrays.copyOf(danhSach, danhSach.length * 2);
     }
 
+    public void PrintHeader() {
+        System.out.println("+------------+----------+----------+------------+--------------+------------------------------+");
+        System.out.printf("| %-10s | %-8s | %-8s | %-10s | %-12s | %-28s |%n",
+                "MA PNH", "MA NCC", "MA NV", "NGAY NHAP", "TONG TIEN", "CAC CHI TIET");
+        System.out.println("+------------+----------+----------+------------+--------------+------------------------------+");
+    }
+
+    public void PrintFooter() {
+        System.out.println("+------------+----------+----------+------------+--------------+------------------------------+");
+    }
+
     @Override
     public void Output() {
         if (soLuong == 0) {
             System.out.println("Danh sach phieu nhap hang dang trong!");
             return;
         }
-        System.out.println("+------------+------------+------------+--------------+----------------+");
-        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-14s |%n",
-                "MA PNH", "MA NCC", "MA NV", "NGAY NHAP", "TONG TIEN");
-        System.out.println("+------------+------------+------------+--------------+----------------+");
+        PrintHeader();
         for (int i = 0; i < soLuong; i++) danhSach[i].output();
-        System.out.println("+------------+------------+------------+--------------+----------------+");
+        PrintFooter();
     }
 
     @Override

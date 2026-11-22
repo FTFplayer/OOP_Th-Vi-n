@@ -33,12 +33,19 @@ public class QLThuVien {
         dsReader.ReadFile();
         dsBook.ReadFile();
         dstl.ReadFile();
+
         dsPM.ReadFile();
         dsCTPM.ReadFile();
+        dsPM.napChiTiet(dsCTPM);
+
         dsPNH.ReadFile();
         dsCTPNH.ReadFile();
+        dsPNH.napChiTiet(dsCTPNH);
+
         dsPP.ReadFile();
         dsCTPP.ReadFile();
+        dsPP.napChiTiet(dsCTPP);
+
         dsQDP.ReadFile();
         dsProvider.ReadFile();
     }
