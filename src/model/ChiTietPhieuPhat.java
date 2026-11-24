@@ -9,6 +9,7 @@ public class ChiTietPhieuPhat {
     private String maSach;
     private double tienPhat;
     private String maLD;
+    private String LD;
     Scanner sc= new Scanner(System.in);
 
     public ChiTietPhieuPhat() {
@@ -52,6 +53,14 @@ public class ChiTietPhieuPhat {
     public void setMaLD(String maLD) {
         this.maLD = maLD;
     }
+     public String getLD() {
+        return LD;
+    }
+
+    public void setLD(String LD) {
+        this.LD = LD;
+    }
+    
 
     public void Input() {
         System.out.print("Nhap ma sach: ");
@@ -65,6 +74,9 @@ public class ChiTietPhieuPhat {
     // Input all thông tin
     public void Input(String maPP, DSQuyDinhPhat dsQDP,DSBook dsBook) {
         this.maPP = maPP;
+        //nhập lý do 
+        System.out.print("Nhap ly do phat:");
+        LD= sc.nextLine();
           //nhập mã sách
           do{
          System.out.print("Nhap ma sach: ");
@@ -80,32 +92,12 @@ public class ChiTietPhieuPhat {
           }
     
 
-        ////////tienPhat        ////////tienPhat
-        //     double tienphat=dsQDP.TinhTienPhat(maLD);tienphat=listQD.TinhTienPhat(maLD);
-        //     System.out.println("-> Ma loi khong ton tai!");}
-        //     while(tienphat<0);
-        //     this.tienPhat = 0;
-        //     return;
-        // }
-
-        // // if (maLD.equalsIgnoreCase("LD01")) {
-        //     System.out.print("Nhap so ngay tre");
-        //     int soNgayTre = Integer.parseInt(sc.nextLine());
-        //     this.tienPhat = qd.tinhTienChiTiet(0, soNgayTre);
-        // } else {
-        //     Book book = dsBook.timkiemBook(maSach);
-        //     if (book == null) {
-        //         System.out.println("Khong ton tai ma sach:" + maSach);
-        //         this.tienPhat = 0;
-        //         return;
-        //     }
-        //     double giaSach = book.getDonGia();
-        //     this.tienPhat = qd.tinhTienChiTiet(giaSach, 0);
-        // }
-    
+       
 
     public void Output() {
-        System.out.printf("| %-8s | %-10s | %-15.2f | %-8s |\n", maPP, maSach, tienPhat, maLD);
+        System.out.printf("| %-8s | %-10s | %-15.2f | %-8s |%-50|\n", maPP, maSach, tienPhat, maLD,LD);
     }
+
+   
 
 }
