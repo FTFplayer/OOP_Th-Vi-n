@@ -108,17 +108,17 @@ public class PhieuPhat {
             return;
         }
         System.out.println("  Chi tiet phieu phat " + maPP + " (Tong tien phat: " + (long) tongSoTienPhat + " VND):");
-        System.out.println("  +------------+------------------------+----------+-------------------------------------+");
-        System.out.printf("  | %-10s | %-22s | %-8s | %-35s |%n",
-                "MA SACH", "TIEN PHAT", "MA LYDO", "LY DO CHI TIET");
-        System.out.println("  +------------+------------------------+----------+-------------------------------------+");
+        System.out.println("  +------------+------------------------+-------------+-------------------------------------+");
+        System.out.printf("  | %-10s | %-22s | %-11s | %-35s |%n",
+                "MA SACH", "TIEN PHAT", "MA QUY DINH", "LY DO CHI TIET");
+        System.out.println("  +------------+------------------------+-------------+-------------------------------------+");
         for (int i = 0; i < soChiTiet; i++) {
             if (dsChiTiet[i] != null) {
                 System.out.print("  ");
                 dsChiTiet[i].OutputTrongPhieu();
             }
         }
-        System.out.println("  +------------+------------------------+----------+-------------------------------------+");
+        System.out.println("  +------------+------------------------+-------------+-------------------------------------+");
     }
 
     public void Input(DSPhieuPhat ds1, DSPhieuMuon ds2) {

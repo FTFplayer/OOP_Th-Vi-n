@@ -36,14 +36,14 @@ public class DSChiTietPhieuPhat implements DanhSach {
     public int getSoLuong() { return n; }
 
     public void PrintHeader() {
-        System.out.println("+----------+------------+------------------------+----------+-------------------------------------+");
-        System.out.printf("| %-8s | %-10s | %-22s | %-8s | %-35s |%n",
-                "MA PP", "MA SACH", "TIEN PHAT", "MA LYDO", "LY DO CHI TIET");
-        System.out.println("+----------+------------+------------------------+----------+-------------------------------------+");
+        System.out.println("+----------+------------+---------------------------+----------+-------------------------------------+");
+        System.out.printf("| %-8s | %-10s | %-22s | %-11s | %-35s |%n",
+                "MA PP", "MA SACH", "TIEN PHAT", "MA QUY DINH", "LY DO CHI TIET");
+        System.out.println("+----------+------------+---------------------------+----------+-------------------------------------+");
     }
 
     public void PrintFooter() {
-        System.out.println("+----------+------------+------------------------+----------+-------------------------------------+");
+        System.out.println("+----------+------------+---------------------------+----------+-------------------------------------+");
     }
 
     public void Input(String maPPCurrent, DSQuyDinhPhat listQD, DSBook dsBook) {
