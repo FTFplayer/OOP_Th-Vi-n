@@ -1,0 +1,10 @@
+TL01,Cong Nghe Thong Tin
+TL02,Kinh Te - Quan Tri
+TL03,Van Hoc
+TL04,Khoa Hoc Tu Nhien
+TL05,Ngoai Ngu
+TL06,Lich Su - Dia Ly
+TL07,Tam Ly - Ky Nang
+TL08,Thieu Nhi
+TL09,Y Hoc - Suc Khoe
+TL10,Nghe Thuat - Thiet Ke

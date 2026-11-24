@@ -1,0 +1,3 @@
+QD01,Tra sach tre,10000 dong moi ngay tre
+QD02,Hu hong sach,Phat bang gia sach
+QD03,Mat sach,Phat gap 2 lan gia sach
