@@ -398,13 +398,25 @@ public class QLPhieuMuon extends QLThuVien {
         String strNgayPhat = ngayThucTra.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
         System.out.println("================ LAP PHIEU PHAT TU DONG ================");
-        System.out.println("Ma phieu phat (gan san): " + maPPMoi);
+        System.out.println("Ma phieu phat          : " + maPPMoi);
         System.out.println("Ma phieu muon          : " + pm.getMaPM());
         System.out.println("Ngay lap phieu phat    : " + strNgayPhat);
 
         if (soNgayTre > 0) {
-            System.out.println("--- [QD01] XU LY PHAT TRA TRE (" + soNgayTre + " ngay) ---");
-            nhapChiTietPhatTheoQuyDinh(sc, pp, chiTietList, "QD01", soNgayTre, soLuongMat);
+            System.out.println("--- [QD01] TU DONG AP DUNG PHAT TRA TRE (" + soNgayTre + " ngay) CHO TOAN BO SACH MUON ---");
+            for (ChiTietPhieuMuon ctMuon : chiTietList) {
+                if (ctMuon == null) continue;
+                double mucPhat1Cuon = dsQDP.TinhTienPhat("QD01", soNgayTre, ctMuon.getMaSach(), dsBook);
+                double thanhTienPhat = Math.max(0, mucPhat1Cuon) * ctMuon.getSoLuong();
+                String maCTPPMoi = dsCTPP.taoMaCTPPMoi();
+                String lyDoTre = "Tra sach tre " + soNgayTre + " ngay";
+                ChiTietPhieuPhat ctPhat = new ChiTietPhieuPhat(
+                        maCTPPMoi, pp.getMaPP(), ctMuon.getMaSach(), thanhTienPhat, "QD01", lyDoTre, (int) soNgayTre);
+                pp.themChiTiet(ctPhat);
+                dsCTPP.Them(ctPhat);
+                System.out.printf("  -> Da them tu dong [%s | QD01 | %s | %d cuon | %s]%n",
+                        maCTPPMoi, ctMuon.getMaSach(), ctMuon.getSoLuong(), ctPhat.getTienPhatKemSoLuong());
+            }
         }
         if (coHuHong) {
             System.out.println("--- [QD02] XU LY PHAT HU HONG SACH ---");
@@ -463,8 +475,9 @@ public class QLPhieuMuon extends QLThuVien {
 
             // Luu soNgayTre cho QD01 de hien (X ngay), luu soLuongViPham cho QD02/QD03 de hien (X cuon)
             int soLuongHienThi = maLD.equalsIgnoreCase("QD01") ? (int) soNgayTre : soLuongViPham;
+            String maCTPPMoi = dsCTPP.taoMaCTPPMoi();
             ChiTietPhieuPhat ct = new ChiTietPhieuPhat(
-                    pp.getMaPP(), chiTietList[vt].getMaSach(), thanhTienPhat, maLD, lyDo, soLuongHienThi);
+                    maCTPPMoi, pp.getMaPP(), chiTietList[vt].getMaSach(), thanhTienPhat, maLD, lyDo, soLuongHienThi);
             pp.themChiTiet(ct);
             dsCTPP.Them(ct);
 

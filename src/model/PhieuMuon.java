@@ -190,13 +190,16 @@ public class PhieuMuon {
             return;
         }
         System.out.println("  Chi tiet sach muon cua phieu " + maPM + " (Tong: " + tinhTongSoSach() + " cuon):");
-        System.out.printf("  %-12s %-12s %-12s %-10s%n", "MA CT", "MA PM", "MA SACH", "SO LUONG");
+        System.out.println("  +------------+------------+----------+");
+        System.out.printf("  | %-10s | %-10s | %-8s |%n", "MA CT", "MA SACH", "SO LUONG");
+        System.out.println("  +------------+------------+----------+");
         for (int i = 0; i < soChiTiet; i++) {
             if (dsChiTiet[i] != null) {
                 System.out.print("  ");
-                dsChiTiet[i].Output();
+                dsChiTiet[i].OutputTrongPhieu();
             }
         }
+        System.out.println("  +------------+------------+----------+");
     }
 
     // Chi nhap ngay muon -> tu dong tinh ngay tra (+7 ngay) va mac dinh ngayThucTra = null ("Chua tra")

@@ -1,6 +1,7 @@
 package quanly;
 
 import danhsach.*;
+import java.time.temporal.ChronoUnit;
 import model.*;
 
 public class QLPhieuPhat extends QLThuVien {
@@ -67,6 +68,10 @@ public class QLPhieuPhat extends QLThuVien {
         dsPP.ReadFile();
         dsCTPP.ReadFile();
         dsPP.napChiTiet(dsCTPP);
+        dsPM.ReadFile();
+        dsCTPM.ReadFile();
+        dsBook.ReadFile();
+        dsQDP.ReadFile();
         dsPP.Output();
 
         System.out.print("Nhap ma phieu phat can quan ly chi tiet (VD: PP001): ");
@@ -79,8 +84,13 @@ public class QLPhieuPhat extends QLThuVien {
 
         long soNgayTre = 0;
         PhieuMuon pm = dsPM.TimtheoMaPM(pp.getMaPM());
+        ChiTietPhieuMuon[] chiTietMuon = dsCTPM.TimTheoMaPM(pp.getMaPM());
         if (pm != null && pm.getNgayTraLocalDate() != null) {
-            soNgayTre = pp.tinhSoTraNgayTre(pm.getNgayTraLocalDate());
+            if (pm.getNgayThucTra() != null && pm.getNgayThucTra().isAfter(pm.getNgayTraLocalDate())) {
+                soNgayTre = ChronoUnit.DAYS.between(pm.getNgayTraLocalDate(), pm.getNgayThucTra());
+            } else {
+                soNgayTre = pp.tinhSoTraNgayTre(pm.getNgayTraLocalDate());
+            }
         }
 
         int choice;
@@ -102,50 +112,44 @@ public class QLPhieuPhat extends QLThuVien {
                 case 1 -> pp.xuatChiTiet();
                 case 2 -> {
                     ChiTietPhieuPhat ct = new ChiTietPhieuPhat();
+                    ct.setMaCTPP(dsCTPP.taoMaCTPPMoi());
                     ct.Input(pp.getMaPP(), dsQDP, dsBook);
-                    double tien = dsQDP.TinhTienPhat(ct.getMaLD(), soNgayTre, ct.getMaSach(), dsBook);
+                    double tien;
+                    if ("QD01".equalsIgnoreCase(ct.getMaLD())) {
+                        long ngayTinh = (ct.getSoLuong() > 0) ? ct.getSoLuong() : soNgayTre;
+                        tien = dsQDP.TinhTienPhat("QD01", ngayTinh, ct.getMaSach(), dsBook);
+                    } else {
+                        tien = dsQDP.TinhTienPhat(ct.getMaLD(), 0, ct.getMaSach(), dsBook) * ct.getSoLuong();
+                    }
                     ct.setTienPhat(Math.max(0, tien));
                     pp.themChiTiet(ct);
                     dsCTPP.Them(ct);
                     dsPP.WriteFile();
                     dsCTPP.WriteFile();
-                    System.out.println("=> Them chi tiet thanh cong! Tong tien phat moi: " + (long) pp.getTongSoTienPhat() + " VND");
+                    System.out.println("=> Them chi tiet " + ct.getMaCTPP() + " thanh cong! Tong tien phat moi: " + (long) pp.getTongSoTienPhat() + " VND");
                 }
                 case 3 -> {
                     pp.xuatChiTiet();
                     if (pp.getSoChiTiet() == 0) break;
-                    System.out.print("Nhap ma sach cua chi tiet can sua: ");
-                    String maSachCu = sc.nextLine().trim();
-                    if (pp.timChiTietTheoSach(maSachCu) == null) {
-                        System.out.println("Khong tim thay chi tiet co ma sach " + maSachCu + " trong phieu " + pp.getMaPP());
-                        break;
+                    if (dsCTPP.SuaTrongPhieu(pp.getMaPP(), chiTietMuon, soNgayTre, dsQDP, dsBook)) {
+                        dsPP.napChiTiet(dsCTPP);
+                        dsPP.WriteFile();
+                        dsCTPP.WriteFile();
+                        System.out.println("=> Sua chi tiet thanh cong! Tong tien phat moi: " + (long) pp.getTongSoTienPhat() + " VND");
                     }
-                    System.out.println("Nhap lai thong tin chi tiet moi:");
-                    ChiTietPhieuPhat ctMoi = new ChiTietPhieuPhat();
-                    ctMoi.Input(pp.getMaPP(), dsQDP, dsBook);
-                    double tien = dsQDP.TinhTienPhat(ctMoi.getMaLD(), soNgayTre, ctMoi.getMaSach(), dsBook);
-                    ctMoi.setTienPhat(Math.max(0, tien));
-
-                    pp.xoaChiTietTheoSach(maSachCu);
-                    dsCTPP.Xoa(pp.getMaPP(), maSachCu);
-                    pp.themChiTiet(ctMoi);
-                    dsCTPP.Them(ctMoi);
-                    dsPP.WriteFile();
-                    dsCTPP.WriteFile();
-                    System.out.println("=> Sua chi tiet thanh cong! Tong tien phat moi: " + (long) pp.getTongSoTienPhat() + " VND");
                 }
                 case 4 -> {
                     pp.xuatChiTiet();
                     if (pp.getSoChiTiet() == 0) break;
-                    System.out.print("Nhap ma sach can xoa khoi chi tiet: ");
-                    String maSach = sc.nextLine().trim();
-                    if (pp.xoaChiTietTheoSach(maSach)) {
-                        dsCTPP.Xoa(pp.getMaPP(), maSach);
+                    System.out.print("Nhap MA CTPP can xoa khoi phieu (VD: CTPP001): ");
+                    String maCTPP = sc.nextLine().trim();
+                    if (pp.xoaChiTietTheoMaCTPP(maCTPP)) {
+                        dsCTPP.XoaTheoMaCTPP(maCTPP);
                         dsPP.WriteFile();
                         dsCTPP.WriteFile();
-                        System.out.println("=> Xoa chi tiet thanh cong! Tong tien phat moi: " + (long) pp.getTongSoTienPhat() + " VND");
+                        System.out.println("=> Xoa chi tiet " + maCTPP + " thanh cong! Tong tien phat moi: " + (long) pp.getTongSoTienPhat() + " VND");
                     } else {
-                        System.out.println("Khong tim thay chi tiet de xoa!");
+                        System.out.println("Khong tim thay chi tiet " + maCTPP + " de xoa!");
                     }
                 }
                 case 0 -> System.out.println("Quay lai menu phieu phat.");
@@ -172,8 +176,15 @@ public class QLPhieuPhat extends QLThuVien {
         for (int i = 0; i < k; i++) {
             System.out.println("--- Chi tiet vi pham thu " + (i + 1) + " ---");
             ChiTietPhieuPhat ct = new ChiTietPhieuPhat();
+            ct.setMaCTPP(dsCTPP.taoMaCTPPMoi());
             ct.Input(pp.getMaPP(), dsQDP, dsBook);
-            double tien = dsQDP.TinhTienPhat(ct.getMaLD(), soNgayTre, ct.getMaSach(), dsBook);
+            double tien;
+            if ("QD01".equalsIgnoreCase(ct.getMaLD())) {
+                long ngayTinh = (ct.getSoLuong() > 0) ? ct.getSoLuong() : soNgayTre;
+                tien = dsQDP.TinhTienPhat("QD01", ngayTinh, ct.getMaSach(), dsBook);
+            } else {
+                tien = dsQDP.TinhTienPhat(ct.getMaLD(), 0, ct.getMaSach(), dsBook) * ct.getSoLuong();
+            }
             ct.setTienPhat(Math.max(0, tien));
             pp.themChiTiet(ct);
             dsCTPP.Them(ct);
@@ -191,12 +202,7 @@ public class QLPhieuPhat extends QLThuVien {
             System.out.println("Khong tim thay phieu phat de xoa!");
             return;
         }
-        ChiTietPhieuPhat[] cts = dsCTPP.Tim(maPP);
-        if (cts != null) {
-            for (ChiTietPhieuPhat ct : cts) {
-                dsCTPP.Xoa(ct.getMaPP(), ct.getMaSach());
-            }
-        }
+        dsCTPP.XoaTheoMaPP(maPP);
         dsPP.Xoa(maPP);
         System.out.println("Da xoa phieu phat " + maPP + " va toan bo chi tiet lien quan.");
     }

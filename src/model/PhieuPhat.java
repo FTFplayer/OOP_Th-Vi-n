@@ -48,6 +48,15 @@ public class PhieuPhat {
         this.soChiTiet = 0;
     }
 
+    public ChiTietPhieuPhat timChiTietTheoMaCTPP(String maCTPP) {
+        for (int i = 0; i < soChiTiet; i++) {
+            if (dsChiTiet[i] != null && dsChiTiet[i].getMaCTPP().equalsIgnoreCase(maCTPP)) {
+                return dsChiTiet[i];
+            }
+        }
+        return null;
+    }
+
     public ChiTietPhieuPhat timChiTietTheoSach(String maSach) {
         for (int i = 0; i < soChiTiet; i++) {
             if (dsChiTiet[i] != null && dsChiTiet[i].getMaSach().equalsIgnoreCase(maSach)) {
@@ -63,6 +72,21 @@ public class PhieuPhat {
         dsChiTiet[soChiTiet++] = ct;
         capNhatTongTienPhat();
         return true;
+    }
+
+    public boolean xoaChiTietTheoMaCTPP(String maCTPP) {
+        for (int i = 0; i < soChiTiet; i++) {
+            if (dsChiTiet[i] != null && dsChiTiet[i].getMaCTPP().equalsIgnoreCase(maCTPP)) {
+                for (int j = i; j < soChiTiet - 1; j++) {
+                    dsChiTiet[j] = dsChiTiet[j + 1];
+                }
+                soChiTiet--;
+                dsChiTiet = Arrays.copyOf(dsChiTiet, soChiTiet);
+                capNhatTongTienPhat();
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean xoaChiTietTheoSach(String maSach) {
@@ -89,36 +113,66 @@ public class PhieuPhat {
         return tong;
     }
 
+    // Gom nhom theo 3 quy dinh mac dinh QD01, QD02, QD03 -> VD: QD01(S01, S02), QD02(S03), QD03(S04)
     public String getChuoiCacChiTiet() {
         if (soChiTiet == 0) return "(Trong)";
+        String[] qdMacDinh = {"QD01", "QD02", "QD03"};
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < soChiTiet; i++) {
-            if (dsChiTiet[i] != null) {
+        for (String qd : qdMacDinh) {
+            StringBuilder dsSach = new StringBuilder();
+            for (int i = 0; i < soChiTiet; i++) {
+                if (dsChiTiet[i] != null && qd.equalsIgnoreCase(dsChiTiet[i].getMaLD())) {
+                    if (dsSach.length() > 0) dsSach.append(", ");
+                    dsSach.append(dsChiTiet[i].getMaSach());
+                }
+            }
+            if (dsSach.length() > 0) {
                 if (sb.length() > 0) sb.append(", ");
-                sb.append(dsChiTiet[i].getMaSach()).append("(").append(dsChiTiet[i].getMaLD()).append(")");
+                sb.append(qd).append("(").append(dsSach).append(")");
+            }
+        }
+        // Cac ma quy dinh ngoai QD01/QD02/QD03 (neu co)
+        for (int i = 0; i < soChiTiet; i++) {
+            if (dsChiTiet[i] == null) continue;
+            String ld = dsChiTiet[i].getMaLD();
+            if (!"QD01".equalsIgnoreCase(ld) && !"QD02".equalsIgnoreCase(ld) && !"QD03".equalsIgnoreCase(ld)) {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(ld).append("(").append(dsChiTiet[i].getMaSach()).append(")");
             }
         }
         return sb.toString();
     }
 
-    // Bang chi tiet cua rieng 1 phieu phat (da bo cot MA PP du thua)
+    // Bang chi tiet cua rieng 1 phieu phat (gom nhom theo QD01 -> QD02 -> QD03, co MA CTPP, bo MA PP)
     public void xuatChiTiet() {
         if (soChiTiet == 0) {
             System.out.println("  (Phieu phat " + maPP + " chua co chi tiet vi pham)");
             return;
         }
         System.out.println("  Chi tiet phieu phat " + maPP + " (Tong tien phat: " + (long) tongSoTienPhat + " VND):");
-        System.out.println("  +------------+------------------------+-------------+-------------------------------------+");
-        System.out.printf("  | %-10s | %-22s | %-11s | %-35s |%n",
-                "MA SACH", "TIEN PHAT", "MA QUY DINH", "LY DO CHI TIET");
-        System.out.println("  +------------+------------------------+-------------+-------------------------------------+");
+        System.out.println("  Tom tat theo quy dinh: " + getChuoiCacChiTiet());
+        System.out.println("  +-----------+-------------+------------+------------------------+-------------------------------------+");
+        System.out.printf("  | %-9s | %-11s | %-10s | %-22s | %-35s |%n",
+                "MA CTPP", "MA QUY DINH", "MA SACH", "TIEN PHAT", "LY DO CHI TIET");
+        System.out.println("  +-----------+-------------+------------+------------------------+-------------------------------------+");
+        String[] qdMacDinh = {"QD01", "QD02", "QD03"};
+        for (String qd : qdMacDinh) {
+            for (int i = 0; i < soChiTiet; i++) {
+                if (dsChiTiet[i] != null && qd.equalsIgnoreCase(dsChiTiet[i].getMaLD())) {
+                    System.out.print("  ");
+                    dsChiTiet[i].OutputTrongPhieu();
+                }
+            }
+        }
         for (int i = 0; i < soChiTiet; i++) {
-            if (dsChiTiet[i] != null) {
+            if (dsChiTiet[i] == null) continue;
+            String ld = dsChiTiet[i].getMaLD();
+            if (!"QD01".equalsIgnoreCase(ld) && !"QD02".equalsIgnoreCase(ld) && !"QD03".equalsIgnoreCase(ld)) {
                 System.out.print("  ");
                 dsChiTiet[i].OutputTrongPhieu();
             }
         }
-        System.out.println("  +------------+------------------------+-------------+-------------------------------------+");
+        System.out.println("  +-----------+-------------+------------+------------------------+-------------------------------------+");
     }
 
     public void Input(DSPhieuPhat ds1, DSPhieuMuon ds2) {

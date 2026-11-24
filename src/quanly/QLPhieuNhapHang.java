@@ -3,6 +3,7 @@ package quanly;
 import danhsach.DSChiTietPhieuNhapHang;
 import danhsach.DSPhieuNhapHang;
 import java.util.Scanner;
+import model.Book;
 import model.ChiTietPhieuNhapHang;
 import model.PhieuMuon;
 import model.PhieuNhapHang;
@@ -53,6 +54,7 @@ public class QLPhieuNhapHang extends QLThuVien {
                     themPhieuNhap(sc);
                     dsPNH.WriteFile();
                     dsCTPNH.WriteFile();
+                    dsBook.WriteFile();
                 }
                 case 3 -> timPhieuNhap(sc);
                 case 4 -> {
@@ -63,6 +65,7 @@ public class QLPhieuNhapHang extends QLThuVien {
                     xoaPhieuNhap(sc);
                     dsPNH.WriteFile();
                     dsCTPNH.WriteFile();
+                    dsBook.WriteFile();
                 }
                 case 6 -> thongKe(sc);
                 case 7 -> menuChiTietCuaPhieu(sc);
@@ -76,6 +79,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         dsPNH.ReadFile();
         dsCTPNH.ReadFile();
         dsPNH.napChiTiet(dsCTPNH);
+        dsBook.ReadFile();
         dsPNH.Output();
 
         System.out.print("Nhap ma phieu nhap can quan ly chi tiet (VD: PNH001): ");
@@ -104,23 +108,11 @@ public class QLPhieuNhapHang extends QLThuVien {
             switch (choice) {
                 case 1 -> pnh.xuatChiTiet();
                 case 2 -> {
-                    ChiTietPhieuNhapHang ct = new ChiTietPhieuNhapHang();
-                    String maCTMoi = dsCTPNH.taoMaCTMoi();
-                    ct.setMaCT(maCTMoi);
-                    ct.setMaPNH(pnh.getMaPNH());
-                    System.out.println("-> Ma chi tiet tu dong: " + maCTMoi);
-                    System.out.print("Nhap ma sach (VD: S01): ");
-                    ct.setMaSach(sc.nextLine().trim());
-                    ct.setSoLuong(nhapSoDuong(sc, "Nhap so luong nhap: "));
-                    ct.setDonGia(nhapSoThucDuong(sc, "Nhap don gia nhap: "));
-
-                    if (dsCTPNH.Them(ct)) {
-                        pnh.themChiTiet(ct);
+                    if (nhapVaThemChiTiet(sc, pnh)) {
                         dsCTPNH.WriteFile();
                         dsPNH.WriteFile();
-                        System.out.println("=> Them chi tiet " + maCTMoi + " thanh cong! Tong tien moi: " + (long) pnh.getTongTien() + " VND");
-                    } else {
-                        System.out.println("Khong the them chi tiet!");
+                        dsBook.WriteFile();
+                        System.out.println("=> Cap nhat tong tien phieu nhap: " + (long) pnh.getTongTien() + " VND");
                     }
                 }
                 case 3 -> {
@@ -133,13 +125,23 @@ public class QLPhieuNhapHang extends QLThuVien {
                         System.out.println("Khong tim thay chi tiet " + maCT + " trong phieu " + pnh.getMaPNH());
                         break;
                     }
-                    System.out.print("Nhap ma sach moi: ");
-                    ct.setMaSach(sc.nextLine().trim());
-                    ct.setSoLuong(nhapSoDuong(sc, "Nhap so luong moi: "));
-                    ct.setDonGia(nhapSoThucDuong(sc, "Nhap don gia moi: "));
+                    String maSachCu = ct.getMaSach();
+                    int soLuongCu = ct.getSoLuong();
+                    String maSachMoi = nhapMaSachCoSanHoacBo(sc);
+                    if (maSachMoi == null) break;
+                    int soLuongMoi = nhapSoDuong(sc, "Nhap so luong moi: ");
+                    double donGiaMoi = nhapSoThucDuong(sc, "Nhap don gia moi: ");
+
+                    if (!capNhatKhoKhiSuaNhap(maSachCu, soLuongCu, maSachMoi, soLuongMoi)) {
+                        break;
+                    }
+                    ct.setMaSach(maSachMoi);
+                    ct.setSoLuong(soLuongMoi);
+                    ct.setDonGia(donGiaMoi);
                     pnh.capNhatTongTien();
                     dsCTPNH.WriteFile();
                     dsPNH.WriteFile();
+                    dsBook.WriteFile();
                     System.out.println("=> Sua chi tiet thanh cong! Tong tien moi: " + (long) pnh.getTongTien() + " VND");
                 }
                 case 4 -> {
@@ -147,14 +149,20 @@ public class QLPhieuNhapHang extends QLThuVien {
                     if (pnh.getSoChiTiet() == 0) break;
                     System.out.print("Nhap ma chi tiet can xoa: ");
                     String maCT = sc.nextLine().trim();
-                    if (pnh.xoaChiTiet(maCT)) {
-                        dsCTPNH.Xoa(maCT);
-                        dsCTPNH.WriteFile();
-                        dsPNH.WriteFile();
-                        System.out.println("=> Xoa chi tiet thanh cong! Tong tien moi: " + (long) pnh.getTongTien() + " VND");
-                    } else {
+                    ChiTietPhieuNhapHang ct = pnh.timChiTiet(maCT);
+                    if (ct == null) {
                         System.out.println("Khong tim thay chi tiet " + maCT + " trong phieu " + pnh.getMaPNH());
+                        break;
                     }
+                    if (!dsBook.giamKhoKhiHuyNhap(ct.getMaSach(), ct.getSoLuong())) {
+                        break;
+                    }
+                    pnh.xoaChiTiet(maCT);
+                    dsCTPNH.Xoa(maCT);
+                    dsCTPNH.WriteFile();
+                    dsPNH.WriteFile();
+                    dsBook.WriteFile();
+                    System.out.println("=> Xoa chi tiet thanh cong! Tong tien moi: " + (long) pnh.getTongTien() + " VND");
                 }
                 case 0 -> System.out.println("Quay lai menu phieu nhap hang.");
                 default -> System.out.println("Lua chon khong hop le!");
@@ -162,29 +170,144 @@ public class QLPhieuNhapHang extends QLThuVien {
         } while (choice != 0);
     }
 
+    // Nhap 1 dong chi tiet nhap hang: tu dong phan nhanh sach cu / sach moi
+    private boolean nhapVaThemChiTiet(Scanner sc, PhieuNhapHang pnh) {
+        String maCTMoi = dsCTPNH.taoMaCTMoi();
+        System.out.println("-> Ma chi tiet tu dong: " + maCTMoi);
+
+        while (true) {
+            System.out.print("Nhap ma sach (VD: S01): ");
+            String maSach = sc.nextLine().trim();
+            Book sach = dsBook.timkiemBook(maSach);
+
+            if (sach != null) {
+                // Truong hop 1: Sach da co trong DSBook -> cong don SoLuong + SoLuongConLai
+                System.out.println("-> Sach hien co: " + sach.getTenSach()
+                        + " (Ton kho: " + sach.getSoLuongConLai() + "/" + sach.getSoLuong() + ")");
+                int slNhap = nhapSoDuong(sc, "Nhap so luong nhap: ");
+                double donGiaNhap = nhapSoThucDuong(sc, "Nhap don gia nhap: ");
+
+                ChiTietPhieuNhapHang ct = new ChiTietPhieuNhapHang(maCTMoi, pnh.getMaPNH(), sach.getMaSach(), slNhap, donGiaNhap);
+                if (dsCTPNH.Them(ct)) {
+                    dsBook.nhapHangSachCu(sach.getMaSach(), slNhap);
+                    pnh.themChiTiet(ct);
+                    System.out.println("=> Da cong them " + slNhap + " cuon vao kho cho sach " + sach.getMaSach());
+                    return true;
+                }
+                return false;
+            } else {
+                // Truong hop 2: Sach chua co trong DSBook -> hoi xac nhan tao sach moi
+                System.out.print("Ma sach " + maSach + " chua co trong kho, them sach moi luon khong? (Y/N): ");
+                String chon = sc.nextLine().trim();
+                if (!chon.equalsIgnoreCase("Y")) {
+                    System.out.print("Ban co muon nhap lai ma sach khac khong? (Y/N): ");
+                    if (sc.nextLine().trim().equalsIgnoreCase("Y")) {
+                        continue;
+                    }
+                    return false;
+                }
+                while (!dsBook.CheckHopLe(maSach) || dsBook.CheckMaSach(maSach)) {
+                    System.out.print("Ma sach khong hop le (phai co dang Sxx). Nhap lai ma sach: ");
+                    maSach = sc.nextLine().trim();
+                }
+                int slNhap = nhapSoDuong(sc, "Nhap so luong nhap: ");
+                double donGiaNhap = nhapSoThucDuong(sc, "Nhap don gia nhap: ");
+
+                if (dsBook.themSachTuPhieuNhap(maSach, slNhap, donGiaNhap, dstl)) {
+                    ChiTietPhieuNhapHang ct = new ChiTietPhieuNhapHang(maCTMoi, pnh.getMaPNH(), maSach, slNhap, donGiaNhap);
+                    if (dsCTPNH.Them(ct)) {
+                        pnh.themChiTiet(ct);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+
+    private String nhapMaSachCoSanHoacBo(Scanner sc) {
+        while (true) {
+            System.out.print("Nhap ma sach moi (phai ton tai trong DS sach, bo trong de huy): ");
+            String ma = sc.nextLine().trim();
+            if (ma.isEmpty()) return null;
+            if (dsBook.timkiemBook(ma) != null) return ma;
+            System.out.println("Khong tim thay ma sach " + ma + " trong kho!");
+        }
+    }
+
+    private boolean capNhatKhoKhiSuaNhap(String maSachCu, int soLuongCu, String maSachMoi, int soLuongMoi) {
+        if (maSachCu.equalsIgnoreCase(maSachMoi)) {
+            if (soLuongMoi > soLuongCu) {
+                return dsBook.nhapHangSachCu(maSachMoi, soLuongMoi - soLuongCu);
+            }
+            if (soLuongMoi < soLuongCu) {
+                return dsBook.giamKhoKhiHuyNhap(maSachMoi, soLuongCu - soLuongMoi);
+            }
+            return true;
+        }
+        if (!dsBook.giamKhoKhiHuyNhap(maSachCu, soLuongCu)) {
+            return false;
+        }
+        if (!dsBook.nhapHangSachCu(maSachMoi, soLuongMoi)) {
+            dsBook.nhapHangSachCu(maSachCu, soLuongCu);
+            return false;
+        }
+        return true;
+    }
+
+    private String nhapMaNCCHopLe(Scanner sc) {
+        dsProvider.ReadFile();
+        while (true) {
+            System.out.print("Nhap ma nha cung cap (VD: NCC01): ");
+            String maNCC = sc.nextLine().trim();
+            if (dsProvider.Tim(maNCC) != -1) return maNCC;
+            System.out.println("Ma nha cung cap khong ton tai! Vui long nhap lai.");
+        }
+    }
+
+    private String nhapMaNVHopLe(Scanner sc) {
+        dsEmployee.ReadFile();
+        while (true) {
+            System.out.print("Nhap ma nhan vien (VD: NV01): ");
+            String maNV = sc.nextLine().trim();
+            if (dsEmployee.TimEmployeeTheoMa(maNV) != -1) return maNV;
+            System.out.println("Ma nhan vien khong ton tai! Vui long nhap lai.");
+        }
+    }
+
     private void themPhieuNhap(Scanner sc) {
+        dsBook.ReadFile();
         PhieuNhapHang pnh = new PhieuNhapHang();
-        pnh.Input(sc);
+        String maPNH;
+        while (true) {
+            System.out.print("Nhap ma phieu nhap hang (VD: PNH021): ");
+            maPNH = sc.nextLine().trim();
+            if (!maPNH.isEmpty() && dsPNH.TimTheoMa(maPNH) == null) break;
+            System.out.println("Ma phieu nhap rong hoac da ton tai! Vui long nhap lai.");
+        }
+        pnh.setMaPNH(maPNH);
+        pnh.setMaNCC(nhapMaNCCHopLe(sc));
+        pnh.setMaNV(nhapMaNVHopLe(sc));
+        while (true) {
+            System.out.print("Nhap ngay nhap (dd/MM/yyyy): ");
+            String ngay = sc.nextLine().trim();
+            if (PhieuMuon.isValidDate(ngay)) {
+                pnh.setNgayNhap(ngay);
+                break;
+            }
+            System.out.println("Ngay khong hop le (dd/MM/yyyy)!");
+        }
+        pnh.setTongTien(0);
+
         if (!dsPNH.Them(pnh)) {
-            System.out.println("Ma phieu nhap da ton tai.");
+            System.out.println("Khong the them phieu nhap!");
             return;
         }
         System.out.print("Phieu nay nhap bao nhieu dau sach? ");
         int k = nhapSo(sc);
         for (int i = 0; i < k; i++) {
-            String maCTMoi = dsCTPNH.taoMaCTMoi();
-            System.out.println("--- Chi tiet sach thu " + (i + 1) + " (Ma tu dong: " + maCTMoi + ") ---");
-            ChiTietPhieuNhapHang ct = new ChiTietPhieuNhapHang();
-            ct.setMaCT(maCTMoi);
-            ct.setMaPNH(pnh.getMaPNH());
-            System.out.print("Nhap ma sach (VD: S01): ");
-            ct.setMaSach(sc.nextLine().trim());
-            ct.setSoLuong(nhapSoDuong(sc, "Nhap so luong nhap: "));
-            ct.setDonGia(nhapSoThucDuong(sc, "Nhap don gia nhap: "));
-
-            if (dsCTPNH.Them(ct)) {
-                pnh.themChiTiet(ct);
-            }
+            System.out.println("--- Chi tiet sach thu " + (i + 1) + " ---");
+            nhapVaThemChiTiet(sc, pnh);
         }
         System.out.println("=> Them phieu nhap kem chi tiet thanh cong! Tong tien: " + (long) pnh.getTongTien() + " VND");
     }
@@ -209,10 +332,8 @@ public class QLPhieuNhapHang extends QLThuVien {
             System.out.println("Khong tim thay phieu nhap.");
             return;
         }
-        System.out.print("Nhap ma nha cung cap moi: ");
-        item.setMaNCC(sc.nextLine().trim());
-        System.out.print("Nhap ma nhan vien moi: ");
-        item.setMaNV(sc.nextLine().trim());
+        item.setMaNCC(nhapMaNCCHopLe(sc));
+        item.setMaNV(nhapMaNVHopLe(sc));
         while (true) {
             System.out.print("Nhap ngay nhap moi (dd/MM/yyyy): ");
             String ngay = sc.nextLine().trim();
@@ -227,6 +348,7 @@ public class QLPhieuNhapHang extends QLThuVien {
     }
 
     private void xoaPhieuNhap(Scanner sc) {
+        dsBook.ReadFile();
         System.out.print("Nhap ma phieu nhap can xoa: ");
         String maPNH = sc.nextLine().trim();
         PhieuNhapHang pnh = dsPNH.TimTheoMa(maPNH);
@@ -236,10 +358,18 @@ public class QLPhieuNhapHang extends QLThuVien {
         }
         ChiTietPhieuNhapHang[] cts = dsCTPNH.TimTheoMaPNH(maPNH);
         for (ChiTietPhieuNhapHang ct : cts) {
+            if (!dsBook.coTheGiamKhoKhiHuyNhap(ct.getMaSach(), ct.getSoLuong())) {
+                System.out.println("Khong the xoa phieu nhap " + maPNH
+                        + " vi sach " + ct.getMaSach() + " khong du ton kho de tru nguoc (da co nguoi muon)!");
+                return;
+            }
+        }
+        for (ChiTietPhieuNhapHang ct : cts) {
+            dsBook.giamKhoKhiHuyNhap(ct.getMaSach(), ct.getSoLuong());
             dsCTPNH.Xoa(ct.getMaCT());
         }
         dsPNH.Xoa(maPNH);
-        System.out.println("Da xoa phieu nhap " + maPNH + " va toan bo chi tiet lien quan.");
+        System.out.println("Da xoa phieu nhap " + maPNH + ", xoa chi tiet va cap nhat lai kho sach.");
     }
 
     private void thongKe(Scanner sc) {

@@ -45,6 +45,12 @@ public class ReferenceBook extends Book {
         nhapThongTinRieng();
     }
 
+    @Override
+    public void InputTuPhieuNhap(double donGia, int soLuong) {
+        super.InputTuPhieuNhap(donGia, soLuong);
+        nhapThongTinRieng();
+    }
+
     private void nhapThongTinRieng() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nhap linh vuc tham khao: ");

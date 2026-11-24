@@ -19,8 +19,6 @@ public class QLQuyDinhPhat extends QLThuVien {
             System.out.println("| 5) Xoa quy dinh theo ma                   |");
             System.out.println("| 6) Sua quy dinh theo ma                   |");
             System.out.println("| 7) Thong ke so quy dinh                   |");
-            System.out.println("| 8) Ghi file                               |");
-            System.out.println("| 9) Doc file                               |");
             System.out.println("| 0) Thoat menu quy dinh                    |");
             System.out.println("+-------------------------------------------+");
             System.out.print("Nhap lua chon tu 0 - 9: ");
@@ -54,8 +52,6 @@ public class QLQuyDinhPhat extends QLThuVien {
                     dsQDP.WriteFile();
                 }
                 case 7 -> dsQDP.ThongKe();
-                case 8 -> dsQDP.WriteFile();
-                case 9 -> dsQDP.ReadFile();
                 case 0 -> System.out.println("Thoat menu quy dinh phat.");
                 default -> System.out.println("Lua chon khong hop le.");
             }

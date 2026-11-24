@@ -52,6 +52,11 @@ public class ChiTietPhieuMuon {
         System.out.printf("%-12s %-12s %-12s %-10d%n", maCT, maPM, maSach, soLuong);
     }
 
+    // In ben trong 1 phieu muon cu the (bo cot MA PM du thua, co khung dong bo)
+    public void OutputTrongPhieu() {
+        System.out.printf("| %-10s | %-10s | %-8d |%n", maCT, maSach, soLuong);
+    }
+
     public void output() {
         Output();
     }

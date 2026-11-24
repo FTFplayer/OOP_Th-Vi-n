@@ -121,17 +121,17 @@ public class PhieuNhapHang {
             return;
         }
         System.out.println("  Chi tiet phieu nhap " + maPNH + " (Tong tien: " + (long) tongTien + " VND):");
-        System.out.println("  +------------+------------+------------+----------+--------------+----------------+");
-        System.out.printf("  | %-10s | %-10s | %-10s | %-8s | %-12s | %-14s |%n",
-                "MA CT", "MA PNH", "MA SACH", "SO LUONG", "DON GIA", "THANH TIEN");
-        System.out.println("  +------------+------------+------------+----------+--------------+----------------+");
+        System.out.println("  +------------+------------+----------+--------------+----------------+");
+        System.out.printf("  | %-10s | %-10s | %-8s | %-12s | %-14s |%n",
+                "MA CT", "MA SACH", "SO LUONG", "DON GIA", "THANH TIEN");
+        System.out.println("  +------------+------------+----------+--------------+----------------+");
         for (int i = 0; i < soChiTiet; i++) {
             if (dsChiTiet[i] != null) {
                 System.out.print("  ");
-                dsChiTiet[i].Output();
+                dsChiTiet[i].OutputTrongPhieu();
             }
         }
-        System.out.println("  +------------+------------+------------+----------+--------------+----------------+");
+        System.out.println("  +------------+------------+----------+--------------+----------------+");
     }
 
     public void Input(Scanner sc) {

@@ -228,6 +228,38 @@ public abstract class Book {
         updateStatus();
     }
 
+    public void InputTuPhieuNhap(double donGia, int soLuong) {
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.print("Nhap ten sach: ");
+            this.TenSach = sc.nextLine().trim();
+            if (!this.TenSach.isEmpty()) {
+                break;
+            }
+            System.out.println("Ten sach khong duoc de trong!");
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        while (true) {
+            System.out.print("Nhap ngay xuat ban (dd/MM/yyyy): ");
+            String strNgay = sc.nextLine().trim();
+            try {
+                LocalDate temp = LocalDate.parse(strNgay, formatter);
+                if (temp.isAfter(LocalDate.now())) {
+                    System.out.println("Ngay xuat ban khong the lon hon ngay hien tai. Vui long nhap lai!");
+                    continue;
+                }
+                this.NgayXB = temp;
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Ngay xuat ban khong dung dinh dang dd/MM/yyyy. Vui long nhap lai!");
+            }
+        }
+        this.DonGia = donGia;
+        this.SoLuong = soLuong;
+        this.SoLuongConLai = soLuong;
+        updateStatus();
+    }
+
     public void updateStatus() {
         if (this.SoLuongConLai > 0) {
             this.TrangThai = "Con sach";

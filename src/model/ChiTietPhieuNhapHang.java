@@ -108,6 +108,12 @@ public class ChiTietPhieuNhapHang {
                 maCT, maPNH, maSach, soLuong, donGia, getThanhTien());
     }
 
+    // In ben trong 1 phieu nhap cu the (bo cot MA PNH du thua)
+    public void OutputTrongPhieu() {
+        System.out.printf("| %-10s | %-10s | %-8d | %-12.0f | %-14.0f |%n",
+                maCT, maSach, soLuong, donGia, getThanhTien());
+    }
+
     public void output() {
         Output();
     }

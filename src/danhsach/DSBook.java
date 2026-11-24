@@ -1,4 +1,4 @@
-    package danhsach;
+package danhsach;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -417,6 +417,88 @@ public class DSBook implements DanhSach {
         } else {
             System.out.println("Khong tim thay sach co ma: " + ma);
         }
+    }
+
+    // Tang ca SoLuong tong va SoLuongConLai khi nhap them sach da co trong kho
+    public boolean nhapHangSachCu(String maSach, int soLuongNhap) {
+        Book sach = timkiemBook(maSach);
+        if (sach == null || soLuongNhap <= 0) {
+            return false;
+        }
+        sach.setSoLuong(sach.getSoLuong() + soLuongNhap);
+        sach.setSoLuongConLai(sach.getSoLuongConLai() + soLuongNhap);
+        sach.updateStatus();
+        return true;
+    }
+
+    // Kiem tra co du ton kho de tru nguoc khi sua/xoa phieu nhap hay khong
+    public boolean coTheGiamKhoKhiHuyNhap(String maSach, int soLuongTru) {
+        Book sach = timkiemBook(maSach);
+        if (sach == null || soLuongTru <= 0) {
+            return false;
+        }
+        return sach.getSoLuong() >= soLuongTru && sach.getSoLuongConLai() >= soLuongTru;
+    }
+
+    // Tru nguoc ca SoLuong tong va SoLuongConLai khi xoa/giam chi tiet nhap hang
+    public boolean giamKhoKhiHuyNhap(String maSach, int soLuongTru) {
+        Book sach = timkiemBook(maSach);
+        if (sach == null) {
+            System.out.println("Khong tim thay sach co ma: " + maSach);
+            return false;
+        }
+        if (soLuongTru <= 0) {
+            return false;
+        }
+        if (sach.getSoLuongConLai() < soLuongTru || sach.getSoLuong() < soLuongTru) {
+            System.out.println("Khong the giam/xoa phieu nhap vi sach " + maSach
+                    + " chi con " + sach.getSoLuongConLai() + " cuon trong kho (da co nguoi muon)!");
+            return false;
+        }
+        sach.setSoLuong(sach.getSoLuong() - soLuongTru);
+        sach.setSoLuongConLai(sach.getSoLuongConLai() - soLuongTru);
+        sach.updateStatus();
+        return true;
+    }
+
+    // Tinh don gia ban tu don gia nhap (+10,000 VND de co loi nhuan)
+    public static double tinhDonGiaBan(double donGiaNhap) {
+        return donGiaNhap + 10000;
+    }
+
+    // Them sach moi hoan toan tu Phieu Nhap Hang (tai su dung kiem tra TL/TG/NXB cua DSBook)
+    public boolean themSachTuPhieuNhap(String maSach, int soLuongNhap, double donGiaNhap, DSTheLoai dstl) {
+        if (!CheckHopLe(maSach) || CheckMaSach(maSach)) {
+            return false;
+        }
+        if (dstl == null) {
+            dstl = taoDSTheLoaiDaDoc();
+        } else {
+            dstl.ReadFile();
+        }
+        DSAuthor dsAuthor = new DSAuthor();
+        dsAuthor.ReadFile();
+        DSPublisher dsPublisher = new DSPublisher();
+        dsPublisher.ReadFile();
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n--- NHAP THONG TIN CHO SACH MOI [" + maSach + "] ---");
+        int loai = chonLoaiSach(sc);
+        Book sachMoi = (loai == 1) ? new EducationBook() : new ReferenceBook();
+
+        sachMoi.setMaSach(maSach);
+        sachMoi.setMaTheLoai(nhapMaTheLoaiHopLe(sc, dstl));
+        sachMoi.setMaTG(nhapMaTacGiaHopLe(sc, dsAuthor));
+        sachMoi.setMaNXB(nhapMaNXBHopLe(sc, dsPublisher));
+        double donGiaBan = tinhDonGiaBan(donGiaNhap);
+        sachMoi.InputTuPhieuNhap(donGiaBan, soLuongNhap);
+
+        ds = Arrays.copyOf(ds, n + 1);
+        ds[n] = sachMoi;
+        n++;
+        Book.setTongSoDauSach(n);
+        System.out.println("=> Da them sach moi " + maSach + " vao danh sach sach! (Gia nhap: " + (long) donGiaNhap + " -> Gia ban: " + (long) donGiaBan + " VND)");
+        return true;
     }
 
     public Book timkiemBook(String ma) {
