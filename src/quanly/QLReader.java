@@ -1,7 +1,5 @@
 package quanly;
 
-import danhsach.DSReader;
-
 import java.util.Scanner;
 
 public class QLReader extends QLThuVien {

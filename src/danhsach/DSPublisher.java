@@ -1,13 +1,12 @@
 package danhsach;
 
-import model.Publisher;
-
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Scanner;
+import model.Publisher;
 
 public class DSPublisher implements DanhSach {
     // 1. Thuoc tinh
@@ -199,7 +198,6 @@ public class DSPublisher implements DanhSach {
         Scanner sc = new Scanner(System.in);
         dsnxb = Arrays.copyOf(dsnxb, n + 1);
         dsnxb[n] = new Publisher();
-        System.out.println("Nhap thong tin nha xuat ban moi:");
         System.out.print("Nhap ma nha xuat ban: ");
         String MaNXB = sc.nextLine().trim();
 

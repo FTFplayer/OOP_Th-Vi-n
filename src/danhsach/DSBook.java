@@ -1,4 +1,4 @@
-package danhsach;
+    package danhsach;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -425,6 +425,44 @@ public class DSBook implements DanhSach {
             return ds[vt];
         }
         return null;
+    }
+
+    public boolean giamSoLuong(String maSach, int soLuongMuon) {
+        if (soLuongMuon <= 0) {
+            return false;
+        }
+
+        Book sach = timkiemBook(maSach);
+        if (sach == null) {
+            System.out.println("Khong tim thay sach co ma: " + maSach);
+            return false;
+        }
+
+        int soLuongConLai = sach.getSoLuongConLai();
+        if (soLuongConLai < soLuongMuon) {
+            System.out.println("Sach " + maSach + " khong du so luong. Con lai: " + soLuongConLai);
+            return false;
+        }
+
+        sach.setSoLuongConLai(soLuongConLai - soLuongMuon);
+        WriteFile();
+        return true;
+    }
+
+    public boolean tangSoLuong(String maSach, int soLuongTra) {
+        if (soLuongTra <= 0) {
+            return false;
+        }
+
+        Book sach = timkiemBook(maSach);
+        if (sach == null) {
+            System.out.println("Khong tim thay sach co ma: " + maSach);
+            return false;
+        }
+
+        sach.setSoLuongConLai(sach.getSoLuongConLai() + soLuongTra);
+        WriteFile();
+        return true;
     }
 
     public void timTheoTenSach() {

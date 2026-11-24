@@ -337,6 +337,23 @@ public class DSPhieuPhat implements DanhSach {
         System.out.println("+-----------------------------------------+");
     }
 
+    // Tu dong sinh ma phieu phat tiep theo (VD: PP020 -> PP021)
+    public String taoMaPPMoi() {
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            if (dsPhieuPhat[i] != null && dsPhieuPhat[i].getMaPP() != null) {
+                String digits = dsPhieuPhat[i].getMaPP().replaceAll("[^0-9]", "");
+                if (!digits.isEmpty()) {
+                    try {
+                        int val = Integer.parseInt(digits);
+                        if (val > max) max = val;
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+        }
+        return String.format("PP%03d", max + 1);
+    }
+    
     @Override
     public void ReadFile() {
         int count = 0;

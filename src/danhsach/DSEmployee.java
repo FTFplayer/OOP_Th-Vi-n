@@ -1,16 +1,15 @@
 package danhsach;
 
-import model.Employee;
-
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Scanner;
+import model.Employee;
 
 public class DSEmployee implements DanhSach {
     // 1. Thuoc tinh
@@ -225,7 +224,6 @@ public class DSEmployee implements DanhSach {
         Scanner sc = new Scanner(System.in);
         dsnv = Arrays.copyOf(dsnv, n + 1);
         dsnv[n] = new Employee();
-        System.out.println("Nhap thong tin nhan vien moi:");
         System.out.print("Nhap ma nhan vien: ");
         String MaNV = sc.nextLine().trim();
 

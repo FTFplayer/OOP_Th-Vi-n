@@ -187,8 +187,7 @@ public class DSReader implements DanhSach {
         dsdocgia = Arrays.copyOf(dsdocgia, n + 1);
         Scanner sc = new Scanner(System.in);
         dsdocgia[n] = new Reader();
-        System.out.println("Nhap thong tin doc gia moi:");
-        System.out.println("Nhap ma doc gia: ");
+        System.out.print("Nhap ma doc gia: ");
         String MaDG = sc.nextLine().trim();
 
         while (CheckMaDG(MaDG) || !CheckHopLe(MaDG)) {
