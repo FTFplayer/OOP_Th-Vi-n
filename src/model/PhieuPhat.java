@@ -89,7 +89,6 @@ public class PhieuPhat {
         return tong;
     }
 
-    // Chuoi liet ke cac chi tiet vi pham (MaSach-MaLD) de hien len cot "Cac chi tiet"
     public String getChuoiCacChiTiet() {
         if (soChiTiet == 0) return "(Trong)";
         StringBuilder sb = new StringBuilder();
@@ -102,22 +101,24 @@ public class PhieuPhat {
         return sb.toString();
     }
 
+    // Bang chi tiet cua rieng 1 phieu phat (da bo cot MA PP du thua)
     public void xuatChiTiet() {
         if (soChiTiet == 0) {
             System.out.println("  (Phieu phat " + maPP + " chua co chi tiet vi pham)");
             return;
         }
         System.out.println("  Chi tiet phieu phat " + maPP + " (Tong tien phat: " + (long) tongSoTienPhat + " VND):");
-        System.out.println("  +----------+------------+-----------------+----------+");
-        System.out.printf("  | %-8s | %-10s | %-15s | %-8s |%n", "MA PP", "MA SACH", "TIEN PHAT", "MA LYDO");
-        System.out.println("  +----------+------------+-----------------+----------+");
+        System.out.println("  +------------+------------------------+----------+-------------------------------------+");
+        System.out.printf("  | %-10s | %-22s | %-8s | %-35s |%n",
+                "MA SACH", "TIEN PHAT", "MA LYDO", "LY DO CHI TIET");
+        System.out.println("  +------------+------------------------+----------+-------------------------------------+");
         for (int i = 0; i < soChiTiet; i++) {
             if (dsChiTiet[i] != null) {
                 System.out.print("  ");
-                dsChiTiet[i].Output();
+                dsChiTiet[i].OutputTrongPhieu();
             }
         }
-        System.out.println("  +----------+------------+-----------------+----------+");
+        System.out.println("  +------------+------------------------+----------+-------------------------------------+");
     }
 
     public void Input(DSPhieuPhat ds1, DSPhieuMuon ds2) {
@@ -153,14 +154,26 @@ public class PhieuPhat {
         return s.substring(0, maxLen - 2) + "..";
     }
 
+    // Cat gon sau dau phay cuoi cung de khong bi cat ngang ma sach (VD: S01(QD01), S02(QD02), ..)
+    private String catChuoiTheoDauPhay(String s, int maxLen) {
+        if (s == null) return "";
+        if (s.length() <= maxLen) return s;
+        String phanDau = s.substring(0, maxLen - 3);
+        int lastComma = phanDau.lastIndexOf(",");
+        if (lastComma > 0) {
+            return phanDau.substring(0, lastComma + 1) + " ..";
+        }
+        return s.substring(0, maxLen - 2) + "..";
+    }
+
     public void Output() {
         String strNgay = (ngayPhat != null) ? ngayPhat.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
-        System.out.printf("| %-10s | %-10s | %-10s | %-12.0f | %-28s |%n",
+        System.out.printf("| %-10s | %-10s | %-10s | %-12.0f | %-55s |%n",
                 catChuoi(maPP, 10),
                 catChuoi(maPM, 10),
                 strNgay,
                 tongSoTienPhat,
-                catChuoi(getChuoiCacChiTiet(), 28));
+                catChuoiTheoDauPhay(getChuoiCacChiTiet(), 55));
     }
 
     public long tinhSoTraNgayTre(LocalDate ngayQuyDinhTra) {

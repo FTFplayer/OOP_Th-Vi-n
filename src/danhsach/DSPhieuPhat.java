@@ -49,15 +49,31 @@ public class DSPhieuPhat implements DanhSach {
         }
     }
 
+    public String taoMaPPMoi() {
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            if (dsPhieuPhat[i] != null && dsPhieuPhat[i].getMaPP() != null) {
+                String digits = dsPhieuPhat[i].getMaPP().replaceAll("[^0-9]", "");
+                if (!digits.isEmpty()) {
+                    try {
+                        int val = Integer.parseInt(digits);
+                        if (val > max) max = val;
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+        }
+        return String.format("PP%03d", max + 1);
+    }
+
     public void PrintHeader() {
-        System.out.println("+------------+------------+------------+--------------+------------------------------+");
-        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-28s |%n",
+        System.out.println("+------------+------------+------------+--------------+---------------------------------------------------------+");
+        System.out.printf("| %-10s | %-10s | %-10s | %-12s | %-55s |%n",
                 "MA PP", "MA PM", "NGAY PHAT", "SO TIEN PHAT", "CAC CHI TIET");
-        System.out.println("+------------+------------+------------+--------------+------------------------------+");
+        System.out.println("+------------+------------+------------+--------------+---------------------------------------------------------+");
     }
 
     public void PrintFooter() {
-        System.out.println("+------------+------------+------------+--------------+------------------------------+");
+        System.out.println("+------------+------------+------------+--------------+---------------------------------------------------------+");
     }
 
     public void Input(DSPhieuMuon dspm) {
@@ -337,23 +353,6 @@ public class DSPhieuPhat implements DanhSach {
         System.out.println("+-----------------------------------------+");
     }
 
-    // Tu dong sinh ma phieu phat tiep theo (VD: PP020 -> PP021)
-    public String taoMaPPMoi() {
-        int max = 0;
-        for (int i = 0; i < n; i++) {
-            if (dsPhieuPhat[i] != null && dsPhieuPhat[i].getMaPP() != null) {
-                String digits = dsPhieuPhat[i].getMaPP().replaceAll("[^0-9]", "");
-                if (!digits.isEmpty()) {
-                    try {
-                        int val = Integer.parseInt(digits);
-                        if (val > max) max = val;
-                    } catch (NumberFormatException ignored) {}
-                }
-            }
-        }
-        return String.format("PP%03d", max + 1);
-    }
-    
     @Override
     public void ReadFile() {
         int count = 0;

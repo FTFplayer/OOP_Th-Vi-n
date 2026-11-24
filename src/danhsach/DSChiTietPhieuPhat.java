@@ -35,6 +35,17 @@ public class DSChiTietPhieuPhat implements DanhSach {
 
     public int getSoLuong() { return n; }
 
+    public void PrintHeader() {
+        System.out.println("+----------+------------+------------------------+----------+-------------------------------------+");
+        System.out.printf("| %-8s | %-10s | %-22s | %-8s | %-35s |%n",
+                "MA PP", "MA SACH", "TIEN PHAT", "MA LYDO", "LY DO CHI TIET");
+        System.out.println("+----------+------------+------------------------+----------+-------------------------------------+");
+    }
+
+    public void PrintFooter() {
+        System.out.println("+----------+------------+------------------------+----------+-------------------------------------+");
+    }
+
     public void Input(String maPPCurrent, DSQuyDinhPhat listQD, DSBook dsBook) {
         System.out.print("Nhap so luong sach vi pham: ");
         int sl = Integer.parseInt(sc.nextLine().trim());
@@ -50,30 +61,27 @@ public class DSChiTietPhieuPhat implements DanhSach {
     @Override
     public void Output() {
         System.out.println("DANH SACH CHI TIET PHIEU PHAT:");
-        System.out.println("+----------+------------+-----------------+----------+");
-        System.out.printf("| %-8s | %-10s | %-15s | %-8s |%n", "MA PP", "MA SACH", "TIEN PHAT", "MA LYDO");
-        System.out.println("+----------+------------+-----------------+----------+");
+        PrintHeader();
         for (int i = 0; i < n; i++) {
-            if (dsChiTiet[i] != null) {
-                dsChiTiet[i].Output();
-            }
+            if (dsChiTiet[i] != null) dsChiTiet[i].Output();
         }
-        System.out.println("+----------+------------+-----------------+----------+");
+        PrintFooter();
     }
 
     public void Output(String maPP) {
         boolean found = false;
         System.out.println("DANH SACH CHI TIET THEO MA PP: " + maPP);
-        System.out.println("+----------+------------+-----------------+----------+");
-        System.out.printf("| %-8s | %-10s | %-15s | %-8s |%n", "MA PP", "MA SACH", "TIEN PHAT", "MA LYDO");
-        System.out.println("+----------+------------+-----------------+----------+");
+        System.out.println("+------------+---------------------------+----------+-------------------------------------+");
+        System.out.printf("| %-10s | %-22s | %-11s | %-35s |%n",
+                "MA SACH", "TIEN PHAT", "MA QUY DINH", "LY DO CHI TIET");
+        System.out.println("+------------+---------------------------+----------+-------------------------------------+");
         for (int i = 0; i < n; i++) {
             if (dsChiTiet[i] != null && dsChiTiet[i].getMaPP().equalsIgnoreCase(maPP)) {
-                dsChiTiet[i].Output();
+                dsChiTiet[i].OutputTrongPhieu();
                 found = true;
             }
         }
-        System.out.println("+----------+------------+-----------------+----------+");
+        System.out.println("+------------+---------------------------+----------+-------------------------------------+");
         if (!found) {
             System.out.println("Khong tim thay chi tiet nao cho ma PP: " + maPP);
         }
@@ -125,9 +133,7 @@ public class DSChiTietPhieuPhat implements DanhSach {
             }
         }
         if (idx == -1) return false;
-        for (int i = idx; i < n - 1; i++) {
-            dsChiTiet[i] = dsChiTiet[i + 1];
-        }
+        for (int i = idx; i < n - 1; i++) dsChiTiet[i] = dsChiTiet[i + 1];
         dsChiTiet[--n] = null;
         return true;
     }
@@ -137,11 +143,8 @@ public class DSChiTietPhieuPhat implements DanhSach {
         String maPP = sc.nextLine().trim();
         System.out.print("Nhap ma sach can xoa: ");
         String maSach = sc.nextLine().trim();
-        if (Xoa(maPP, maSach)) {
-            System.out.println("Xoa thanh cong!");
-        } else {
-            System.out.println("Khong tim thay chi tiet de xoa!");
-        }
+        if (Xoa(maPP, maSach)) System.out.println("Xoa thanh cong!");
+        else System.out.println("Khong tim thay chi tiet de xoa!");
     }
 
     public void Sua(DSQuyDinhPhat listQD, DSBook dsBook) {
@@ -203,14 +206,23 @@ public class DSChiTietPhieuPhat implements DanhSach {
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine().trim();
                 if (line.isEmpty()) continue;
-                String[] data = line.split(",");
+                String[] data = line.split(",", 6);
                 if (data.length >= 4) {
+                    String lyDo = (data.length >= 5) ? data[4].trim() : "";
+                    int soLuong = 1;
+                    if (data.length >= 6 && !data[5].trim().isEmpty()) {
+                        try {
+                            soLuong = Math.max(1, Integer.parseInt(data[5].trim()));
+                        } catch (NumberFormatException ignored) {}
+                    }
                     dsChiTiet = Arrays.copyOf(dsChiTiet, count + 1);
                     dsChiTiet[count] = new ChiTietPhieuPhat(
                             data[0].trim(),
                             data[1].trim(),
                             Double.parseDouble(data[2].trim()),
-                            data[3].trim());
+                            data[3].trim(),
+                            lyDo,
+                            soLuong);
                     count++;
                 }
             }
@@ -231,11 +243,14 @@ public class DSChiTietPhieuPhat implements DanhSach {
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(filename))) {
             for (int i = 0; i < n; i++) {
                 if (dsChiTiet[i] != null) {
+                    String lyDoSach = dsChiTiet[i].getLD().replace(",", " -");
                     writer.println(
                             dsChiTiet[i].getMaPP() + ","
                             + dsChiTiet[i].getMaSach() + ","
                             + (long) dsChiTiet[i].getTienPhat() + ","
-                            + dsChiTiet[i].getMaLD());
+                            + dsChiTiet[i].getMaLD() + ","
+                            + lyDoSach + ","
+                            + dsChiTiet[i].getSoLuong());
                 }
             }
         } catch (FileNotFoundException e) {
