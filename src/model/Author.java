@@ -183,7 +183,7 @@ public class Author {
     // 5. Phuong thuc xuat
     public void Output() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String dataFormat = "|%-10s|%-12s|%-10s|%-14s|%-10s|%-12s|%n";
+        String dataFormat = "|%-10s|%-15s|%-10s|%-14s|%-10s|%-12s|%n";
         String strNgaySinh = (this.NgaySinh == null) ? "" : this.NgaySinh.format(formatter);
 
         System.out.printf(dataFormat, this.MaTG, this.HoTG, this.TenTG, strNgaySinh, this.GioiTinh, this.SDT);

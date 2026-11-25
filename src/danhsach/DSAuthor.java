@@ -46,10 +46,10 @@ public class DSAuthor implements DanhSach {
     // -----------------------------------------------------------------------------------//
     // 3. In tieu de bang
     public void PrintHeader() {
-        System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
-        System.out.printf("|%-10s|%-12s|%-10s|%-14s|%-10s|%-12s|%n",
+        System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
+        System.out.printf("|%-10s|%-15s|%-10s|%-14s|%-10s|%-12s|%n",
                 "Ma TG", "Ho TG", "Ten TG", "Ngay Sinh", "Gioi Tinh", "SDT");
-        System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+        System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
     }
 
     // -----------------------------------------------------------------------------------//
@@ -106,7 +106,7 @@ public class DSAuthor implements DanhSach {
                 this.dstacgia[i].Output();
             }
         }
-        System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+        System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
     }
 
     // -----------------------------------------------------------------------------------//
@@ -123,7 +123,7 @@ public class DSAuthor implements DanhSach {
             System.out.println("Thong tin tac gia co ma " + MaTGCanTim + ":");
             this.PrintHeader();
             this.dstacgia[index].Output();
-            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+            System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
         } else {
             System.out.println("Khong tim thay tac gia co ma " + MaTGCanTim);
         }
@@ -149,12 +149,12 @@ public class DSAuthor implements DanhSach {
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
             if (this.dstacgia[i] != null && this.dstacgia[i].getHoTG() != null
-                    && this.dstacgia[i].getHoTG().equalsIgnoreCase(HoCanTim)) {
+                    && this.dstacgia[i].getHoTG().toLowerCase().contains(HoCanTim.toLowerCase())) {
                 this.dstacgia[i].Output();
                 count++;
             }
         }
-        System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+        System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
 
         if (count == 0) {
             System.out.println("Khong tim thay tac gia co ho " + HoCanTim);
@@ -171,12 +171,12 @@ public class DSAuthor implements DanhSach {
         this.PrintHeader();
         for (int i = 0; i < n; i++) {
             if (this.dstacgia[i] != null && this.dstacgia[i].getTenTG() != null
-                    && this.dstacgia[i].getTenTG().equalsIgnoreCase(TenCanTim)) {
+                    && this.dstacgia[i].getTenTG().toLowerCase().contains(TenCanTim.toLowerCase())) {
                 this.dstacgia[i].Output();
                 count++;
             }
         }
-        System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+        System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
 
         if (count == 0) {
             System.out.println("Khong tim thay tac gia co ten " + TenCanTim);
@@ -194,7 +194,7 @@ public class DSAuthor implements DanhSach {
             System.out.println("Thong tin tac gia co SDT " + SDTCanTim + ":");
             this.PrintHeader();
             this.dstacgia[index].Output();
-            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+            System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
         } else {
             System.out.println("Khong tim thay tac gia co SDT " + SDTCanTim);
         }
@@ -437,9 +437,9 @@ public class DSAuthor implements DanhSach {
             System.out.println("| 3) Sua ngay sinh tac gia.                 |");
             System.out.println("| 4) Sua gioi tinh tac gia.                 |");
             System.out.println("| 5) Sua so dien thoai tac gia.             |");
-            System.out.println("| 6) Thoat.                                 |");
+            System.out.println("| 0) Thoat.                                 |");
             System.out.println("+-------------------------------------------+");
-            System.out.print("Nhap lua chon tu 1 - 6: ");
+            System.out.print("Nhap lua chon tu 0 - 5: ");
 
             int choice;
             try {
@@ -520,10 +520,10 @@ public class DSAuthor implements DanhSach {
                         break;
                     }
                     break;
-                case 6:
+                case 0:
                     return;
                 default:
-                    System.out.println("Lua chon khong hop le. Vui long chon lai tu 1 den 6!");
+                    System.out.println("Lua chon khong hop le. Vui long chon lai tu 0 den 5!");
             }
         }
     }
@@ -554,7 +554,7 @@ public class DSAuthor implements DanhSach {
                     this.dstacgia[i].Output();
                 }
             }
-            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+            System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
         }
     }
 
@@ -581,7 +581,7 @@ public class DSAuthor implements DanhSach {
                     this.dstacgia[i].Output();
                 }
             }
-            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+            System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
         }
     }
 
@@ -624,7 +624,7 @@ public class DSAuthor implements DanhSach {
                     this.dstacgia[i].Output();
                 }
             }
-            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+            System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
         }
     }
 
