@@ -12,6 +12,9 @@ import model.ChiTietPhieuPhat;
 import model.PhieuMuon;
 import model.PhieuPhat;
 public class QLPhieuMuon extends QLThuVien {
+    private static final DateTimeFormatter FORMAT_NGAY_THONG_KE =
+            DateTimeFormatter.ofPattern("dd/MM/uuuu");
+
     public QLPhieuMuon() {
         super();
     }
@@ -65,7 +68,7 @@ public class QLPhieuMuon extends QLThuVien {
                     dsPM.WriteFile();
                     dsCTPM.WriteFile();
                 }
-                case 6 -> thongKe(sc);
+                case 6 -> menuThongKe(sc);
                 case 7 -> menuChiTietCuaPhieu(sc);
                 case 8 -> traSach(sc);
                 case 0 -> System.out.println("Da thoat khoi Quan ly Phieu Muon.");
@@ -279,6 +282,68 @@ public class QLPhieuMuon extends QLThuVien {
         System.out.println("Tong so sach muon cua phieu " + maPM + ": " + pm.tinhTongSoSach() + " cuon");
         pm.xuatChiTiet();
     }
+
+    private void menuThongKe(Scanner sc) {
+        int choice;
+        do {
+            System.out.println();
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|       MENU THONG KE PHIEU MUON            |");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1) Thong ke sach trong phieu muon         |");
+            System.out.println("| 2) Thong ke theo ngay muon                |");
+            System.out.println("| 0) Quay lai                               |");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Nhap lua chon tu 0 - 2: ");
+            choice = nhapSo(sc);
+            switch (choice) {
+                case 1 -> thongKe(sc);
+                case 2 -> thongKeTheoNgay(sc);
+                case 0 -> { }
+                default -> System.out.println("Lua chon khong hop le.");
+            }
+        } while (choice != 0);
+    }
+
+    private void thongKeTheoNgay(Scanner sc) {
+        dsPM.ReadFile();
+        dsCTPM.ReadFile();
+        dsPM.napChiTiet(dsCTPM);
+
+        LocalDate ngayThongKe = nhapNgayThongKe(sc);
+        int soPhieu = 0;
+        int soSach = 0;
+        int soPhieuNgayKhongHopLe = 0;
+        for (int i = 0; i < dsPM.getSoLuong(); i++) {
+            PhieuMuon pm = dsPM.get(i);
+            LocalDate ngayMuon = pm.getNgayMuon();
+            if (ngayMuon == null) {
+                soPhieuNgayKhongHopLe++;
+                continue;
+            }
+            if (ngayMuon.equals(ngayThongKe)) {
+                soPhieu++;
+                soSach += pm.tinhTongSoSach();
+            }
+        }
+
+        System.out.printf("%nTHONG KE PHIEU MUON NGAY %s%n",
+                ngayThongKe.format(FORMAT_NGAY_THONG_KE));
+        System.out.printf("So phieu muon: %d%nTong so sach muon: %d cuon%n", soPhieu, soSach);
+        if (soPhieuNgayKhongHopLe > 0) {
+            System.out.printf("Bo qua %d phieu co ngay muon khong hop le.%n", soPhieuNgayKhongHopLe);
+        }
+    }
+
+    private LocalDate nhapNgayThongKe(Scanner sc) {
+        while (true) {
+            System.out.print("Nhap ngay muon can thong ke (dd/MM/yyyy): ");
+            String value = sc.nextLine().trim();
+            if (PhieuMuon.isValidDate(value)) return PhieuMuon.parseDate(value);
+            System.out.println("Ngay khong hop le (dd/MM/yyyy).");
+        }
+    }
+
     private void traSach(Scanner sc) {
         dsPM.ReadFile();
         dsCTPM.ReadFile();
