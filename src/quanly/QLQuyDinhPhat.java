@@ -12,16 +12,15 @@ public class QLQuyDinhPhat extends QLThuVien {
             System.out.println("\n+-------------------------------------------+");
             System.out.println("|         MENU QUAN LY QUY DINH PHAT        |");
             System.out.println("+-------------------------------------------+");
-            System.out.println("| 1) Nhap danh sach quy dinh                |");
-            System.out.println("| 2) Xuat danh sach quy dinh                |");
-            System.out.println("| 3) Them quy dinh moi                      |");
-            System.out.println("| 4) Tim quy dinh theo ma                   |");
-            System.out.println("| 5) Xoa quy dinh theo ma                   |");
-            System.out.println("| 6) Sua quy dinh theo ma                   |");
-            System.out.println("| 7) Thong ke so quy dinh                   |");
+            System.out.println("| 1) Xuat danh sach quy dinh                |");
+            System.out.println("| 2) Them quy dinh moi                      |");
+            System.out.println("| 3) Tim quy dinh theo ma                   |");
+            System.out.println("| 4) Xoa quy dinh theo ma                   |");
+            System.out.println("| 5) Sua quy dinh theo ma                   |");
+            System.out.println("| 6) Thong ke so quy dinh                   |");
             System.out.println("| 0) Thoat menu quy dinh                    |");
             System.out.println("+-------------------------------------------+");
-            System.out.print("Nhap lua chon tu 0 - 9: ");
+            System.out.print("Nhap lua chon tu 0 - 6: ");
 
             try {
                 choice = Integer.parseInt(sc.nextLine().trim());
@@ -31,27 +30,23 @@ public class QLQuyDinhPhat extends QLThuVien {
 
             switch (choice) {
                 case 1 -> {
-                    dsQDP.Input();
-                    dsQDP.WriteFile();
-                }
-                case 2 -> {
                     dsQDP.ReadFile();
                     dsQDP.Output();
                 }
-                case 3 -> {
+                case 2 -> {
                     dsQDP.Them();
                     dsQDP.WriteFile();
                 }
-                case 4 -> dsQDP.TimQuyDinh();
-                case 5 -> {
+                case 3 -> dsQDP.TimQuyDinh();
+                case 4 -> {
                     dsQDP.Xoa();
                     dsQDP.WriteFile();
                 }
-                case 6 -> {
+                case 5 -> {
                     dsQDP.Sua();
                     dsQDP.WriteFile();
                 }
-                case 7 -> dsQDP.ThongKe();
+                case 6 -> dsQDP.ThongKe();
                 case 0 -> System.out.println("Thoat menu quy dinh phat.");
                 default -> System.out.println("Lua chon khong hop le.");
             }
