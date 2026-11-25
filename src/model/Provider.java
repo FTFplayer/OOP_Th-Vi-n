@@ -1,8 +1,7 @@
 package model;
 
-import java.util.Scanner;
-
 import danhsach.DSProvider;
+import java.util.Scanner;
 public class Provider{
 //1.Atrribute
     private String MaNCC, tenNCC, diaChi, soDienThoai;
@@ -36,13 +35,12 @@ public void setSoDienThoai(String soDienThoai){ this.soDienThoai = soDienThoai; 
 
 //2.INPUT<OUTPUT>
 public void Input(Scanner sc, DSProvider ds){
-    System.out.println("Tien hanh nhap thong tin Provider");
     do{
-    System.out.print("MA NHA CUNG CAP: ");
+    System.out.print("Nhap ma NCC: ");
     MaNCC= sc.nextLine();
 // xử lý khóa chính
     if(MaNCC.trim().isEmpty() || ds.Tim(MaNCC) != -1){
-        System.out.println("Ma NCC da ton tai___Tien hanh nhap lai ma NCC");
+        System.out.println("Ma NCC da ton tai !! Tien hanh nhap lai ma NCC.");
     }
     else {
         break;
@@ -51,27 +49,23 @@ public void Input(Scanner sc, DSProvider ds){
     }
     while(true);
 
-    System.out.print("TEN NHA CUNG CAP: ");
+    System.out.print("Nhap ten NCC: ");
     tenNCC=sc.nextLine();
-    System.out.print("DIA CHI:");
+    System.out.print("Nhap dia chi:");
     diaChi= sc.nextLine();
-    System.out.print("SO DIEN THOAI: ");
+    System.out.print("Nhap so dien thoai: ");
     soDienThoai= sc.nextLine();
 }
 
 
 
 public void Output(){
-    System.out.printf("|%-10S|%-30s|%-55s|%-15s|\n", MaNCC,tenNCC,diaChi,soDienThoai);
+    String ma = MaNCC != null ? MaNCC : "";
+    String ten = tenNCC != null ? tenNCC : "";
+    String diaChiHienThi = diaChi != null ? diaChi : "";
+    String sdt = soDienThoai != null ? soDienThoai : "";
+    System.out.printf("|%-10s|%-30s|%-55s|%-15s|%n", ma, ten, diaChiHienThi, sdt);
 }
-
-
-
-// public static void main(String[] args) {
-//     Provider nc1= new Provider();
-//     nc1.Input();
-//     nc1.Output();
-// }
 
 
 }

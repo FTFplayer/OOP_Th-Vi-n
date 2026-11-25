@@ -53,20 +53,26 @@ public void Input(){
         }
     }
 
+    public void PrintHeader() {
+        System.out.format("+----------+------------------------------+-------------------------------------------------------+---------------+%n");
+        System.out.printf("|%-10s|%-30s|%-55s|%-15s|%n",
+                "Ma NCC", "Ten NCC", "Dia Chi", "SDT");
+        System.out.format("+----------+------------------------------+-------------------------------------------------------+---------------+%n");
+    }
+
     public void Output() {
-        System.out.println("----------------------------------------------DANH SACH NHA CUNG CAP-------------------------------------------");
-        System.out.println("---------------------------------------------------------------------------------------------------------------");
         if (n == 0) {
-            System.out.println("DANH SACH RONG");
-            System.out.println("---------------------------------------------------------------------------------------------------------------");
+            System.out.println("Danh sach nha cung cap dang trong!");
             return;
         }
 
-        System.out.printf("|%-10S|%-30s|%-55s|%-15s|\n", "MA NCC", "TEN NCC", "DIA CHI", "SO_DIEN_THOAI");
+        PrintHeader();
         for (int i = 0; i < n; i++) {
-            dsProvider[i].Output();
+            if (dsProvider[i] != null) {
+                dsProvider[i].Output();
+            }
         }
-        System.out.println("---------------------------------------------------------------------------------------------------------------");
+        System.out.format("+----------+------------------------------+-------------------------------------------------------+---------------+%n");
     }
 
     public void Show() {
@@ -98,11 +104,10 @@ public void Input(){
 
         int kq = Tim(maNCC);
         if (kq != -1) {
-            System.out.println("---------------------------------------------------------------------------------------------------------------");
-            System.out.println("                           THONG TIN NHA CUNG CAP CO MA NCC:" + maNCC);
-            System.out.println("---------------------------------------------------------------------------------------------------------------");
-            System.out.printf("|%-10S|%-30s|%-55s|%-15s|\n", "MA NCC", "TEN NCC", "DIA CHI", "SO_DIEN_THOAI");
+            System.out.println("Thong tin nha cung cap co ma " + maNCC + ":");
+            PrintHeader();
             dsProvider[kq].Output();
+            System.out.format("+----------+------------------------------+-------------------------------------------------------+---------------+%n");
         } else {
             System.out.println("KHONG TON TAI NCC co ma NCC:" + maNCC);
         }
@@ -116,10 +121,8 @@ public void Input(){
         for (int i = 0; i < n; i++) {
             if (dsProvider[i].getTenNCC().toLowerCase().contains(ten.toLowerCase())) {
                 if (!found) {
-                    System.out.println("---------------------------------------------------------------------------------------------------------------");
-                    System.out.println("                                      DANH SACH CO TEN:" + ten);
-                    System.out.println("---------------------------------------------------------------------------------------------------------------");
-                    System.out.printf("|%-10S|%-30s|%-55s|%-15s|\n", "MA NCC", "TEN NCC", "DIA CHI", "SO_DIEN_THOAI");
+                    System.out.println("Danh sach nha cung cap co ten: " + ten);
+                    PrintHeader();
                     found = true;
                 }
                 dsProvider[i].Output();
@@ -128,6 +131,8 @@ public void Input(){
 
         if (!found) {
             System.out.println("Khong tim thay nha cung cap co ten " + ten);
+        } else {
+            System.out.format("+----------+------------------------------+-------------------------------------------------------+---------------+%n");
         }
     }
 
@@ -139,10 +144,8 @@ public void Input(){
         for (int i = 0; i < n; i++) {
             if (dsProvider[i].getSoDienThoai().equals(soDT)) {
                 if (!found) {
-                    System.out.println("---------------------------------------------------------------------------------------------------------------");
-                    System.out.println("                               NHA CUNG CAP CO SO DIEN THOAI:" + soDT);
-                    System.out.println("---------------------------------------------------------------------------------------------------------------");
-                    System.out.printf("|%-10S|%-30s|%-55s|%-15s|\n", "MA NCC", "TEN NCC", "DIA CHI", "SO_DIEN_THOAI");
+                    System.out.println("Nha cung cap co so dien thoai: " + soDT);
+                    PrintHeader();
                     found = true;
                 }
                 dsProvider[i].Output();
@@ -151,6 +154,8 @@ public void Input(){
 
         if (!found) {
             System.out.println("Khong tim thay nha cung cap co so dien thoai:" + soDT);
+        } else {
+            System.out.format("+----------+------------------------------+-------------------------------------------------------+---------------+%n");
         }
     }
 
@@ -162,10 +167,8 @@ public void Input(){
         for (int i = 0; i < n; i++) {
             if (dsProvider[i].getDiaChi().toLowerCase().contains(diaChi.toLowerCase())) {
                 if (!found) {
-                    System.out.println("---------------------------------------------------------------------------------------------------------------");
-                    System.out.println("                                  DANH SACH CO DIA CHI:" + diaChi);
-                    System.out.println("---------------------------------------------------------------------------------------------------------------");
-                    System.out.printf("|%-10S|%-30s|%-55s|%-15s|\n", "MA NCC", "TEN NCC", "DIA CHI", "SO_DIEN_THOAI");
+                    System.out.println("Danh sach nha cung cap co dia chi: " + diaChi);
+                    PrintHeader();
                     found = true;
                 }
                 dsProvider[i].Output();
@@ -174,6 +177,8 @@ public void Input(){
 
         if (!found) {
             System.out.println("Khong tim thay nha cung cap co dia chi:" + diaChi);
+        } else {
+            System.out.format("+----------+------------------------------+-------------------------------------------------------+---------------+%n");
         }
     }
 
@@ -195,7 +200,7 @@ public void Input(){
             Xoa(kq);
             System.out.println("XOA THANH CONG");
         } else {
-            System.out.println("KHONG THE XOA VI MA NCC: " + maNCC + " KHONG TON TAI");
+            System.out.println("Khong the xoa !! Vi maNCC " + maNCC + " khong ton tai.");
         }
     }
 
@@ -212,12 +217,15 @@ public void Input(){
         int luaChon;
         System.out.println("TIEN HANH SUA THONG TIN");
         do {
-            System.out.println("\n===== MENU SUA NCC =====");
-            System.out.println("1. Sua ten NCC");
-            System.out.println("2. Sua dia chi");
-            System.out.println("3. Sua so dien thoai");
-            System.out.println("0. Thoat");
-            System.out.print("Nhap lua chon: ");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|           MENU SUA NHA CUNG CAP           |");
+            System.out.println("+-------------------------------------------+");
+            System.out.printf("| %-41s |%n", "1) Sua ten NCC.");
+            System.out.printf("| %-41s |%n", "2) Sua dia chi.");
+            System.out.printf("| %-41s |%n", "3) Sua so dien thoai.");
+            System.out.printf("| %-41s |%n", "0) Thoat.");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Nhap lua chon tu 0 - 3: ");
 
             try {
                 luaChon = Integer.parseInt(sc.nextLine());
@@ -249,14 +257,14 @@ public void Input(){
 
     public void ThongkeProvider_theo_tongNCC() {
         System.out.println("THONG KE SO LUONG NHA CUNG CAP");
-        System.out.println("TONG SO NHA CUNG CAP: " + n);
+        System.out.println("Tong so nha cung cap: " + n);
         Output();
     }
 
     public void Thongke_diaChi_theo_NCC() {
         System.out.println("THONG KE NHA CUNG CAP THEO DIA CHI");
         if (n == 0) {
-            System.out.println("DANH SACH NHA CUNG CAP RONG");
+            System.out.println("Danh sach nha cung cap rong!!");
             return;
         }
 
@@ -276,14 +284,16 @@ public void Input(){
             }
 
             int dem = 0;
-            System.out.println("THONG KE THEO DIA CHI :" + diaChi);
+            System.out.println("Thong ke theo dia chi :" + diaChi);
+            PrintHeader();
             for (int j = i; j < n; j++) {
                 if (dsProvider[j].getDiaChi().equalsIgnoreCase(diaChi)) {
                     dem++;
                     dsProvider[j].Output();
                 }
             }
-            System.out.println("SO LUONG NCC CO DIA CHI: " + diaChi + ":" + dem);
+            System.out.format("+----------+------------------------------+-------------------------------------------------------+---------------+%n");
+            System.out.println("--> Tong co " + dem+" NCC\n");
         }
     }
     @Override
