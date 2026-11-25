@@ -2,6 +2,8 @@ package quanly;
 
 import danhsach.DSChiTietPhieuNhapHang;
 import danhsach.DSPhieuNhapHang;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import model.Book;
 import model.ChiTietPhieuNhapHang;
@@ -9,6 +11,9 @@ import model.PhieuMuon;
 import model.PhieuNhapHang;
 
 public class QLPhieuNhapHang extends QLThuVien {
+    private static final DateTimeFormatter FORMAT_NGAY_THONG_KE =
+            DateTimeFormatter.ofPattern("dd/MM/uuuu");
+
     public QLPhieuNhapHang() {
         super();
     }
@@ -67,7 +72,7 @@ public class QLPhieuNhapHang extends QLThuVien {
                     dsCTPNH.WriteFile();
                     dsBook.WriteFile();
                 }
-                case 6 -> thongKe(sc);
+                case 6 -> menuThongKe(sc);
                 case 7 -> menuChiTietCuaPhieu(sc);
                 case 0 -> System.out.println("Da thoat khoi Quan ly Phieu Nhap Hang.");
                 default -> System.out.println("Lua chon khong hop le.");
@@ -384,6 +389,73 @@ public class QLPhieuNhapHang extends QLThuVien {
         pnh.xuatChiTiet();
     }
 
+    private void menuThongKe(Scanner sc) {
+        int choice;
+        do {
+            System.out.println();
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|     MENU THONG KE PHIEU NHAP HANG         |");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1) Thong ke sach trong phieu nhap         |");
+            System.out.println("| 2) Thong ke theo ngay nhap                |");
+            System.out.println("| 0) Quay lai                               |");
+            System.out.println("+-------------------------------------------+");
+            System.out.print("Nhap lua chon tu 0 - 2: ");
+            choice = nhapSo(sc);
+            switch (choice) {
+                case 1 -> thongKe(sc);
+                case 2 -> thongKeTheoNgay(sc);
+                case 0 -> { }
+                default -> System.out.println("Lua chon khong hop le.");
+            }
+        } while (choice != 0);
+    }
+
+    private void thongKeTheoNgay(Scanner sc) {
+        dsPNH.ReadFile();
+        dsCTPNH.ReadFile();
+        dsPNH.napChiTiet(dsCTPNH);
+
+        LocalDate ngayThongKe = nhapNgayThongKe(sc);
+        int soPhieu = 0;
+        int soSach = 0;
+        double tongTien = 0;
+        int soPhieuNgayKhongHopLe = 0;
+        for (int i = 0; i < dsPNH.getSoLuong(); i++) {
+            PhieuNhapHang pnh = dsPNH.get(i);
+            LocalDate ngayNhap = PhieuMuon.parseDateSafe(pnh.getNgayNhap());
+            if (ngayNhap == null) {
+                soPhieuNgayKhongHopLe++;
+                continue;
+            }
+            if (!ngayNhap.equals(ngayThongKe)) continue;
+
+            soPhieu++;
+            for (int j = 0; j < pnh.getSoChiTiet(); j++) {
+                ChiTietPhieuNhapHang chiTiet = pnh.getDsChiTiet()[j];
+                if (chiTiet != null) soSach += chiTiet.getSoLuong();
+            }
+            tongTien += pnh.capNhatTongTien();
+        }
+
+        System.out.printf("%nTHONG KE PHIEU NHAP NGAY %s%n",
+                ngayThongKe.format(FORMAT_NGAY_THONG_KE));
+        System.out.printf("So phieu nhap: %d%nTong so sach nhap: %d cuon%nTong tien: %.0f VND%n",
+                soPhieu, soSach, tongTien);
+        if (soPhieuNgayKhongHopLe > 0) {
+            System.out.printf("Bo qua %d phieu co ngay nhap khong hop le.%n", soPhieuNgayKhongHopLe);
+        }
+    }
+
+    private LocalDate nhapNgayThongKe(Scanner sc) {
+        while (true) {
+            System.out.print("Nhap ngay nhap can thong ke (dd/MM/yyyy): ");
+            String value = sc.nextLine().trim();
+            if (PhieuMuon.isValidDate(value)) return PhieuMuon.parseDate(value);
+            System.out.println("Ngay khong hop le (dd/MM/yyyy).");
+        }
+    }
+
     private int nhapSo(Scanner sc) {
         try {
             return Integer.parseInt(sc.nextLine().trim());
@@ -413,4 +485,5 @@ public class QLPhieuNhapHang extends QLThuVien {
             }
         }
     }
+
 }
