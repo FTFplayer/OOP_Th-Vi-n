@@ -49,11 +49,11 @@ public class DSReader implements DanhSach {
     // 3. In kích thước
     public void PrintHeader() {
         System.out.format(
-                "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
-        System.out.printf("|%-5s|%-10s|%-10s|%-10s|%-9s|%-22s|%-10s|%-12s|%n",
+                "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
+        System.out.printf("|%-5s|%-15s|%-10s|%-10s|%-9s|%-22s|%-10s|%-12s|%n",
                 "Ma DG", "Ho", "Ten", "Ngay Sinh", "Gioi Tinh", "Dia Chi", "Ngay Lap", "SDT");
         System.out.format(
-                "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
+                "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
     }
 
     // -----------------------------------------------------------------------------------//
@@ -100,7 +100,7 @@ public class DSReader implements DanhSach {
             }
         }
         System.out.format(
-                "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
+                "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
     }
 
     // -----------------------------------------------------------------------------------//
@@ -119,7 +119,7 @@ public class DSReader implements DanhSach {
             this.PrintHeader();
             this.dsdocgia[index].Output();
             System.out.format(
-                    "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
+                    "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
         } else {
             System.out.println("Khong tim thay doc gia co ma " + MaDocGiaCanTim);
         }
@@ -150,7 +150,7 @@ public class DSReader implements DanhSach {
             }
         }
         System.out.format(
-                "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
+                "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
 
         if (C == 0) {
             System.out.println("Khong tim thay doc gia co ho " + HoDocGiaCanTim);
@@ -173,7 +173,7 @@ public class DSReader implements DanhSach {
             }
         }
         System.out.format(
-                "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
+                "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
 
         if (C == 0) {
             System.out.println("Khong tim thay doc gia co ten " + TenDocGiaCanTim);
@@ -492,10 +492,10 @@ public class DSReader implements DanhSach {
             System.out.println("| 5) Sua dia chi doc gia.                   |");
             System.out.println("| 6) Sua ngay lap the doc gia.              |");
             System.out.println("| 7) Sua so dien thoai doc gia.             |");
-            System.out.println("| 8) Thoat.                                 |");
+            System.out.println("| 0) Thoat.                                 |");
             System.out.println("+-------------------------------------------+");
 
-            System.out.print("Nhap lua chon tu 1 - 8: ");
+            System.out.print("Nhap lua chon tu 0 - 7: ");
 
             int choice;
             try {
@@ -612,7 +612,7 @@ public class DSReader implements DanhSach {
                         break;
                     }
                     break;
-                case 8:
+                case 0:
                     return;
                 default:
                     System.out.println("Lua chon khong hop le. Vui long chon lai.");
@@ -662,7 +662,7 @@ public class DSReader implements DanhSach {
                 }
             }
             System.out.format(
-                    "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
+                    "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
         }
     }
 
@@ -701,7 +701,7 @@ public class DSReader implements DanhSach {
                 }
             }
             System.out.format(
-                    "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
+                    "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
         }
     }
 
@@ -741,7 +741,7 @@ public class DSReader implements DanhSach {
                 }
             }
             System.out.format(
-                    "+-----+----------+----------+----------+---------+----------------------+----------+------------+%n");
+                    "+-----+---------------+----------+----------+---------+----------------------+----------+------------+%n");
         }
     }
 

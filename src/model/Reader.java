@@ -234,7 +234,7 @@ public class Reader {
     // 5. Phuong thuc xuat
     public void Output() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String DataFormat = "|%-5s|%-10s|%-10s|%-10s|%-9s|%-22s|%-10s|%-12s|%n";
+        String DataFormat = "|%-5s|%-15s|%-10s|%-10s|%-9s|%-22s|%-10s|%-12s|%n";
 
         String StrNgaySinh = this.NgaySinh == null ? "" : this.NgaySinh.format(formatter);
         String StrNgayLapThe = this.NgayLapThe == null ? "" : this.NgayLapThe.format(formatter);
