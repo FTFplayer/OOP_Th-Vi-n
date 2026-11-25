@@ -662,7 +662,7 @@ public class DSAuthor implements DanhSach {
                     this.dstacgia[i].Output();
                 }
             }
-            System.out.format("+----------+------------+----------+--------------+----------+------------+%n");
+            System.out.format("+----------+---------------+----------+--------------+----------+------------+%n");
         }
     }
 
