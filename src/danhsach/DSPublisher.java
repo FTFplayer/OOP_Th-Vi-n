@@ -457,7 +457,7 @@ public class DSPublisher implements DanhSach {
         int count = 0;
         for (int i = 0; i < n; i++) {
             if (this.dsnxb[i] != null && this.dsnxb[i].getDiaChi() != null
-                    && this.dsnxb[i].getDiaChi().equalsIgnoreCase(DiaChiCanThongKe)) {
+                    && this.dsnxb[i].getDiaChi().toLowerCase().contains(DiaChiCanThongKe.toLowerCase())) {
                 count++;
             }
         }
@@ -467,7 +467,7 @@ public class DSPublisher implements DanhSach {
             this.PrintHeader();
             for (int i = 0; i < n; i++) {
                 if (this.dsnxb[i] != null && this.dsnxb[i].getDiaChi() != null
-                        && this.dsnxb[i].getDiaChi().equalsIgnoreCase(DiaChiCanThongKe)) {
+                        && this.dsnxb[i].getDiaChi().toLowerCase().contains(DiaChiCanThongKe.toLowerCase())) {
                     this.dsnxb[i].Output();
                 }
             }
@@ -485,7 +485,7 @@ public class DSPublisher implements DanhSach {
         int count = 0;
         for (int i = 0; i < n; i++) {
             if (this.dsnxb[i] != null && this.dsnxb[i].getTenNXB() != null
-                    && this.dsnxb[i].getTenNXB().equalsIgnoreCase(TenCanThongKe)) {
+                    && this.dsnxb[i].getTenNXB().toLowerCase().contains(TenCanThongKe.toLowerCase())) {
                 count++;
             }
         }
@@ -495,7 +495,7 @@ public class DSPublisher implements DanhSach {
             this.PrintHeader();
             for (int i = 0; i < n; i++) {
                 if (this.dsnxb[i] != null && this.dsnxb[i].getTenNXB() != null
-                        && this.dsnxb[i].getTenNXB().equalsIgnoreCase(TenCanThongKe)) {
+                        && this.dsnxb[i].getTenNXB().toLowerCase().contains(TenCanThongKe.toLowerCase())) {
                     this.dsnxb[i].Output();
                 }
             }

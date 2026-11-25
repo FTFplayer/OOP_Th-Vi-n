@@ -1,7 +1,5 @@
 package quanly;
 
-import danhsach.DSPublisher;
-
 import java.util.Scanner;
 
 public class QLPublisher extends QLThuVien {
@@ -23,10 +21,11 @@ public class QLPublisher extends QLThuVien {
             System.out.println("| 3) Tim kiem thong tin nha xuat ban.       |");
             System.out.println("| 4) Sua thong tin nha xuat ban.            |");
             System.out.println("| 5) Xoa thong tin nha xuat ban.            |");
+            System.out.println("| 6) Thong ke thong tin nha xuat ban.       |");
             System.out.println("| 0) Thoat.                                 |");
             System.out.println("+-------------------------------------------+");
 
-            System.out.print("Nhap lua chon tu 0 - 5: ");
+            System.out.print("Nhap lua chon tu 0 - 6: ");
             choice = nhapLuaChon();
 
             switch (choice) {
@@ -56,11 +55,14 @@ public class QLPublisher extends QLThuVien {
                 case 5:
                     menuXoa();
                     break;
+                case 6:
+                    menuThongKe();
+                    break;
                 case 0:
                     System.out.println("Da thoat khoi Quan ly Nha xuat ban.");
                     break;
                 default:
-                    System.out.println("Lua chon khong hop le. Vui long chon lai tu 0 den 5!");
+                    System.out.println("Lua chon khong hop le. Vui long chon lai tu 0 den 6!");
             }
         } while (choice != 0);
     }
@@ -152,7 +154,39 @@ public class QLPublisher extends QLThuVien {
     }
 
     // -----------------------------------------------------------------------------------//
-    // 4. Check phần nhập
+    // 4. Menu Thong ke
+    private void menuThongKe() {
+        int choice;
+        do {
+            System.out.println("+-------------------------------------------+");
+            System.out.println("|        MENU THONG KE NHA XUAT BAN         |");
+            System.out.println("+-------------------------------------------+");
+            System.out.println("| 1) Thong ke nha xuat ban theo dia chi.    |");
+            System.out.println("| 2) Thong ke nha xuat ban theo ten.        |");
+            System.out.println("| 0) Thoat.                                 |");
+            System.out.println("+-------------------------------------------+");
+
+            System.out.print("Nhap lua chon tu 0 - 2: ");
+            choice = nhapLuaChon();
+
+            switch (choice) {
+                case 1:
+                    dsPublisher.ThongKePublisherTheoDiaChi();
+                    break;
+                case 2:
+                    dsPublisher.ThongKePublisherTheoTen();
+                    break;
+                case 0:
+                    System.out.println("Quay lai menu quan ly nha xuat ban.");
+                    break;
+                default:
+                    System.out.println("Lua chon khong hop le. Vui long chon lai tu 0 den 2!");
+            }
+        } while (choice != 0);
+    }
+
+    // -----------------------------------------------------------------------------------//
+    // 5. Check phần nhập
     private int nhapLuaChon() {
         try {
             return Integer.parseInt(sc.nextLine().trim());
