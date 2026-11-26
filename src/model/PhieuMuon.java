@@ -18,6 +18,7 @@ public class PhieuMuon {
     private LocalDate ngayMuon;
     private LocalDate ngayTra;
     private LocalDate ngayThucTra; // null = "Chua tra"
+    private static final Scanner sc = new Scanner(System.in);
 
     private ChiTietPhieuMuon[] dsChiTiet = new ChiTietPhieuMuon[0];
     private int soChiTiet = 0;
@@ -203,20 +204,20 @@ public class PhieuMuon {
     }
 
     // Chi nhap ngay muon -> tu dong tinh ngay tra (+7 ngay) va mac dinh ngayThucTra = null ("Chua tra")
-    public void Input(Scanner sc) {
+    public void Input() {
         System.out.print("Nhap ma phieu muon: ");
         maPM = sc.nextLine().trim();
         System.out.print("Nhap ma doc gia: ");
         maDG = sc.nextLine().trim();
         System.out.print("Nhap ma nhan vien: ");
         maNV = sc.nextLine().trim();
-        this.ngayMuon = nhapNgay(sc, "Nhap ngay muon (dd/MM/yyyy): ");
+        this.ngayMuon = nhapNgay("Nhap ngay muon (dd/MM/yyyy): ");
         this.ngayTra = tinhNgayTraMacDinh(this.ngayMuon);
         this.ngayThucTra = null;
         System.out.println("-> Han tra tu dong (+7 ngay): " + getNgayTraStr() + " | Trang thai tra: Chua tra");
     }
 
-    private LocalDate nhapNgay(Scanner sc, String prompt) {
+    private LocalDate nhapNgay(String prompt) {
         while (true) {
             System.out.print(prompt);
             String value = sc.nextLine().trim();

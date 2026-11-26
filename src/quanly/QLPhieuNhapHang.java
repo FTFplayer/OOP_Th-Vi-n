@@ -4,7 +4,6 @@ import danhsach.DSChiTietPhieuNhapHang;
 import danhsach.DSPhieuNhapHang;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 import model.Book;
 import model.ChiTietPhieuNhapHang;
 import model.PhieuMuon;
@@ -26,10 +25,10 @@ public class QLPhieuNhapHang extends QLThuVien {
 
     @Override
     public void menu() {
-        Menu(sc);
+        Menu();
     }
 
-    public void Menu(Scanner sc) {
+    public void Menu() {
         int choice;
         do {
             System.out.println();
@@ -42,11 +41,12 @@ public class QLPhieuNhapHang extends QLThuVien {
             System.out.println("| 4) Sua thong tin phieu nhap               |");
             System.out.println("| 5) Xoa phieu nhap hang                    |");
             System.out.println("| 6) Thong ke phieu nhap hang               |");
-            System.out.println("| 7) Quan ly chi tiet cua phieu nhap hang   |");
+            System.out.println("| 7) Quan ly chi tiet cua 1 phieu nhap hang |");
+            System.out.println("| 8) Xem danh sach chi tiet phieu nhap hang |");
             System.out.println("| 0) Thoat                                  |");
             System.out.println("+-------------------------------------------+");
-            System.out.print("Nhap lua chon tu 0 - 7: ");
-            choice = nhapSo(sc);
+            System.out.print("Nhap lua chon tu 0 - 8: ");
+            choice = nhapSo();
 
             switch (choice) {
                 case 1 -> {
@@ -56,31 +56,35 @@ public class QLPhieuNhapHang extends QLThuVien {
                     dsPNH.Output();
                 }
                 case 2 -> {
-                    themPhieuNhap(sc);
+                    themPhieuNhap();
                     dsPNH.WriteFile();
                     dsCTPNH.WriteFile();
                     dsBook.WriteFile();
                 }
-                case 3 -> timPhieuNhap(sc);
+                case 3 -> timPhieuNhap();
                 case 4 -> {
-                    suaPhieuNhap(sc);
+                    suaPhieuNhap();
                     dsPNH.WriteFile();
                 }
                 case 5 -> {
-                    xoaPhieuNhap(sc);
+                    xoaPhieuNhap();
                     dsPNH.WriteFile();
                     dsCTPNH.WriteFile();
                     dsBook.WriteFile();
                 }
-                case 6 -> menuThongKe(sc);
-                case 7 -> menuChiTietCuaPhieu(sc);
+                case 6 -> menuThongKe();
+                case 7 -> menuChiTietCuaPhieu();
+                case 8 -> {
+                    dsCTPNH.ReadFile();
+                    dsCTPNH.Output();
+                }
                 case 0 -> System.out.println("Da thoat khoi Quan ly Phieu Nhap Hang.");
                 default -> System.out.println("Lua chon khong hop le.");
             }
         } while (choice != 0);
     }
 
-    private void menuChiTietCuaPhieu(Scanner sc) {
+    private void menuChiTietCuaPhieu() {
         dsPNH.ReadFile();
         dsCTPNH.ReadFile();
         dsPNH.napChiTiet(dsCTPNH);
@@ -108,12 +112,12 @@ public class QLPhieuNhapHang extends QLThuVien {
             System.out.println("| 0) Quay lai menu phieu nhap hang          |");
             System.out.println("+-------------------------------------------+");
             System.out.print("Nhap lua chon tu 0 - 4: ");
-            choice = nhapSo(sc);
+            choice = nhapSo();
 
             switch (choice) {
                 case 1 -> pnh.xuatChiTiet();
                 case 2 -> {
-                    if (nhapVaThemChiTiet(sc, pnh)) {
+                    if (nhapVaThemChiTiet(pnh)) {
                         dsCTPNH.WriteFile();
                         dsPNH.WriteFile();
                         dsBook.WriteFile();
@@ -132,10 +136,10 @@ public class QLPhieuNhapHang extends QLThuVien {
                     }
                     String maSachCu = ct.getMaSach();
                     int soLuongCu = ct.getSoLuong();
-                    String maSachMoi = nhapMaSachCoSanHoacBo(sc);
+                    String maSachMoi = nhapMaSachCoSanHoacBo();
                     if (maSachMoi == null) break;
-                    int soLuongMoi = nhapSoDuong(sc, "Nhap so luong moi: ");
-                    double donGiaMoi = nhapSoThucDuong(sc, "Nhap don gia moi: ");
+                    int soLuongMoi = nhapSoDuong("Nhap so luong moi: ");
+                    double donGiaMoi = nhapSoThucDuong("Nhap don gia moi: ");
 
                     if (!capNhatKhoKhiSuaNhap(maSachCu, soLuongCu, maSachMoi, soLuongMoi)) {
                         break;
@@ -176,7 +180,7 @@ public class QLPhieuNhapHang extends QLThuVien {
     }
 
     // Nhap 1 dong chi tiet nhap hang: tu dong phan nhanh sach cu / sach moi
-    private boolean nhapVaThemChiTiet(Scanner sc, PhieuNhapHang pnh) {
+    private boolean nhapVaThemChiTiet(PhieuNhapHang pnh) {
         String maCTMoi = dsCTPNH.taoMaCTMoi();
         System.out.println("-> Ma chi tiet tu dong: " + maCTMoi);
 
@@ -189,8 +193,8 @@ public class QLPhieuNhapHang extends QLThuVien {
                 // Truong hop 1: Sach da co trong DSBook -> cong don SoLuong + SoLuongConLai
                 System.out.println("-> Sach hien co: " + sach.getTenSach()
                         + " (Ton kho: " + sach.getSoLuongConLai() + "/" + sach.getSoLuong() + ")");
-                int slNhap = nhapSoDuong(sc, "Nhap so luong nhap: ");
-                double donGiaNhap = nhapSoThucDuong(sc, "Nhap don gia nhap: ");
+                int slNhap = nhapSoDuong("Nhap so luong nhap: ");
+                double donGiaNhap = nhapSoThucDuong("Nhap don gia nhap: ");
 
                 ChiTietPhieuNhapHang ct = new ChiTietPhieuNhapHang(maCTMoi, pnh.getMaPNH(), sach.getMaSach(), slNhap, donGiaNhap);
                 if (dsCTPNH.Them(ct)) {
@@ -215,8 +219,8 @@ public class QLPhieuNhapHang extends QLThuVien {
                     System.out.print("Ma sach khong hop le (phai co dang Sxx). Nhap lai ma sach: ");
                     maSach = sc.nextLine().trim();
                 }
-                int slNhap = nhapSoDuong(sc, "Nhap so luong nhap: ");
-                double donGiaNhap = nhapSoThucDuong(sc, "Nhap don gia nhap: ");
+                int slNhap = nhapSoDuong("Nhap so luong nhap: ");
+                double donGiaNhap = nhapSoThucDuong("Nhap don gia nhap: ");
 
                 if (dsBook.themSachTuPhieuNhap(maSach, slNhap, donGiaNhap, dstl)) {
                     ChiTietPhieuNhapHang ct = new ChiTietPhieuNhapHang(maCTMoi, pnh.getMaPNH(), maSach, slNhap, donGiaNhap);
@@ -230,7 +234,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         }
     }
 
-    private String nhapMaSachCoSanHoacBo(Scanner sc) {
+    private String nhapMaSachCoSanHoacBo() {
         while (true) {
             System.out.print("Nhap ma sach moi (phai ton tai trong DS sach, bo trong de huy): ");
             String ma = sc.nextLine().trim();
@@ -260,7 +264,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         return true;
     }
 
-    private String nhapMaNCCHopLe(Scanner sc) {
+    private String nhapMaNCCHopLe() {
         dsProvider.ReadFile();
         while (true) {
             System.out.print("Nhap ma nha cung cap (VD: NCC01): ");
@@ -270,7 +274,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         }
     }
 
-    private String nhapMaNVHopLe(Scanner sc) {
+    private String nhapMaNVHopLe() {
         dsEmployee.ReadFile();
         while (true) {
             System.out.print("Nhap ma nhan vien (VD: NV01): ");
@@ -280,7 +284,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         }
     }
 
-    private void themPhieuNhap(Scanner sc) {
+    private void themPhieuNhap() {
         dsBook.ReadFile();
         PhieuNhapHang pnh = new PhieuNhapHang();
         String maPNH;
@@ -291,8 +295,8 @@ public class QLPhieuNhapHang extends QLThuVien {
             System.out.println("Ma phieu nhap rong hoac da ton tai! Vui long nhap lai.");
         }
         pnh.setMaPNH(maPNH);
-        pnh.setMaNCC(nhapMaNCCHopLe(sc));
-        pnh.setMaNV(nhapMaNVHopLe(sc));
+        pnh.setMaNCC(nhapMaNCCHopLe());
+        pnh.setMaNV(nhapMaNVHopLe());
         while (true) {
             System.out.print("Nhap ngay nhap (dd/MM/yyyy): ");
             String ngay = sc.nextLine().trim();
@@ -309,15 +313,15 @@ public class QLPhieuNhapHang extends QLThuVien {
             return;
         }
         System.out.print("Phieu nay nhap bao nhieu dau sach? ");
-        int k = nhapSo(sc);
+        int k = nhapSo();
         for (int i = 0; i < k; i++) {
             System.out.println("--- Chi tiet sach thu " + (i + 1) + " ---");
-            nhapVaThemChiTiet(sc, pnh);
+            nhapVaThemChiTiet(pnh);
         }
         System.out.println("=> Them phieu nhap kem chi tiet thanh cong! Tong tien: " + (long) pnh.getTongTien() + " VND");
     }
 
-    private void timPhieuNhap(Scanner sc) {
+    private void timPhieuNhap() {
         System.out.print("Nhap ma phieu nhap: ");
         PhieuNhapHang pnh = dsPNH.TimTheoMa(sc.nextLine().trim());
         if (pnh == null) {
@@ -330,15 +334,15 @@ public class QLPhieuNhapHang extends QLThuVien {
         pnh.xuatChiTiet();
     }
 
-    private void suaPhieuNhap(Scanner sc) {
+    private void suaPhieuNhap() {
         System.out.print("Nhap ma phieu nhap can sua: ");
         PhieuNhapHang item = dsPNH.TimTheoMa(sc.nextLine().trim());
         if (item == null) {
             System.out.println("Khong tim thay phieu nhap.");
             return;
         }
-        item.setMaNCC(nhapMaNCCHopLe(sc));
-        item.setMaNV(nhapMaNVHopLe(sc));
+        item.setMaNCC(nhapMaNCCHopLe());
+        item.setMaNV(nhapMaNVHopLe());
         while (true) {
             System.out.print("Nhap ngay nhap moi (dd/MM/yyyy): ");
             String ngay = sc.nextLine().trim();
@@ -352,7 +356,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         System.out.println("Sua phieu nhap thanh cong.");
     }
 
-    private void xoaPhieuNhap(Scanner sc) {
+    private void xoaPhieuNhap() {
         dsBook.ReadFile();
         System.out.print("Nhap ma phieu nhap can xoa: ");
         String maPNH = sc.nextLine().trim();
@@ -377,7 +381,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         System.out.println("Da xoa phieu nhap " + maPNH + ", xoa chi tiet va cap nhat lai kho sach.");
     }
 
-    private void thongKe(Scanner sc) {
+    private void thongKe() {
         System.out.print("Nhap ma phieu nhap: ");
         String maPNH = sc.nextLine().trim();
         PhieuNhapHang pnh = dsPNH.TimTheoMa(maPNH);
@@ -389,7 +393,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         pnh.xuatChiTiet();
     }
 
-    private void menuThongKe(Scanner sc) {
+    private void menuThongKe() {
         int choice;
         do {
             System.out.println();
@@ -398,25 +402,30 @@ public class QLPhieuNhapHang extends QLThuVien {
             System.out.println("+-------------------------------------------+");
             System.out.println("| 1) Thong ke sach trong phieu nhap         |");
             System.out.println("| 2) Thong ke theo ngay nhap                |");
+            System.out.println("| 3) Thong ke phieu nhap hang theo quy      |");
             System.out.println("| 0) Quay lai                               |");
             System.out.println("+-------------------------------------------+");
-            System.out.print("Nhap lua chon tu 0 - 2: ");
-            choice = nhapSo(sc);
+            System.out.print("Nhap lua chon tu 0 - 3: ");
+            choice = nhapSo();
             switch (choice) {
-                case 1 -> thongKe(sc);
-                case 2 -> thongKeTheoNgay(sc);
+                case 1 -> thongKe();
+                case 2 -> thongKeTheoNgay();
+                case 3 -> {
+                    dsPNH.ReadFile();
+                    dsPNH.ThongKeTheoQuy();
+                }
                 case 0 -> { }
                 default -> System.out.println("Lua chon khong hop le.");
             }
         } while (choice != 0);
     }
 
-    private void thongKeTheoNgay(Scanner sc) {
+    private void thongKeTheoNgay() {
         dsPNH.ReadFile();
         dsCTPNH.ReadFile();
         dsPNH.napChiTiet(dsCTPNH);
 
-        LocalDate ngayThongKe = nhapNgayThongKe(sc);
+        LocalDate ngayThongKe = nhapNgayThongKe();
         int soPhieu = 0;
         int soSach = 0;
         double tongTien = 0;
@@ -447,7 +456,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         }
     }
 
-    private LocalDate nhapNgayThongKe(Scanner sc) {
+    private LocalDate nhapNgayThongKe() {
         while (true) {
             System.out.print("Nhap ngay nhap can thong ke (dd/MM/yyyy): ");
             String value = sc.nextLine().trim();
@@ -456,7 +465,7 @@ public class QLPhieuNhapHang extends QLThuVien {
         }
     }
 
-    private int nhapSo(Scanner sc) {
+    private int nhapSo() {
         try {
             return Integer.parseInt(sc.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -464,16 +473,16 @@ public class QLPhieuNhapHang extends QLThuVien {
         }
     }
 
-    private int nhapSoDuong(Scanner sc, String prompt) {
+    private int nhapSoDuong(String prompt) {
         while (true) {
             System.out.print(prompt);
-            int val = nhapSo(sc);
+            int val = nhapSo();
             if (val > 0) return val;
             System.out.println("Vui long nhap so nguyen > 0!");
         }
     }
 
-    private double nhapSoThucDuong(Scanner sc, String prompt) {
+    private double nhapSoThucDuong(String prompt) {
         while (true) {
             System.out.print(prompt);
             try {

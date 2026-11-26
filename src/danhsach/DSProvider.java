@@ -48,7 +48,7 @@ public void Input(){
 
         for (int i = 0; i < n; i++) {
             dsProvider[i] = new Provider();
-            dsProvider[i].Input(sc, this);
+            dsProvider[i].Input(this);
             this.n++;
         }
     }
@@ -85,7 +85,7 @@ public void Input(){
         }
 
         dsProvider[n] = new Provider();
-        dsProvider[n].Input(sc, this);
+        dsProvider[n].Input(this);
         n++;
     }
 

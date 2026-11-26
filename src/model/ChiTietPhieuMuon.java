@@ -7,6 +7,7 @@ public class ChiTietPhieuMuon {
     private String maPM;
     private String maSach;
     private int soLuong;
+    private static final Scanner sc = new Scanner(System.in);
 
     public ChiTietPhieuMuon() {
         this("", "", "", 0);
@@ -33,7 +34,7 @@ public class ChiTietPhieuMuon {
         this.soLuong = soLuong;
     }
 
-    public void Input(Scanner sc) {
+    public void Input() {
         System.out.print("Nhap ma chi tiet: ");
         maCT = sc.nextLine().trim();
         System.out.print("Nhap ma phieu muon: ");
@@ -44,20 +45,12 @@ public class ChiTietPhieuMuon {
         setSoLuong(Integer.parseInt(sc.nextLine().trim()));
     }
 
-    public void input(Scanner sc) {
-        Input(sc);
-    }
-
     public void Output() {
-        System.out.printf("%-12s %-12s %-12s %-10d%n", maCT, maPM, maSach, soLuong);
+        System.out.printf("| %-10s | %-10s | %-10s | %-8d |%n", maCT, maPM, maSach, soLuong);
     }
 
     // In ben trong 1 phieu muon cu the (bo cot MA PM du thua, co khung dong bo)
     public void OutputTrongPhieu() {
         System.out.printf("| %-10s | %-10s | %-8d |%n", maCT, maSach, soLuong);
-    }
-
-    public void output() {
-        Output();
     }
 }

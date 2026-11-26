@@ -134,4 +134,11 @@ public class ChiTietPhieuPhat {
         System.out.printf("| %-9s | %-11s | %-10s | %-22s | %-35s |%n",
                 catChuoi(getMaCTPP(), 9), maLD, maSach, getTienPhatKemSoLuong(), catChuoi(getLD(), 35));
     }
+
+    // In ben trong 1 phieu phat kem cot SO LUONG MUON lay tu PhieuMuon
+    public void OutputTrongPhieu(int soLuongMuon) {
+        String strSLMuon = (soLuongMuon > 0) ? String.valueOf(soLuongMuon) : "-";
+        System.out.printf("| %-9s | %-11s | %-10s | %-13s | %-22s | %-35s |%n",
+                catChuoi(getMaCTPP(), 9), maLD, maSach, strSLMuon, getTienPhatKemSoLuong(), catChuoi(getLD(), 35));
+    }
 }

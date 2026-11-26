@@ -74,7 +74,7 @@ public class DSQuyDinhPhat implements DanhSach {
         return viTri == -1 ? null : dsQDP[viTri];
     }
 
-    public QuyDinhPhat Tim(Scanner sc) {
+    public QuyDinhPhat Tim() {
         System.out.print("Nhap ma quy dinh can tim: ");
         QuyDinhPhat quyDinh = Tim(sc.nextLine().trim());
         if (quyDinh == null) {
@@ -84,7 +84,7 @@ public class DSQuyDinhPhat implements DanhSach {
     }
 
     public void TimQuyDinh() {
-        QuyDinhPhat quyDinh = Tim(sc);
+        QuyDinhPhat quyDinh = Tim();
         if (quyDinh != null) {
             System.out.println("+----------+------------------------------+------------------------------+");
             System.out.printf("|%-10s|%-30s|%-30s|%n", "MA QDP", "TEN LY DO", "CACH THUC PHAT");
@@ -138,7 +138,7 @@ public class DSQuyDinhPhat implements DanhSach {
     }
 
     public void Sua() {
-        QuyDinhPhat quyDinh = Tim(sc);
+        QuyDinhPhat quyDinh = Tim();
         if (quyDinh == null) {
             return;
         }

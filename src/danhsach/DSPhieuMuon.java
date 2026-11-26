@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.Scanner;
 import model.ChiTietPhieuMuon;
 import model.PhieuMuon;
 
@@ -58,9 +57,9 @@ public class DSPhieuMuon implements DanhSach {
         return true;
     }
 
-    public void Them(Scanner sc) {
+    public void Them() {
         PhieuMuon item = new PhieuMuon();
-        item.Input(sc);
+        item.Input();
         System.out.println(Them(item) ? "Them phieu muon thanh cong!" : "Ma phieu muon da ton tai hoac ngay khong hop le.");
     }
 
@@ -116,45 +115,31 @@ public class DSPhieuMuon implements DanhSach {
         PrintFooter();
     }
 
+    public void ThongKeTheoQuy() {
+        int q1 = 0, q2 = 0, q3 = 0, q4 = 0;
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i] == null || danhSach[i].getNgayMuon() == null) continue;
+            int thang = danhSach[i].getNgayMuon().getMonthValue();
+            int quy = (thang - 1) / 3 + 1;
+            switch (quy) {
+                case 1 -> q1++;
+                case 2 -> q2++;
+                case 3 -> q3++;
+                case 4 -> q4++;
+            }
+        }
+        System.out.println("\n=== THONG KE SO PHIEU MUON DUOC TAO THEO QUY ===");
+        System.out.println("  Quy 1 (Thang 1 - 3)  : " + q1 + " phieu");
+        System.out.println("  Quy 2 (Thang 4 - 6)  : " + q2 + " phieu");
+        System.out.println("  Quy 3 (Thang 7 - 9)  : " + q3 + " phieu");
+        System.out.println("  Quy 4 (Thang 10 - 12): " + q4 + " phieu");
+    }
+
     @Override
     public void ReadFile() {
-        try {
-            docFile("data/PhieuMuon.txt");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi doc file data/PhieuMuon.txt: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void WriteFile() {
-        try {
-            ghiFile("data/PhieuMuon.txt");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi ghi file data/PhieuMuon.txt: " + e.getMessage());
-        }
-    }
-
-    public void ghiFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            for (int i = 0; i < soLuong; i++) {
-                PhieuMuon item = danhSach[i];
-                writer.println(String.join(";",
-                        item.getMaPM(),
-                        item.getMaDG(),
-                        item.getMaNV(),
-                        item.getNgayMuonStr(),
-                        item.getNgayTraStr(),
-                        item.getNgayThucTraStr()));
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Khong the ghi danh sach phieu muon.", e);
-        }
-    }
-
-    public void docFile(String filename) {
         soLuong = 0;
         Arrays.fill(danhSach, null);
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("data/PhieuMuon.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
@@ -167,7 +152,21 @@ public class DSPhieuMuon implements DanhSach {
                 }
             }
         } catch (IOException e) {
-            throw new IllegalStateException("Khong the doc danh sach phieu muon.", e);
+            System.out.println("Loi doc file data/PhieuMuon.txt: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void WriteFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("data/PhieuMuon.txt"))) {
+            for (int i = 0; i < soLuong; i++) {
+                PhieuMuon item = danhSach[i];
+                String thucTra = (item.getNgayThucTra() != null) ? item.getNgayThucTraStr() : "";
+                writer.println(String.join(";", item.getMaPM(), item.getMaDG(), item.getMaNV(),
+                        item.getNgayMuonStr(), item.getNgayTraStr(), thucTra));
+            }
+        } catch (IOException e) {
+            System.out.println("Loi ghi file data/PhieuMuon.txt: " + e.getMessage());
         }
     }
 }

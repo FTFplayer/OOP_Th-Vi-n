@@ -23,11 +23,12 @@ public class QLPhieuPhat extends QLThuVien {
             System.out.println("| 4) Sua thong tin phieu phat               |");
             System.out.println("| 5) Xoa phieu phat                         |");
             System.out.println("| 6) Thong ke phieu phat                    |");
-            System.out.println("| 7) Quan ly chi tiet cua phieu phat        |");
+            System.out.println("| 7) Quan ly chi tiet 1 cua phieu phat      |");
+            System.out.println("| 8) Xem danh sach chi tiet phieu phat      |");
             System.out.println("| 0) Thoat                                  |");
             System.out.println("+-------------------------------------------+");
 
-            System.out.print("Nhap lua chon tu 0 - 7: ");
+            System.out.print("Nhap lua chon tu 0 - 8: ");
             choice = nhapLuaChon();
 
             switch (choice) {
@@ -54,6 +55,10 @@ public class QLPhieuPhat extends QLThuVien {
                 }
                 case 6 -> menuThongKe();
                 case 7 -> menuChiTietCuaPhieu();
+                case 8 -> {
+                    dsCTPP.ReadFile();
+                    dsCTPP.Output();
+                }
                 case 0 -> System.out.println("Da thoat khoi Quan ly Phieu Phat.");
                 default -> System.out.println("Lua chon khong hop le.");
             }
@@ -159,39 +164,21 @@ public class QLPhieuPhat extends QLThuVien {
     }
 
     public void ThemPP(DSBook dsBook, DSPhieuMuon dsPM, DSQuyDinhPhat dsQDP, DSChiTietPhieuPhat dsCTPP) {
-        System.out.println("THUC HIEN THEM PHIEU PHAT");
+        dsPP.ReadFile();
+        dsCTPP.ReadFile();
+        dsPP.napChiTiet(dsCTPP);
+        dsPM.ReadFile();
+        dsCTPM.ReadFile();
+        dsBook.ReadFile();
+        dsQDP.ReadFile();
+
         PhieuPhat pp = new PhieuPhat();
-        pp.Input(dsPP, dsPM);
-
-        long soNgayTre = 0;
-        PhieuMuon pm = dsPM.TimtheoMaPM(pp.getMaPM());
-        if (pm != null && pm.getNgayTraLocalDate() != null) {
-            soNgayTre = pp.tinhSoTraNgayTre(pm.getNgayTraLocalDate());
+        if (pp.lapPhieuPhat(dsPP, dsPM, dsCTPM, dsCTPP, dsQDP, dsBook)) {
+            dsPP.Them(pp);
+            System.out.println("=> Them phieu phat " + pp.getMaPP()
+                    + " thanh cong! Tong tien phat: " + (long) pp.getTongSoTienPhat() + " VND");
+            pp.xuatChiTiet();
         }
-
-        System.out.print("Nhap so chi tiet vi pham cua phieu phat: ");
-        int k = nhapLuaChon();
-        if (k < 0) k = 0;
-
-        for (int i = 0; i < k; i++) {
-            System.out.println("--- Chi tiet vi pham thu " + (i + 1) + " ---");
-            ChiTietPhieuPhat ct = new ChiTietPhieuPhat();
-            ct.setMaCTPP(dsCTPP.taoMaCTPPMoi());
-            ct.Input(pp.getMaPP(), dsQDP, dsBook);
-            double tien;
-            if ("QD01".equalsIgnoreCase(ct.getMaLD())) {
-                long ngayTinh = (ct.getSoLuong() > 0) ? ct.getSoLuong() : soNgayTre;
-                tien = dsQDP.TinhTienPhat("QD01", ngayTinh, ct.getMaSach(), dsBook);
-            } else {
-                tien = dsQDP.TinhTienPhat(ct.getMaLD(), 0, ct.getMaSach(), dsBook) * ct.getSoLuong();
-            }
-            ct.setTienPhat(Math.max(0, tien));
-            pp.themChiTiet(ct);
-            dsCTPP.Them(ct);
-        }
-
-        dsPP.Them(pp);
-        System.out.println("=> Them phieu phat thanh cong! Tong tien phat: " + (long) pp.getTongSoTienPhat() + " VND");
     }
 
     private void xoaPhieuPhat() {
@@ -244,6 +231,7 @@ public class QLPhieuPhat extends QLThuVien {
             System.out.println("| 4) Thong ke theo ma phieu muon.           |");
             System.out.println("| 5) Thong ke theo khoang ngay.             |");
             System.out.println("| 6) Thong ke tong hop.                     |");
+            System.out.println("| 7) Thong ke phieu phat theo quy.          |");
             System.out.println("| 0) Thoat.                                 |");
             System.out.println("+-------------------------------------------+");
 
@@ -257,6 +245,10 @@ public class QLPhieuPhat extends QLThuVien {
                 case 4 -> dsPP.ThongKePPtheoMaPM();
                 case 5 -> dsPP.ThongKeTheoKhoangNgay();
                 case 6 -> dsPP.ThongKeTongHop();
+                case 7 -> {
+                    dsPP.ReadFile();
+                    dsPP.ThongKeTheoQuy();
+                }
                 case 0 -> System.out.println("Quay lai menu quan ly.");
                 default -> System.out.println("Lua chon khong hop le!");
             }

@@ -353,6 +353,26 @@ public class DSPhieuPhat implements DanhSach {
         System.out.println("+-----------------------------------------+");
     }
 
+    public void ThongKeTheoQuy() {
+        int q1 = 0, q2 = 0, q3 = 0, q4 = 0;
+        for (int i = 0; i < n; i++) {
+            if (dsPhieuPhat[i] == null || dsPhieuPhat[i].getNgayPhat() == null) continue;
+            int thang = dsPhieuPhat[i].getNgayPhat().getMonthValue();
+            int quy = (thang - 1) / 3 + 1;
+            switch (quy) {
+                case 1 -> q1++;
+                case 2 -> q2++;
+                case 3 -> q3++;
+                case 4 -> q4++;
+            }
+        }
+        System.out.println("\n=== THONG KE SO PHIEU PHAT DUOC TAO THEO QUY ===");
+        System.out.println("  Quy 1 (Thang 1 - 3)  : " + q1 + " phieu");
+        System.out.println("  Quy 2 (Thang 4 - 6)  : " + q2 + " phieu");
+        System.out.println("  Quy 3 (Thang 7 - 9)  : " + q3 + " phieu");
+        System.out.println("  Quy 4 (Thang 10 - 12): " + q4 + " phieu");
+    }
+
     @Override
     public void ReadFile() {
         int count = 0;

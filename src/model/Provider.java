@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Provider{
 //1.Atrribute
     private String MaNCC, tenNCC, diaChi, soDienThoai;
+    private static final Scanner sc = new Scanner(System.in);
 
     
 
@@ -34,7 +35,7 @@ public void setSoDienThoai(String soDienThoai){ this.soDienThoai = soDienThoai; 
 
 
 //2.INPUT<OUTPUT>
-public void Input(Scanner sc, DSProvider ds){
+public void Input(DSProvider ds){
     do{
     System.out.print("Nhap ma NCC: ");
     MaNCC= sc.nextLine();

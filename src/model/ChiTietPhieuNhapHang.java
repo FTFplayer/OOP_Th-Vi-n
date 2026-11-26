@@ -8,6 +8,7 @@ public class ChiTietPhieuNhapHang {
     private String maSach;
     private int soLuong;
     private double donGia;
+    private static final Scanner sc = new Scanner(System.in);
 
     public ChiTietPhieuNhapHang() {
         this("", "", "", 0, 0);
@@ -58,7 +59,7 @@ public class ChiTietPhieuNhapHang {
 
     public double getThanhTien() { return soLuong * donGia; }
 
-    public void Input(Scanner sc) {
+    public void Input() {
         while (true) {
             System.out.print("Nhap ma chi tiet (VD: CTPN001): ");
             maCT = sc.nextLine().trim();
@@ -99,10 +100,6 @@ public class ChiTietPhieuNhapHang {
         }
     }
 
-    public void input(Scanner sc) {
-        Input(sc);
-    }
-
     public void Output() {
         System.out.printf("| %-10s | %-10s | %-10s | %-8d | %-12.0f | %-14.0f |%n",
                 maCT, maPNH, maSach, soLuong, donGia, getThanhTien());
@@ -112,9 +109,5 @@ public class ChiTietPhieuNhapHang {
     public void OutputTrongPhieu() {
         System.out.printf("| %-10s | %-10s | %-8d | %-12.0f | %-14.0f |%n",
                 maCT, maSach, soLuong, donGia, getThanhTien());
-    }
-
-    public void output() {
-        Output();
     }
 }

@@ -5,9 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Scanner;
 import model.ChiTietPhieuNhapHang;
+import model.PhieuMuon;
 import model.PhieuNhapHang;
 
 public class DSPhieuNhapHang implements DanhSach {
@@ -53,9 +54,9 @@ public class DSPhieuNhapHang implements DanhSach {
         return true;
     }
 
-    public void Them(Scanner sc) {
+    public void Them() {
         PhieuNhapHang item = new PhieuNhapHang();
-        item.Input(sc);
+        item.Input();
         System.out.println(Them(item) ? "Them phieu nhap hang thanh cong!" : "Ma phieu nhap da ton tai.");
     }
 
@@ -105,40 +106,33 @@ public class DSPhieuNhapHang implements DanhSach {
         PrintFooter();
     }
 
+    public void ThongKeTheoQuy() {
+        int q1 = 0, q2 = 0, q3 = 0, q4 = 0;
+        for (int i = 0; i < soLuong; i++) {
+            if (danhSach[i] == null) continue;
+            LocalDate ngay = PhieuMuon.parseDateSafe(danhSach[i].getNgayNhap());
+            if (ngay == null) continue;
+            int thang = ngay.getMonthValue();
+            int quy = (thang - 1) / 3 + 1;
+            switch (quy) {
+                case 1 -> q1++;
+                case 2 -> q2++;
+                case 3 -> q3++;
+                case 4 -> q4++;
+            }
+        }
+        System.out.println("\n=== THONG KE SO PHIEU NHAP HANG DUOC TAO THEO QUY ===");
+        System.out.println("  Quy 1 (Thang 1 - 3)  : " + q1 + " phieu");
+        System.out.println("  Quy 2 (Thang 4 - 6)  : " + q2 + " phieu");
+        System.out.println("  Quy 3 (Thang 7 - 9)  : " + q3 + " phieu");
+        System.out.println("  Quy 4 (Thang 10 - 12): " + q4 + " phieu");
+    }
+
     @Override
     public void ReadFile() {
-        try {
-            docFile("data/PhieuNhapHang.txt");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi doc file data/PhieuNhapHang.txt: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void WriteFile() {
-        try {
-            ghiFile("data/PhieuNhapHang.txt");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi ghi file data/PhieuNhapHang.txt: " + e.getMessage());
-        }
-    }
-
-    public void ghiFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            for (int i = 0; i < soLuong; i++) {
-                PhieuNhapHang item = danhSach[i];
-                writer.println(String.join(";", item.getMaPNH(), item.getMaNCC(), item.getMaNV(),
-                        item.getNgayNhap(), String.valueOf(item.getTongTien())));
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Khong the ghi danh sach phieu nhap hang.", e);
-        }
-    }
-
-    public void docFile(String filename) {
         soLuong = 0;
         Arrays.fill(danhSach, null);
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("data/PhieuNhapHang.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
@@ -151,7 +145,20 @@ public class DSPhieuNhapHang implements DanhSach {
                 }
             }
         } catch (IOException | NumberFormatException e) {
-            throw new IllegalStateException("Khong the doc danh sach phieu nhap hang.", e);
+            System.out.println("Loi doc file data/PhieuNhapHang.txt: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void WriteFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("data/PhieuNhapHang.txt"))) {
+            for (int i = 0; i < soLuong; i++) {
+                PhieuNhapHang item = danhSach[i];
+                writer.println(String.join(";", item.getMaPNH(), item.getMaNCC(), item.getMaNV(),
+                        item.getNgayNhap(), String.valueOf(item.getTongTien())));
+            }
+        } catch (IOException e) {
+            System.out.println("Loi ghi file data/PhieuNhapHang.txt: " + e.getMessage());
         }
     }
 }

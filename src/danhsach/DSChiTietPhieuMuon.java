@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.Scanner;
 import model.ChiTietPhieuMuon;
 
 public class DSChiTietPhieuMuon implements DanhSach {
@@ -68,9 +67,9 @@ public class DSChiTietPhieuMuon implements DanhSach {
         return true;
     }
 
-    public void Them(Scanner sc) {
+    public void Them() {
         ChiTietPhieuMuon item = new ChiTietPhieuMuon();
-        item.Input(sc);
+        item.Input();
         System.out.println(Them(item) ? "Them chi tiet phieu muon thanh cong!" : "Ma chi tiet da ton tai.");
     }
 
@@ -106,44 +105,19 @@ public class DSChiTietPhieuMuon implements DanhSach {
             System.out.println("Danh sach chi tiet phieu muon dang trong!");
             return;
         }
-        System.out.printf("%-12s %-12s %-12s %-10s%n", "MA CT", "MA PM", "MA SACH", "SO LUONG");
-        for (int i = 0; i < soLuong; i++) danhSach[i].output();
+        System.out.println("DANH SACH CHI TIET PHIEU MUON:");
+        System.out.println("+------------+------------+------------+----------+");
+        System.out.printf("| %-10s | %-10s | %-10s | %-8s |%n", "MA CT", "MA PM", "MA SACH", "SO LUONG");
+        System.out.println("+------------+------------+------------+----------+");
+        for (int i = 0; i < soLuong; i++) danhSach[i].Output();
+        System.out.println("+------------+------------+------------+----------+");
     }
 
     @Override
     public void ReadFile() {
-        try {
-            docFile("data/ChiTietPhieuMuon.txt");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi doc file data/ChiTietPhieuMuon.txt: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void WriteFile() {
-        try {
-            ghiFile("data/ChiTietPhieuMuon.txt");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi ghi file data/ChiTietPhieuMuon.txt: " + e.getMessage());
-        }
-    }
-
-    public void ghiFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            for (int i = 0; i < soLuong; i++) {
-                ChiTietPhieuMuon item = danhSach[i];
-                writer.println(String.join(";", item.getMaCT(), item.getMaPM(), item.getMaSach(),
-                        String.valueOf(item.getSoLuong())));
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Khong the ghi chi tiet phieu muon.", e);
-        }
-    }
-
-    public void docFile(String filename) {
         soLuong = 0;
         Arrays.fill(danhSach, null);
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("data/ChiTietPhieuMuon.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
@@ -156,7 +130,20 @@ public class DSChiTietPhieuMuon implements DanhSach {
                 }
             }
         } catch (IOException | NumberFormatException e) {
-            throw new IllegalStateException("Khong the doc chi tiet phieu muon.", e);
+            System.out.println("Loi doc file data/ChiTietPhieuMuon.txt: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void WriteFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("data/ChiTietPhieuMuon.txt"))) {
+            for (int i = 0; i < soLuong; i++) {
+                ChiTietPhieuMuon item = danhSach[i];
+                writer.println(String.join(";", item.getMaCT(), item.getMaPM(), item.getMaSach(),
+                        String.valueOf(item.getSoLuong())));
+            }
+        } catch (IOException e) {
+            System.out.println("Loi ghi file data/ChiTietPhieuMuon.txt: " + e.getMessage());
         }
     }
 }

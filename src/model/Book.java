@@ -1,5 +1,9 @@
 package model;
 
+import danhsach.DSAuthor;
+import danhsach.DSBook;
+import danhsach.DSPublisher;
+import danhsach.DSTheLoai;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -165,11 +169,21 @@ public abstract class Book {
         this.MaTG = sc.nextLine().trim();
         System.out.print("Nhap ma NXB: ");
         this.MaNXB = sc.nextLine().trim();
-        InputConLai();
+        nhapThongTinCoBan();
     }
 
-    // Dung khi DSBook da kiem tra hop le va gan san MaSach, MaTheLoai, MaTG, MaNXB
-    public void InputConLai() {
+    // Nhap day du thong tin sach co kiem tra rang buoc tu cac danh sach
+    public void Input(DSBook dsBook, DSTheLoai dstl, DSAuthor dsAuthor, DSPublisher dsPublisher) {
+        if (this.MaSach == null || this.MaSach.isEmpty()) {
+            this.MaSach = dsBook.nhapMaSachHopLe();
+        }
+        this.MaTheLoai = dsBook.nhapMaTheLoaiHopLe(dstl);
+        this.MaTG = dsBook.nhapMaTacGiaHopLe(dsAuthor);
+        this.MaNXB = dsBook.nhapMaNXBHopLe(dsPublisher);
+        nhapThongTinCoBan();
+    }
+
+    private void nhapThongTinCoBan() {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -228,7 +242,13 @@ public abstract class Book {
         updateStatus();
     }
 
-    public void InputTuPhieuNhap(double donGia, int soLuong) {
+    public void InputTuPhieuNhap(String maSach, double donGia, int soLuong,
+            DSBook dsBook, DSTheLoai dstl, DSAuthor dsAuthor, DSPublisher dsPublisher) {
+        this.MaSach = maSach;
+        this.MaTheLoai = dsBook.nhapMaTheLoaiHopLe(dstl);
+        this.MaTG = dsBook.nhapMaTacGiaHopLe(dsAuthor);
+        this.MaNXB = dsBook.nhapMaNXBHopLe(dsPublisher);
+
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.print("Nhap ten sach: ");

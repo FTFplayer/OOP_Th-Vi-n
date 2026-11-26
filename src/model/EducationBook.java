@@ -1,5 +1,9 @@
 package model;
 
+import danhsach.DSAuthor;
+import danhsach.DSBook;
+import danhsach.DSPublisher;
+import danhsach.DSTheLoai;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -52,14 +56,15 @@ public class EducationBook extends Book {
     }
 
     @Override
-    public void InputConLai() {
-        super.InputConLai();
+    public void Input(DSBook dsBook, DSTheLoai dstl, DSAuthor dsAuthor, DSPublisher dsPublisher) {
+        super.Input(dsBook, dstl, dsAuthor, dsPublisher);
         nhapThongTinRieng();
     }
 
     @Override
-    public void InputTuPhieuNhap(double donGia, int soLuong) {
-        super.InputTuPhieuNhap(donGia, soLuong);
+    public void InputTuPhieuNhap(String maSach, double donGia, int soLuong,
+            DSBook dsBook, DSTheLoai dstl, DSAuthor dsAuthor, DSPublisher dsPublisher) {
+        super.InputTuPhieuNhap(maSach, donGia, soLuong, dsBook, dstl, dsAuthor, dsPublisher);
         nhapThongTinRieng();
     }
 

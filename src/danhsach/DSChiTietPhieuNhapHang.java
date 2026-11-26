@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.Scanner;
 import model.ChiTietPhieuNhapHang;
 
 public class DSChiTietPhieuNhapHang implements DanhSach {
@@ -68,9 +67,9 @@ public class DSChiTietPhieuNhapHang implements DanhSach {
         return true;
     }
 
-    public void Them(Scanner sc) {
+    public void Them() {
         ChiTietPhieuNhapHang item = new ChiTietPhieuNhapHang();
-        item.Input(sc);
+        item.Input();
         System.out.println(Them(item) ? "Them chi tiet phieu nhap thanh cong!" : "Ma chi tiet da ton tai.");
     }
 
@@ -110,56 +109,41 @@ public class DSChiTietPhieuNhapHang implements DanhSach {
         System.out.printf("| %-10s | %-10s | %-10s | %-8s | %-12s | %-14s |%n",
                 "MA CT", "MA PNH", "MA SACH", "SO LUONG", "DON GIA", "THANH TIEN");
         System.out.println("+------------+------------+------------+----------+--------------+----------------+");
-        for (int i = 0; i < soLuong; i++) danhSach[i].output();
+        for (int i = 0; i < soLuong; i++) danhSach[i].Output();
         System.out.println("+------------+------------+------------+----------+--------------+----------------+");
     }
 
     @Override
     public void ReadFile() {
-        try {
-            docFile("data/ChiTietPhieuNhapHang.txt");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi doc file data/ChiTietPhieuNhapHang.txt: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void WriteFile() {
-        try {
-            ghiFile("data/ChiTietPhieuNhapHang.txt");
-        } catch (IllegalStateException e) {
-            System.out.println("Loi ghi file data/ChiTietPhieuNhapHang.txt: " + e.getMessage());
-        }
-    }
-
-    public void ghiFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            for (int i = 0; i < soLuong; i++) {
-                ChiTietPhieuNhapHang item = danhSach[i];
-                writer.println(String.join(";", item.getMaCT(), item.getMaPNH(), item.getMaSach(),
-                        String.valueOf(item.getSoLuong()), String.valueOf(item.getDonGia())));
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Khong the ghi chi tiet phieu nhap.", e);
-        }
-    }
-
-    public void docFile(String filename) {
         soLuong = 0;
         Arrays.fill(danhSach, null);
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("data/ChiTietPhieuNhapHang.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
                 String[] parts = line.split(";", -1);
                 if (parts.length != 5) throw new IOException("Du lieu chi tiet phieu nhap khong hop le.");
-                ChiTietPhieuNhapHang item = new ChiTietPhieuNhapHang(parts[0].trim(), parts[1].trim(),
-                        parts[2].trim(), Integer.parseInt(parts[3].trim()), Double.parseDouble(parts[4].trim()));
-                if (!Them(item)) throw new IOException("Trung ma chi tiet: " + parts[0]);
+                if (!Them(new ChiTietPhieuNhapHang(parts[0].trim(), parts[1].trim(), parts[2].trim(),
+                        Integer.parseInt(parts[3].trim()), Double.parseDouble(parts[4].trim())))) {
+                    throw new IOException("Trung ma chi tiet: " + parts[0]);
+                }
             }
         } catch (IOException | NumberFormatException e) {
-            throw new IllegalStateException("Khong the doc chi tiet phieu nhap.", e);
+            System.out.println("Loi doc file data/ChiTietPhieuNhapHang.txt: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void WriteFile() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("data/ChiTietPhieuNhapHang.txt"))) {
+            for (int i = 0; i < soLuong; i++) {
+                ChiTietPhieuNhapHang item = danhSach[i];
+                writer.println(String.join(";", item.getMaCT(), item.getMaPNH(), item.getMaSach(),
+                        String.valueOf(item.getSoLuong()), String.valueOf(item.getDonGia())));
+            }
+        } catch (IOException e) {
+            System.out.println("Loi ghi file data/ChiTietPhieuNhapHang.txt: " + e.getMessage());
         }
     }
 }

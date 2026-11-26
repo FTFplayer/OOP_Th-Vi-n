@@ -9,6 +9,7 @@ public class PhieuNhapHang {
     private String maNV;
     private String ngayNhap;
     private double tongTien;
+    private static final Scanner sc = new Scanner(System.in);
 
     private ChiTietPhieuNhapHang[] dsChiTiet = new ChiTietPhieuNhapHang[0];
     private int soChiTiet = 0;
@@ -134,7 +135,7 @@ public class PhieuNhapHang {
         System.out.println("  +------------+------------+----------+--------------+----------------+");
     }
 
-    public void Input(Scanner sc) {
+    public void Input() {
         while (true) {
             System.out.print("Nhap ma phieu nhap hang (VD: PNH001): ");
             maPNH = sc.nextLine().trim();
@@ -145,11 +146,11 @@ public class PhieuNhapHang {
         maNCC = sc.nextLine().trim();
         System.out.print("Nhap ma nhan vien (VD: NV01): ");
         maNV = sc.nextLine().trim();
-        ngayNhap = nhapNgay(sc);
+        ngayNhap = nhapNgay();
         tongTien = 0;
     }
 
-    private String nhapNgay(Scanner sc) {
+    private String nhapNgay() {
         while (true) {
             System.out.print("Nhap ngay nhap (dd/MM/yyyy): ");
             String value = sc.nextLine().trim();
